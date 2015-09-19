@@ -1,5 +1,5 @@
 suites:
     main:
-        namespace: App
-        psr4_prefix: App
+        namespace: bepc
+        psr4_prefix: bepc
         src_path: app
