@@ -21,12 +21,34 @@
               </a>
           </li>
           <li class="sub-menu">
-              <a href="javascript:;" >
-                  <i class="fa fa-desktop"></i>
-                  <span>Barcode</span>
+              <a href="javascript:;" class="barcode" >
+                  <i class="fa fa-barcode"></i>
+                  <span>Barcodes</span>
               </a>
               <ul class="sub">
-                    <li><a  href="{{route('barcode.create')}}">Create Barcode</a></li>
+                <li><a  href="{{route('barcode.list')}}" class=" barcode-list"><i class="fa fa-navicon"></i> List Barcode</a></li>
+                <li><a  href="{{route('barcode.create')}}" class="  barcode-create"><i class="fa fa-plus"></i> Create Barcode</a></li>
+              </ul>
+          </li>
+          <li class="sub-menu">
+              <a href="javascript:;" class="product" >
+                  <i class="fa fa-beer"></i>
+                  <span>Products</span>
+              </a>  
+              <ul class="sub">
+                <li><a  href="{{route('product.list')}}" class="product-list"><i class="fa fa-navicon"></i> List Products</a></li>
+                <li><a  href="{{route('product.create')}}" class="product-create"><i class="fa fa-plus"></i> Create Product</a></li>
+                <li><a  href="{{route('product.compute')}}" class="product-compute"><i class="fa fa-calculator"></i> Compute Ingredients</a></li>
+              </ul>
+          </li>
+          <li class="sub-menu">
+              <a href="javascript:;" class="recipe" >
+                  <i class="fa fa-book"></i>
+                  <span>Recipe</span>
+              </a>
+              <ul class="sub">
+                <li><a  href="{{route('recipe.list')}}" class="recipe-list"><i class="fa fa-navicon"></i> List Recipe</a></li>
+                <li><a  href="{{route('recipe.create')}}" class="recipe-create"><i class="fa fa-plus"></i> Create Recipe</a></li>
               </ul>
           </li>
           

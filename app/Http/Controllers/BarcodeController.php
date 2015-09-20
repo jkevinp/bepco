@@ -5,6 +5,11 @@ use bepc\Http\Controllers\Controller;
 
 use bepc\Libraries\BarcodeGenerator\BarcodeGenerator as BgcOutput;
 use URL;
+use Storage;
+use File;
+use PDF;
+use bepc\Product;
+use bepc\Barcode;
 class BarcodeController extends Controller
 {
     /**
@@ -18,7 +23,8 @@ class BarcodeController extends Controller
 
     public function index()
     {
-        //
+        $files = File::allFiles(public_path('img-barcode'));
+        return view('self.blade.barcode.list')->withFiles($files);
     }
 
     /**
@@ -28,26 +34,9 @@ class BarcodeController extends Controller
      */
     public function create()
     {
-        $dir = public_path().'\\img-barcode\\';
-        $file = $this->BgcOutput->output('kevinpogi.png' , $dir);
-        if(file_exists($dir.$file)){
-            // return redirect()->back()->with(
-            //     'flash_message' , 
-            //     'Successfully saved barcode. <br/>File:<a href="'.$dir.$file.'">View</a>'
-            // );
-            echo "<img src='".URL::asset('public/img-barcode').'/'.$file."' />";
-        }
-       // return redirect()->back()->withErrors('Cannot save barcode! \nArgs:'.$dir.$file );
-       // file_put_contents(public_path().'/img-barcode/code'.$filename.'.png', $html);
-        //$html = file_get_contents($this->BgcOutput->output('test'));
-        //$doc = new DOMDocument();
-        //@$doc->loadHTML($html);
 
-        //$tags = $doc->getElementsByTagName('img');
-        //foreach ($tags as $tag) {
-          //     $t=  $tag->getAttribute('src');
-        //  }
-        //file_put_contents(public_path().'code'.$filename.'.png', $html);
+        $products = Product::whereNull('barcode_id')->orWhere('barcode_id' , '=' ,'')->get()->lists('name', 'id');
+        return view('self.blade.barcode.create')->with(compact('products'));
     }
 
     /**
@@ -58,7 +47,39 @@ class BarcodeController extends Controller
      */
     public function store(Request $request)
     {
+        $input = $request->all();
+        $extension = "png";
+
+        $product = Product::find($input['product_id']);
+
+        $file = $this->BgcOutput->output($request->get('barcodekey') ? $request->get('barcodekey') :  str_pad($input['product_id'], 7, "0", STR_PAD_LEFT) ,  $extension , public_path('img-barcode')); 
+        //if($request->has('fastinput'))return redirect()->back()->with('flash_message' ,  'Successfully saved barcode. <br/>File:<a href="'.$file.'">View</a>');
+        
+        if(file_exists(public_path('img-barcode').'/'.$file)){
+            $input['imageurl'] = Url('img-barcode').'/'.$file;
+            $input['barcodekey'] = $request->get('barcodekey') ?str_pad( $request->get('barcodekey'), 7, "0", STR_PAD_LEFT)  :  str_pad($input['product_id'], 7, "0", STR_PAD_LEFT) ;
+            
+            if($barcode = $this->save($input)){
+                $product->barcode_id = $barcode->id;
+                if($product->save()){
+                    return redirect(route('barcode.show' , $file ))->with('flash_message' ,  'Successfully saved barcode. <br/>File:<a href="'.$file.'">View</a>');
+                }
+            }
+        }
+        return redirect()->back()->withErrors('Cannot save barcode. Try Again');
+    }
+    public function save($input){
         //
+        // $barcode = Barcode::find($input['id']);
+        if($barcode = Barcode::where('product_id' , '=', $input['product_id'])->first())
+        {
+            $barcode->imageurl = $input['imageurl'];
+            $barcode->barcodekey = $input['barcodekey'];
+            $barcode->save();
+        }else{
+            $barcode =Barcode::create($input);
+        }
+        return $barcode;
     }
 
     /**
@@ -69,7 +90,7 @@ class BarcodeController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('self.blade.barcode.show')->withFile($id);
     }
 
     /**
@@ -104,5 +125,18 @@ class BarcodeController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function printbarcode()
+    {
+        $files = File::allFiles(public_path('img-barcode'));
+        $param['files'] = $files;
+        $param['count'] = 10;
+        // echo "<pre>";
+        // die(print_r($param));
+        // echo "</pre>";
+    // $view = view('pdf.print')->with(compact('files'));
+      //  return $view;
+        $pdf = PDF::loadView('pdf.print' , $param );
+        return $pdf->stream();
     }
 }

@@ -11,17 +11,7 @@
                             <h2 class="violet">Create new Barcode</h2>
                             <hr>
                             <div class="form-group ">
-                                <label for="fastinput" class="control-label col-lg-2">Quick Create*</label>     
-                                <div class="col-lg-10"><input checked name="fastinput" class="form-control input-medium " size="16" type="checkbox"></div>
-                            </div>
-                             <div class="form-group ">
-                                <label for="product_id" class="control-label col-lg-2">Product ID*</label>     
-                                <div class="col-lg-10">
-                                    {!! Form::select('product_id',$products,'' ,['class' => 'selectize'])!!}
-                                </div>
-                            </div>
-                            <div class="form-group ">
-                                <label for="barcodekey" class="control-label col-lg-2">Barcode Key*</label>     
+                                <label for="readingdate" class="control-label col-lg-2">Barcode Key*</label>     
                                 <div class="col-lg-10"><input name="barcodekey"class="form-control input-medium " size="16" type="text"></div>
                             </div>
                             <div class="form-group ">

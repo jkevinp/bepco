@@ -1,4 +1,4 @@
-<?php
+<?php namespace bepc\Libraries\BarcodeGenerator;
 /**
  * BCGcode11.barcode.php
  *--------------------------------------------------------------------

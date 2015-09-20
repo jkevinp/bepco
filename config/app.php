@@ -145,6 +145,8 @@ return [
         bepc\Providers\EventServiceProvider::class,
         bepc\Providers\RouteServiceProvider::class,
 
+       Barryvdh\DomPDF\ServiceProvider::class,
+
     ],
 
     /*
@@ -195,6 +197,8 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         'Form'      => Collective\Html\FormFacade::class, /* FORM */
         'Html'      => Collective\Html\HtmlFacade::class, /*BUILDER */
+
+       'PDF'               => Barryvdh\DomPDF\Facade::class,
 
     ],
 

@@ -11,6 +11,28 @@
 |
 */
 Route::get('/', ['uses' => 'PageController@index' , 'as' => 'default.home']);
-Route::group(['prefix' => 'barcode'],function(){
+Route::group(['prefix' => 'user/barcode'],function(){
 	Route::get('/create' , ['uses' => 'BarcodeController@create' , 'as' => 'barcode.create']);
+	Route::get('/show/{id}' , ['uses' => 'BarcodeController@show' , 'as' => 'barcode.show']);
+	Route::get('/list' , ['uses' => 'BarcodeController@index' , 'as' => 'barcode.list']);
+	Route::get('/print' , ['uses' => 'BarcodeController@printbarcode' , 'as' => 'barcode.print']);
+	Route::post('/store' , ['uses' => 'BarcodeController@store' , 'as' => 'barcode.store']);
+});
+Route::group(['prefix' => 'user/product'],function(){
+	Route::get('/create' , ['uses' => 'ProductController@create' , 'as' => 'product.create']);
+	Route::get('/show/{id}' , ['uses' => 'ProductController@show' , 'as' => 'product.show']);
+	Route::get('/list' , ['uses' => 'ProductController@index' , 'as' => 'product.list']);
+	Route::get('/print' , ['uses' => 'ProductController@printbarcode' , 'as' => 'product.print']);
+	Route::post('/store' , ['uses' => 'ProductController@store' , 'as' => 'product.store']);
+	Route::post('/update' , ['uses' => 'ProductController@update' , 'as' => 'product.update']);
+	Route::get('/compute' , ['uses' => 'ProductController@compute' , 'as' => 'product.compute']);
+	Route::post('/compute' , ['uses' => 'ProductController@processcomputation' , 'as' => 'product.compute']);
+});
+Route::group(['prefix' => 'user/recipe'],function(){
+	Route::get('/create' , ['uses' => 'RecipeController@create' , 'as' => 'recipe.create']);
+	Route::get('/show/{id}' , ['uses' => 'RecipeController@show' , 'as' => 'recipe.show']);
+	Route::get('/list' , ['uses' => 'RecipeController@index' , 'as' => 'recipe.list']);
+	Route::get('/print' , ['uses' => 'RecipeController@printbarcode' , 'as' => 'recipe.print']);
+	Route::post('/store' , ['uses' => 'RecipeController@store' , 'as' => 'recipe.store']);
+	Route::post('/update' , ['uses' => 'RecipeController@update' , 'as' => 'recipe.update']);
 });

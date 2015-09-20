@@ -23,7 +23,8 @@
     <link rel="shortcut icon" href="{{ asset($env) }}/img/icons/favicon.ico">
     <!-- Bootstrap core CSS -->
     <link href="{{URL::asset($env)}}/css/bootstrap.css" rel="stylesheet">
-     <link href="{{URL::asset($env)}}/css/selectize.css" rel="stylesheet">
+    <link href="{{URL::asset($env)}}/css/selectize.css" rel="stylesheet">
+    <link href="{{URL::asset($env)}}/css/bootstrap-fileupload.css" rel="stylesheet">
     <!--external css-->
     <link href="{{URL::asset($env)}}/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="{{URL::asset($env)}}/js/gritter/css/jquery.gritter.css" />   
@@ -32,6 +33,7 @@
     <link href="{{URL::asset($env)}}/css/style-responsive.css" rel="stylesheet">
     <link href="{{URL::asset('default')}}/css/table-responsive.css" rel="stylesheet">
     <link href="{{URL::asset($env)}}/css/lightbox.css" rel="stylesheet">
+    <link href="{{URL::asset('libs')}}/css/sweetalert.css" rel="stylesheet">
    
     @yield('header')
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -64,7 +66,7 @@
       </footer>
       <!--footer end-->
     </section>
-    <!-- footer js <script src="{{URL::asset($env)}}/js/jquery.js"></script>-->
+    <!-- footer js-->
     <script type="text/javascript" src="{{URL::asset($env)}}/js/jquery.js"></script>
     <script type="text/javascript" src="{{URL::asset($env)}}/js/bootstrap.min.js"></script>
     <script class="include" type="text/javascript" src="{{URL::asset($env)}}/js/jquery.dcjqaccordion.2.7.js"></script>
@@ -79,12 +81,12 @@
     <!--script for this page-->
     <script type="text/javascript" src="{{URL::asset($env)}}/js/jquery-ui-1.9.2.custom.min.js"></script>
     <!--custom switch-->
-
     <script type="text/javascript" src="{{URL::asset($env)}}/js/bootstrap-switch.js"></script>
-    
     <!--custom tagsinput-->
     <script type="text/javascript" src="{{URL::asset($env)}}/js/selectize.min.js"></script>
     <script type="text/javascript" src="{{URL::asset($env)}}/js/jquery.tagsinput.js"></script>
+    <script type="text/javascript" src="{{URL::asset($env)}}/js/bootstrap-fileupload.js"></script> 
+    <script type="text/javascript" src="{{URL::asset($env)}}/js/advanced-form-components.js"></script> 
     <script src="{{URL::asset($env)}}/js/lightbox.min.js"></script>
     <script src="{{URL::asset($env)}}/js/bootbox.min.js"></script>
     {!! Html::script('links.js')  !!}
@@ -96,6 +98,7 @@
     {!! Html::script($env.'/js/date/moment.min.js')  !!}
     {!! Html::script($env.'/js/date/bootstrap-timepicker.js')  !!}
     {!! Html::script($env.'/js/advanced-form-components.js')  !!}
+    {!! Html::script('libs/js/sweetalert.min.js')  !!}
 
 
     <!--footer js end-->
@@ -140,11 +143,8 @@
       @yield('script')
      <script>
        $(document).ready(function () {
-        $('.selectize').selectize();
-        $('select.styled').customSelect();
-
-
-
+          $('.selectize').selectize();
+          $('select.styled').customSelect();
         });
     </script>
   
