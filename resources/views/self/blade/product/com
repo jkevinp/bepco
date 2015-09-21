@@ -1,0 +1,149 @@
+@extends('default.layout.layout')
+
+@section('content')
+<div class="row mt">
+  <div class="row mt">
+    <div class="col-md-6">
+    	<div class="form-panel">
+            <div class=" form">
+                <div class="cmxform form-horizontal style-form" >
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <h2 class="violet">Compute/Order Ingredients for product</h2>
+                    <h5 class=""><b>Only products with recipe will be loaded.</b></h5>
+                    <hr>
+                    <div  id="product-items">
+                    <div class="form-group ">
+                        <label for="readingdate" class="control-label col-lg-4">Product Name*</label>     
+                        <div class="col-lg-8">
+                          {!! Form::select('product_id' , $products, '' , ['class' => 'selectize ' , 'id' => 'products' ,'data-route' => route('ajax.recipe') ]) !!}
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label for="readingdate" class="control-label col-lg-4">Product Quantity</label>     
+                        <div class="col-lg-8"><input name="quantity" class="form-control input-medium " size="16" id="quantity" type="number" min="1" value="1"></div>
+                    </div>
+                    </div>
+                    <button class="btn btn-theme" id="btn_submit" data-route="{{route('product.processcomputation')}}">Submit</button>
+                    <input class="btn btn-theme04" type="submit" value="Reset">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-md-6">
+      <div class="panel panel-primary">
+           <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="row mt" >
+    <div class="col-md-6">
+      <div class="row mt">
+        <div class="form-panel" >
+          <table  class="table table-hover table-striped">
+            <thead>
+              <th>Recipe</th>
+            </thead>
+            <tbody id="recipe-result">
+            
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row mt">
+        <div class="form-panel" >
+          <table id="" class="table table-hover table-striped">
+            <thead>
+              <th>Ingredient</th>
+            </thead>
+            <tbody id="ingredient-result">
+            
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="row mt">
+        <div class="form-panel" >
+          <table id="" class="table table-hover table-striped">
+            <thead>
+              <th>Required Items</th>
+            </thead>
+            <tbody id="computation-result">
+            
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+</div>
+@stop
+
+@section('script')
+<script type="text/javascript">
+  $(document).ready(function(){
+      
+      $('#products').on('change' , function(){
+          $('#computation-result').html('');
+          var div_recipe = $('#recipe-result');
+          var div_ingredient= $('#ingredient-result');
+          div_recipe.html('<i class="fa fa-spinner fa-pulse bg-black"></i>Fetching recipe...');
+          div_ingredient.html('<i class="fa fa-spinner fa-pulse bg-black"></i>Fetching Ingredients');
+          $.get( $(this).data('route') , { product_id: $(this).val()} )
+          .done(function( data ) {
+            console.log(data);
+              div_recipe.html('');
+              div_ingredient.html('');
+               var html = "<tr>";
+              //loop recipe
+              $.each(data.recipe, function(i,o){
+                $.each(o, function(x,y){
+                    html += "<td>" + y;
+                });
+              });
+               div_recipe.append(html);
+              var html = "";
+              if(data.ingredient.length == 0){
+                 html = "The recipe has no ingredient";
+                 $('#btn_submit').attr('disabled' , 'true');
+                }
+                else{
+                  $('#btn_submit').removeAttr('disabled');
+                  $.each(data.ingredient, function(i, o){
+                    html += "<tr>";
+                    html += "<td>" + i + " x" + o;
+                  });
+                }
+              
+              div_ingredient.append(html);
+              //end loop
+
+             
+          });
+      });
+
+      $('#btn_submit').click(function(e){
+        e.preventDefault();
+        var div_result = $('#computation-result');
+         $.get( $(this).data('route') , { product_id: $('#products').val(), quantity : $('#quantity').val() })
+          .done(function( data ) {
+              div_result.html('');
+              $.each(data, function(i,o){
+                var html = "<tr>";
+                  
+                  $.each(o, function(x,y){
+                    html += "<td>" + y;
+                  });
+                     div_result.append(html);
+              });
+      });
+        });
+      $('#products').change();
+      $('#product-items').draggable();
+  });
+</script>
+@stop

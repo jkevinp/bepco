@@ -8,7 +8,7 @@ use bepc\Http\Controllers\Controller;
 use bepc\Product;
 use URL;
 use bepc\Ingredient;
-
+use bepc\Recipe;
 class ProductController extends Controller
 {
     /**
@@ -120,21 +120,33 @@ class ProductController extends Controller
         //
     }
     public function compute(){
-        $products = Product::all()->lists('name', 'id');
+        $recipe = Recipe::all()->lists('product_id');
+        $products = Product::whereIn('id' , $recipe)->lists('name', 'id');
+       
+        //$products = Product::with('recipe' ,'recipe_id')->lists('name', 'id');
         return view('self.blade.product.compute')->with(compact('products'));
     }
     public function processcomputation(Request $request){
         $input = $request->all();
-        $product = Product::find($input['product_id']);
+        $data = $input['data'];
+        $products = [];
+          $order = [];
+        foreach ($data as $v) {
+           $product= Product::find($v[0]);
+           $recipe = $product->recipe;
+             foreach ($recipe as $key => $value) {
+            $ingredients = Ingredient::where('recipe_id' , '=' , $value['id'])->get();
+                foreach ($ingredients as $ingredient) {
+                    array_push($order, ['name' => $ingredient->name ,  'quantity' => $ingredient->quantity * $v[1]]);
+                }
+            }
+
+        }
+        //$product = Product::find($input['data']);
         $recipe = $product->recipe;
 
-        $order = [];
-        foreach ($recipe as $key => $value) {
-            $ingredients = Ingredient::where('recipe_id' , '=' , $value['id'])->get();
-            foreach ($ingredients as $ingredient) {
-               array_push($order, ['name' => $ingredient->name ,  'quantity' => $ingredient->quantity * $input['quantity']]);
-            }
-        }
+      
+      
         return $order;
     }
 }

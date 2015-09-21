@@ -7,7 +7,6 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="keyword" content="">
-
     <title>@yield('title'){{env('APP_TITLE', 'BEPC')}}</title>
     <?php 
       $env = 'default';
@@ -19,7 +18,6 @@
 
       }
     ?>
-
     <link rel="shortcut icon" href="{{ asset($env) }}/img/icons/favicon.ico">
     <!-- Bootstrap core CSS -->
     <link href="{{URL::asset($env)}}/css/bootstrap.css" rel="stylesheet">
@@ -34,7 +32,9 @@
     <link href="{{URL::asset('default')}}/css/table-responsive.css" rel="stylesheet">
     <link href="{{URL::asset($env)}}/css/lightbox.css" rel="stylesheet">
     <link href="{{URL::asset('libs')}}/css/sweetalert.css" rel="stylesheet">
-   
+
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     @yield('header')
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -43,29 +43,25 @@
     <![endif]-->
   </head>
   <body>
-    <section id="container" >
-          @include('default.layout.topbar')
-          @include('default.layout.sidebar')
-        <section id="main-content">
-            <section class="wrapper">
-            <div class="row mt">
-              <div class="col-lg-12 col-md-6 col-sm-12">
-                  @yield('content')
-              </div>
-            </div>
-            </section>
+  <section id="container" >
+    @include('default.layout.topbar')
+    @include('default.layout.sidebar')
+    <section id="main-content">
+      <section class="wrapper">
+        <div class="row mt">
+          <div class="col-lg-12 col-md-6 col-sm-12">
+            @yield('content')
+          </div>
+        </div>
+      </section>
     </section>
     <!--footer start-->
        <footer class="site-footer black-bg" style="position:fixed;bottom:0;left:0;right:0;">
-          <div class="text-center">
-              {{env('APP_TITLE' ,'BEPC')}}
-              <a href="" class="go-top">
-                  <i class="fa fa-angle-up"></i>
-              </a>
+          <div class="text-center">{{env('APP_TITLE' ,'BEPC')}}<a href="" class="go-top"><i class="fa fa-angle-up"></i></a>
           </div>
       </footer>
       <!--footer end-->
-    </section>
+  </section>
     <!-- footer js-->
     <script type="text/javascript" src="{{URL::asset($env)}}/js/jquery.js"></script>
     <script type="text/javascript" src="{{URL::asset($env)}}/js/bootstrap.min.js"></script>
@@ -140,13 +136,12 @@
     </script>
     @endif
 
-      @yield('script')
+    @yield('script')
      <script>
        $(document).ready(function () {
           $('.selectize').selectize();
           $('select.styled').customSelect();
         });
     </script>
-  
   </body>
 </html>
