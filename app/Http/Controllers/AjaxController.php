@@ -5,8 +5,8 @@ namespace bepc\Http\Controllers;
 use Illuminate\Http\Request;
 use bepc\Http\Requests;
 use bepc\Http\Controllers\Controller;
-use bepc\Product;
-use bepc\Ingredient;
+use bepc\Models\Product;
+use bepc\Models\Ingredient;
 
 class AjaxController extends Controller
 {

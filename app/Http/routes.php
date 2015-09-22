@@ -36,7 +36,15 @@ Route::group(['prefix' => 'user/recipe'],function(){
 	Route::post('/store' , ['uses' => 'RecipeController@store' , 'as' => 'recipe.store']);
 	Route::post('/update' , ['uses' => 'RecipeController@update' , 'as' => 'recipe.update']);
 });
-
+Route::group(['prefix' => 'user/ingredient'],function(){
+	Route::get('/create' , ['uses' => 'IngredientController@create' , 'as' => 'ingredient.create']);
+	Route::get('/show/{id}' , ['uses' => 'IngredientController@show' , 'as' => 'ingredient.show']);
+	Route::get('/list' , ['uses' => 'IngredientController@index' , 'as' => 'ingredient.list']);
+	Route::get('/print' , ['uses' => 'IngredientController@printbarcode' , 'as' => 'ingredient.print']);
+	Route::post('/store' , ['uses' => 'IngredientController@store' , 'as' => 'ingredient.store']);
+	Route::post('/update' , ['uses' => 'IngredientController@update' , 'as' => 'ingredient.update']);
+});
 Route::group(['prefix' => 'ajax'], function(){
 	Route::get('/recipe' , ['uses' => 'AjaxController@recipe' , 'as' => 'ajax.recipe']);
 });
+

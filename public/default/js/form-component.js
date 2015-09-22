@@ -1,6 +1,5 @@
 var Script = function () {
 
-
     //checkbox and radio btn
 
     var d = document;

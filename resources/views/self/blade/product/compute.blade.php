@@ -8,7 +8,7 @@
       <div class="col-md-6">
         <div class="panel panel-info">
           <div class="panel-heading">Products: Move to cart 
-            <span class="pull-right">   <button class="btn btn-theme" id="btn_submit" data-route="{{route('product.processcomputation')}}">Submit</button></span>
+            <span class="pull-right"><button class="btn btn-theme btn-xs" id="btn_submit" data-route="{{route('product.processcomputation')}}">Submit</button></span>
           </div>
             <div class="panel-body">
               <ul id="sortable1" class="droptrue">
@@ -162,7 +162,7 @@
           });
       });
   
-      $('.productlistitem').click(function(){
+      $('.productlistitem').mousedown(function(){
 
            $('#computation-result').html('');
            $('.list-info').removeClass('list-info').addClass('list-success');
@@ -235,9 +235,17 @@
         });
       $('#products').change();
       $('#product-items').draggable();
-      $( "ul.droptrue" ).sortable({
-        connectWith: "ul",
-        placeholder: "listhighlight"
+      $("ul.droptrue" ).sortable({ 
+          connectWith: "ul", 
+          placeholder: "listhighlight",
+          helper: "clone",
+          revert: "valid"
+        });
+      $('#sortable1').sortable({
+        remove: function(event, ui) {
+                ui.item.clone().appendTo('#sortable2');
+                $(this).sortable('cancel');
+            }
       });
       $("#sortable1, #sortable2" ).disableSelection();
       

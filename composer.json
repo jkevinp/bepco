@@ -25,7 +25,8 @@
             "bepc\\": "app/",
             "bepc\\Repositories\\Contracts\\": "app/Repositories/Contracts/",
             "bepc\\Repositories\\Eloquent\\": "app/Repositories/Eloquent/",
-            "bepc\\Libraries\\BarcodeGenerator\\": "app/Libraries/BarcodeGenerator/"
+            "bepc\\Libraries\\BarcodeGenerator\\": "app/Libraries/BarcodeGenerator/",
+            "bepc\\Models\\" : "app/Models/"
 
             
         }

@@ -5,10 +5,10 @@ namespace bepc\Http\Controllers;
 use Illuminate\Http\Request;
 use bepc\Http\Requests;
 use bepc\Http\Controllers\Controller;
-use bepc\Product;
+use bepc\Models\Product;
 use URL;
-use bepc\Ingredient;
-use bepc\Recipe;
+use bepc\Models\Ingredient;
+use bepc\Models\Recipe;
 class ProductController extends Controller
 {
     /**

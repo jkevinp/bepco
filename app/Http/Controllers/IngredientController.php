@@ -5,11 +5,9 @@ namespace bepc\Http\Controllers;
 use Illuminate\Http\Request;
 use bepc\Http\Requests;
 use bepc\Http\Controllers\Controller;
-use bepc\Models\Product;
-use bepc\Models\Recipe;
 use bepc\Models\Ingredient;
 
-class RecipeController extends Controller
+class IngredientController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +16,8 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        $recipe = Recipe::all();
-        return view('self.blade.recipe.list')->with(compact('recipe'));
+        $ingredients = Ingredient::all();
+        return view('self.blade.ingredient.list')->with(compact('ingredients'));
     }
 
     /**

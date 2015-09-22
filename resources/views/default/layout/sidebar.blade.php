@@ -51,6 +51,27 @@
                 <li><a  href="{{route('recipe.create')}}" class="recipe-create"><i class="fa fa-plus"></i> Create Recipe</a></li>
               </ul>
           </li>
+          <li class="sub-menu">
+              <a href="javascript:;" class="ingredients" >
+                  <i class="fa fa-book"></i>
+                  <span>Ingredients</span>
+              </a>
+              <ul class="sub">
+                <li><a  href="{{route('ingredient.list')}}" class="ingredient-list"><i class="fa fa-navicon"></i> List Ingredients</a></li>
+                <li><a  href="{{route('ingredient.create')}}" class="ingredient-create"><i class="fa fa-plus"></i> Create Ingredient</a></li>
+              </ul>
+          </li>
+          <li class="sub-menu">
+              <a href="javascript:;" class="recipe" >
+                  <i class="fa fa-book"></i>
+                  <span>Raw Items</span>
+              </a>
+              <ul class="sub">
+                <li><a  href="{{route('recipe.list')}}" class="recipe-list"><i class="fa fa-navicon"></i> List Recipe</a></li>
+                <li><a  href="{{route('recipe.create')}}" class="recipe-create"><i class="fa fa-plus"></i> Create Recipe</a></li>
+              </ul>
+          </li>
+          
           
       </ul>
   </div>

@@ -8,8 +8,8 @@ use URL;
 use Storage;
 use File;
 use PDF;
-use bepc\Product;
-use bepc\Barcode;
+use bepc\Models\Product;
+use bepc\Models\Barcode;
 class BarcodeController extends Controller
 {
     /**
