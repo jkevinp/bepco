@@ -11,7 +11,8 @@ class VerifyCsrfToken extends BaseVerifier
      *
      * @var array
      */
+
     protected $except = [
-        //
+        'http://localhost:8000/user/order/save'
     ];
 }

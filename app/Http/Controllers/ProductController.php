@@ -119,12 +119,19 @@ class ProductController extends Controller
     {
         //
     }
-    public function compute(){
-        $recipe = Recipe::all()->lists('product_id');
-        $products = Product::whereIn('id' , $recipe)->lists('name', 'id');
-       
-        //$products = Product::with('recipe' ,'recipe_id')->lists('name', 'id');
-        return view('self.blade.product.compute')->with(compact('products'));
+    public function compute($orderid = false){
+        if(!$orderid){
+            $recipe = Recipe::all()->lists('product_id');
+            $products = Product::whereIn('id' , $recipe)->lists('name', 'id');
+           
+            //$products = Product::with('recipe' ,'recipe_id')->lists('name', 'id');
+           
+        }
+        $order = \bepc\Models\Order::find($orderid);
+        $ids= $order->orderdetail->lists('product_id' , 'product_quantity');
+        $products = Product::whereIn('id', $ids)->lists('name', 'id');
+        return view('self.blade.product.compute')->with(compact('products' , 'ids'));
+        
     }
     public function processcomputation(Request $request){
         $input = $request->all();

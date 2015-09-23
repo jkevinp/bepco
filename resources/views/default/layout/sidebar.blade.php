@@ -71,6 +71,16 @@
                 <li><a  href="{{route('recipe.create')}}" class="recipe-create"><i class="fa fa-plus"></i> Create Recipe</a></li>
               </ul>
           </li>
+           <li class="sub-menu">
+              <a href="javascript:;" class="order" >
+                  <i class="fa fa-book"></i>
+                  <span>Orders</span>
+              </a>
+              <ul class="sub">
+                <li><a  href="{{route('order.list')}}" class="order-list"><i class="fa fa-navicon"></i> List Orders</a></li>
+                <li><a  href="{{route('order.create')}}" class="order-create"><i class="fa fa-plus"></i> Create Order</a></li>
+              </ul>
+          </li>
           
           
       </ul>

@@ -25,7 +25,7 @@ Route::group(['prefix' => 'user/product'],function(){
 	Route::get('/print' , ['uses' => 'ProductController@printbarcode' , 'as' => 'product.print']);
 	Route::post('/store' , ['uses' => 'ProductController@store' , 'as' => 'product.store']);
 	Route::post('/update' , ['uses' => 'ProductController@update' , 'as' => 'product.update']);
-	Route::get('/compute' , ['uses' => 'ProductController@compute' , 'as' => 'product.compute']);
+	Route::get('/compute/{orderid?}' , ['uses' => 'ProductController@compute' , 'as' => 'product.compute']);
 	Route::get('/processcomputation' , ['uses' => 'ProductController@processcomputation' , 'as' => 'product.processcomputation']);
 });
 Route::group(['prefix' => 'user/recipe'],function(){
@@ -48,3 +48,8 @@ Route::group(['prefix' => 'ajax'], function(){
 	Route::get('/recipe' , ['uses' => 'AjaxController@recipe' , 'as' => 'ajax.recipe']);
 });
 
+Route::group(['prefix' => 'user/order'],function(){
+	Route::get('/create' , ['uses' => 'OrderController@create' , 'as' => 'order.create']);
+	Route::post('/save' , ['uses' => 'OrderController@save' , 'as' => 'order.ajaxstore']);
+	Route::post('/index' , ['uses' => 'OrderController@index' , 'as' => 'order.list']);
+});
