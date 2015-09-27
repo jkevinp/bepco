@@ -6,6 +6,10 @@
         <div class="row mt">
                 <div class="form-panel">
                     <div class=" form">
+                    
+                        @if(isset($product))
+                          <input type="text" data-route="{{route('product.show')}}" id="barcodekey" name="id" class="form-control" value="" placeholder="barcode key"/>
+                            
                         <form class="cmxform form-horizontal style-form"  method="post" action="{{route('product.update')}}" files="true" enctype="multipart/form-data">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <h2 class="violet">{{$product->name or 'product'}}</h2>
@@ -28,14 +32,14 @@
                                 <div class="col-lg-10">
                                       <div class="fileupload fileupload-new" data-provides="fileupload">
                                           <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
-                                              <img src="{{URL::asset($product->imageurl)}}" alt="" class="">
+                                              <img src="{{URL::asset('img-product/'.  $product->imageurl)}}" alt="" class="">
                                           </div>
                                           <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
                                           <div>
                                               <span class="btn btn-theme02 btn-file">
                                                   <span class="fileupload-new"><i class="fa fa-paperclip"></i> Select image</span>
                                                   <span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
-                                                  <input type="file" class="default" name="file" value="{{explode('/' ,$product->imageurl)[1]}}">
+
                                               </span>
                                               <a href="" class="btn btn-theme04 fileupload-exists" data-dismiss="fileupload">
                                                 <i class="fa fa-trash-o"></i> Remove
@@ -52,7 +56,10 @@
                             </div>
                             <input class="btn btn-theme" type="submit" value="Submit">
                             <input class="btn btn-theme04" type="submit" value="Reset">
-                        </form>
+                        </form> 
+                        @else
+                              <input type="text" data-route="{{route('product.show')}}" id="barcodekey" name="id" class="form-control" value="" placeholder="barcode key"/>
+                        @endif
                     </div>
                 </div>
         </div>
@@ -61,3 +68,14 @@
 
 
 @stop
+
+@section('script')
+<script type="text/javascript">
+  $('#barcodekey').on('change' , function(){
+    window.location.assign($(this).data('route') + "/" + $(this).val());
+
+  });
+  $('#barcodekey').focus();
+</script>
+@stop
+

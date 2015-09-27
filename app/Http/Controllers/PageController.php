@@ -14,6 +14,10 @@ class PageController extends Controller
      *
      * @return Response
      */
+    public function __construct(){
+        $this->middleWare('auth');
+    }
+
     public function index()
     {
         return view('default.blade.home');

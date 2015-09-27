@@ -49,12 +49,9 @@ class BarcodeController extends Controller
     {
         $input = $request->all();
         $extension = "png";
-
         $product = Product::find($input['product_id']);
-
         $file = $this->BgcOutput->output($request->get('barcodekey') ? $request->get('barcodekey') :  str_pad($input['product_id'], 7, "0", STR_PAD_LEFT) ,  $extension , public_path('img-barcode')); 
         //if($request->has('fastinput'))return redirect()->back()->with('flash_message' ,  'Successfully saved barcode. <br/>File:<a href="'.$file.'">View</a>');
-        
         if(file_exists(public_path('img-barcode').'/'.$file)){
             $input['imageurl'] = Url('img-barcode').'/'.$file;
             $input['barcodekey'] = $request->get('barcodekey') ?str_pad( $request->get('barcodekey'), 7, "0", STR_PAD_LEFT)  :  str_pad($input['product_id'], 7, "0", STR_PAD_LEFT) ;

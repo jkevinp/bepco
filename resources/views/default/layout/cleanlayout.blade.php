@@ -44,25 +44,8 @@
     <![endif]-->
   </head>
   <body>
-  <section id="container" >
-    @include('default.layout.topbar')
-    @include('default.layout.sidebar')
-    <section id="main-content">
-      <section class="wrapper">
-        <div class="row mt">
-          <div class="col-lg-12 col-md-6 col-sm-12">
-            @yield('content')
-            @yield('modal')
-          </div>
-        </div>
-      </section>
-    </section>
-    <!--footer start-->
-       <footer class="site-footer black-bg" style="position:fixed;bottom:0;left:0;right:0;">
-          <div class="text-center">{{env('APP_TITLE' ,'BEPC')}}<a href="" class="go-top"><i class="fa fa-angle-up"></i></a>
-          </div>
-      </footer>
-      <!--footer end-->
+  <section id="container" > 
+    @yield('content')
   </section>
     <!-- footer js-->
     <script type="text/javascript" src="{{URL::asset($env)}}/js/jquery.js"></script>

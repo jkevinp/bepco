@@ -20,7 +20,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::all();
+        $fieldlist = (new Order)->getShowables();
+        return view('self.blade.order.list')->with(compact('orders' , 'fieldlist'));
     }
 
     /**
@@ -69,7 +71,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace bepc\Http\Controllers\Auth;
 
-use bepc\User;
+use bepc\Models\User;
 use Validator;
 use bepc\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;

@@ -16,7 +16,7 @@ class OrderDetail extends Model
 								'product_quantity'
 							];
  	public function product(){
- 		return $this->hasMany('bepc\Models\Product');
+ 		return $this->hasMany('bepc\Models\Product' , 'id' , 'product_id');
  	}
 
 }

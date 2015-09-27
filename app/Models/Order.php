@@ -17,9 +17,19 @@ class Order extends Model
 								'customer_id',
 								'creator_id'
 							];
-
+	protected $showables= [
+								'id',
+								'deliverydate',
+								'description',
+								'status',
+								'customer_id',
+								'creator_id'
+							];
 	public function orderdetail(){
 		return $this->hasMany('bepc\Models\OrderDetail');	
+	}
+	public function getShowables(){
+		return $this->showables;
 	}
  	
 }

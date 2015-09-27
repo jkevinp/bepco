@@ -14,7 +14,7 @@
               <ul id="sortable1" class="droptrue">
               @foreach($products as $id=>$name)
                 <li class="list-success productlistitem" data-route="{{route('ajax.recipe')}}" data-id="{{$id}}" data-quantity="10" >
-                  {{dd($ids)}}
+                
                   <input name="quantity" class=" col-lg-3 text-center" size="16" id="quantity" type="number" min="1" value="{{1}}">{{$name}}
                   <span class="btn btn-theme btn-xs pull-right">
                     <i class="fa fa-eye"></i> 

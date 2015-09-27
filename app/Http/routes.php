@@ -11,6 +11,15 @@
 |
 */
 Route::get('/', ['uses' => 'PageController@index' , 'as' => 'default.home']);
+Route::get('/auth/login', ['uses' => 'AuthController@index' , 'as' => 'auth.login']);
+Route::post('/auth/login', ['uses' => 'AuthController@signin' , 'as' => 'auth.login']);
+
+Route::group(['prefix' => 'user'] , function(){
+	Route::get('/create/{type?}' , ['uses' => 'UserController@create' ,  'as' => 'user.create']);
+	Route::post('/registration/' , ['uses' => 'UserController@store' ,  'as' => 'user.store']);
+	Route::get('/list' , ['uses' => 'UserController@index'  , 'as' => 'user.list']);
+});
+
 Route::group(['prefix' => 'user/barcode'],function(){
 	Route::get('/create' , ['uses' => 'BarcodeController@create' , 'as' => 'barcode.create']);
 	Route::get('/show/{id}' , ['uses' => 'BarcodeController@show' , 'as' => 'barcode.show']);
@@ -20,7 +29,7 @@ Route::group(['prefix' => 'user/barcode'],function(){
 });
 Route::group(['prefix' => 'user/product'],function(){
 	Route::get('/create' , ['uses' => 'ProductController@create' , 'as' => 'product.create']);
-	Route::get('/show/{id}' , ['uses' => 'ProductController@show' , 'as' => 'product.show']);
+	Route::get('/show/{id?}' , ['uses' => 'ProductController@show' , 'as' => 'product.show']);
 	Route::get('/list' , ['uses' => 'ProductController@index' , 'as' => 'product.list']);
 	Route::get('/print' , ['uses' => 'ProductController@printbarcode' , 'as' => 'product.print']);
 	Route::post('/store' , ['uses' => 'ProductController@store' , 'as' => 'product.store']);
@@ -51,5 +60,5 @@ Route::group(['prefix' => 'ajax'], function(){
 Route::group(['prefix' => 'user/order'],function(){
 	Route::get('/create' , ['uses' => 'OrderController@create' , 'as' => 'order.create']);
 	Route::post('/save' , ['uses' => 'OrderController@save' , 'as' => 'order.ajaxstore']);
-	Route::post('/index' , ['uses' => 'OrderController@index' , 'as' => 'order.list']);
+	Route::get('/index' , ['uses' => 'OrderController@index' , 'as' => 'order.list']);
 });

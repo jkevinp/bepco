@@ -65,10 +65,12 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id = false)
     {
+        $id  = substr($id, 0,strlen($id) -1);
         $product =Product::find($id);
-        return view('self.blade.product.show')->with(compact('product'));
+        return view('self.blade.product.show')->with(compact('product'));   
+
     }
 
     /**
@@ -128,7 +130,7 @@ class ProductController extends Controller
            
         }
         $order = \bepc\Models\Order::find($orderid);
-        $ids= $order->orderdetail->lists('product_id' , 'product_quantity');
+        $ids= $order->orderdetail->lists('product_id');
         $products = Product::whereIn('id', $ids)->lists('name', 'id');
         return view('self.blade.product.compute')->with(compact('products' , 'ids'));
         
