@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row mt">
-    <div class="col-md-8 ">
+    <div class="col-md-8 col-md-offset-2">
         <div class="row mt">
                 <div class="form-panel">
                     <div class=" form">
@@ -19,7 +19,11 @@
                                         <input name="barcodekey"class="form-control input-medium " value="{{$p->id}}" size="16" type="text">
                                     </div>
                                     <div class='col-lg-7'>
-                                        <img src="{{URL::asset($p->barcode['imageurl'])}}"   />
+                                        @if($p->barcode)
+                                        <img src="{{URL::asset($p->barcode['imageurl'])}}"/>
+                                        @else
+                                        <a href="{{route('barcode.create')}}" class="btn btn-theme">Generate Barcode</a>
+                                        @endif
                                     </div>
                             </div>
                             <div class="form-group">
@@ -28,7 +32,7 @@
                                         <input name="barcodekey"class="form-control input-medium " value="{{$p->name}}" size="16" type="text">
                                     </div>
                                     <div class='col-lg-7'>
-                                        <img src="{{URL::asset('img-barcode')}}/{{$p->imageurl}}"   />
+                                        <img src="{{URL::asset($p['imageurl'])}}"   />
                                     </div>
                             </div>
                             <div class="form-group">

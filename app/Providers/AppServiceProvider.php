@@ -23,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind('bepc\Repositories\Contracts\UserContract', 'bepc\Repositories\Eloquent\EloquentUserRepository');
+        $this->app->bind('bepc\Repositories\Contracts\BarcodeContract', 'bepc\Repositories\Eloquent\EloquentBarcodeRepository');
+
+        $this->app->bind('bepc\Repositories\Contracts\ProductContract', 'bepc\Repositories\Eloquent\EloquentProductRepository');
     }
 }

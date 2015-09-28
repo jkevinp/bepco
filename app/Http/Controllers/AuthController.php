@@ -17,7 +17,7 @@ class AuthController extends Controller
         $input = $request->all();
         $validator = validator::make($input , ['username' => 'required|exists:user' , 'password' => 'required']);
         if(Auth::attempt(['username'=> $input['username'] ,'password'=> $input['password']])){
-
+            return redirect(route('default.home'));
         }else{
             return redirect()->back()->withErrors('Invalid Credentials');
         }

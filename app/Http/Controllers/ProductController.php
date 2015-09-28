@@ -9,6 +9,7 @@ use bepc\Models\Product;
 use URL;
 use bepc\Models\Ingredient;
 use bepc\Models\Recipe;
+use bepc\Repositories\Contracts\ProductContract;
 class ProductController extends Controller
 {
     /**
@@ -16,10 +17,12 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return view('self.blade.product.list')->withProduct(Product::all());
+    public function __construct(ProductContract $pc){
+        $this->product = $pc;
+    }
 
+    public function index(){
+        return view('self.blade.product.list')->withProduct($this->product->all());
     }
 
     /**
@@ -27,9 +30,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-
+    public function create(){
         return view('self.blade.product.create');
     }
 
@@ -39,24 +40,12 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
 
-        $input = $request->all();
-        $image = $request->file('file');
-        if(strpos($image->getClientMimeType(),'image') !== FALSE){
-            $upload_folder ='img-product/';
-            $file_name = str_random(). '.' . $image->getClientOriginalExtension();
-            $image->move(public_path($upload_folder).'/', $file_name);
-            echo URL::asset($upload_folder . $file_name);  // get upload file url
-            $input['imageurl'] = $upload_folder.$file_name;
-           
-            $p =  Product::create($input);
-            return redirect(route('product.show' , $p->id))->with('flash_message' , 'Product saved!');
-           }else{
-            return redirect()->back->withErrors('Failed to save product');  
-         }
-        //$p->save();
+        if($product = $this->product->store($request)){
+            return redirect(route('product.show' , $product->id))->with('flash_message' , 'Product saved!');
+        }
+        return redirect()->back->withErrors('Failed to save product');
     }
 
     /**

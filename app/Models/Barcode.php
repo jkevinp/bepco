@@ -15,7 +15,7 @@ class Barcode extends Model
 								'product_id',
 								'imageurl'
 							];
- 	public function ingredient(){
+ 	public function product(){
  		return $this->belongsTo('bepc\Models\Product');
  	}
  	

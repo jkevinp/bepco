@@ -10,6 +10,9 @@ use File;
 use PDF;
 use bepc\Models\Product;
 use bepc\Models\Barcode;
+
+use bepc\Repositories\Contracts\BarcodeContract;
+use bepc\Repositories\Contracts\ProductContract;
 class BarcodeController extends Controller
 {
     /**
@@ -17,13 +20,14 @@ class BarcodeController extends Controller
      *
      * @return Response
      */
-    public function __construct(BgcOutput $b){
+    public function __construct(BgcOutput $b ,BarcodeContract $bc,ProductContract $pc){
         $this->BgcOutput = $b;
+        $this->barcode = $bc;
+        $this->product = $pc;
     }
 
-    public function index()
-    {
-        $files = File::allFiles(public_path('img-barcode'));
+    public function index(){
+        $files = $this->barcode->all();
         return view('self.blade.barcode.list')->withFiles($files);
     }
 
@@ -32,10 +36,8 @@ class BarcodeController extends Controller
      *
      * @return Response
      */
-    public function create()
-    {
-
-        $products = Product::whereNull('barcode_id')->orWhere('barcode_id' , '=' ,'')->get()->lists('name', 'id');
+    public function create(){
+        $products = $this->product->getNullBarcode()->lists('name', 'id');
         return view('self.blade.barcode.create')->with(compact('products'));
     }
 
@@ -55,7 +57,6 @@ class BarcodeController extends Controller
         if(file_exists(public_path('img-barcode').'/'.$file)){
             $input['imageurl'] = Url('img-barcode').'/'.$file;
             $input['barcodekey'] = $request->get('barcodekey') ?str_pad( $request->get('barcodekey'), 7, "0", STR_PAD_LEFT)  :  str_pad($input['product_id'], 7, "0", STR_PAD_LEFT) ;
-            
             if($barcode = $this->save($input)){
                 $product->barcode_id = $barcode->id;
                 if($product->save()){

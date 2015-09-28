@@ -22,6 +22,7 @@ class CreateUserTable extends Migration
             $table->string('email')->unique();
             $table->string('password', 60);
             $table->string('usergroup_id');
+            $table->integer('barcode_id' ,8)->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
