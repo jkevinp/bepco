@@ -2,6 +2,7 @@
 
 use bepc\Repositories\Contracts\ProductContract;
 use bepc\Models\Product;
+use bepc\Models\Recipe;
 use bepc\Libraries\BarcodeGenerator\BarcodeGenerator as BgcOutput;
 use URL;
 class EloquentProductRepository  implements ProductContract
@@ -42,5 +43,8 @@ class EloquentProductRepository  implements ProductContract
 	}
 	public function getNullBarcode(){
 		 return Product::whereNull('barcode_id')->orWhere('barcode_id' , '=' ,'')->get();
+	}
+	public function getNullRecipe(){
+		 return Product::whereNotIn('id' , Recipe::all()->lists('product_id'))->get();
 	}
 } 

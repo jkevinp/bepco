@@ -11,7 +11,7 @@
         </h5>
         <h6 class="centered">
           @if(Auth::check())
-            {{Auth::user()->usergroup}}
+            {{Auth::user()->getUserGroupName()}}
             @endif
         </h6>
           <li class="mt">

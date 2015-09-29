@@ -48,4 +48,7 @@ class User extends Model implements AuthenticatableContract,AuthorizableContract
     public function userbarcode(){
         return $this->hasOne('bepc\Models\UserBarcode');
     }
+    public function useridcard(){
+        return $this->hasOne('bepc\Models\UserIdCard');
+    }
 }

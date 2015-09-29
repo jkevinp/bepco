@@ -26,9 +26,12 @@
 			      	<span class="label label-info label-mini">Due</span>
 			      </td>
 			      <td>
+			      	  @if($user->userbarcode)
 			          <a href="{{route('user.id' , $user->id)}}" class="btn btn-success btn-sm"><i class="fa fa-user"></i> Create ID</a>
+			          @endif
 			          <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
 			          <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+			          <img src="{{URL::asset('img-idcard')}}/{{$user->useridcard->filename}}" />
 			      </td>
 			  </tr>
 			 </tbody>

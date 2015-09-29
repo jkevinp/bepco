@@ -9,4 +9,5 @@ interface ProductContract{
 	public function search($fields,$param);
 	public function all();
 	public function getNullBarcode();
+	public function getNullRecipe();
 }

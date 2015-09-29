@@ -13,6 +13,7 @@ use URL;
 use bepc\Libraries\BarcodeGenerator\BarcodeGenerator as BgcOutput;
 use bepc\Repositories\Contracts\UserContract;
 use bepc\Repositories\Contracts\UserBarcodeContract;
+use bepc\Repositories\Contracts\UserIdCardContract;
 class UserController extends Controller
 {
     /**
@@ -21,10 +22,11 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function __construct(BgcOutput $b ,UserContract $uc, UserBarcodeContract $ubc){
+    public function __construct(BgcOutput $b ,UserContract $uc, UserBarcodeContract $ubc , UserIdCardContract $uicc){
         $this->BgcOutput = $b;
         $this->user = $uc;
         $this->userbarcode = $ubc;
+        $this->useridcard = $uicc;
     }
     public function index(){   
         $users = $this->user->all();
@@ -90,7 +92,9 @@ class UserController extends Controller
     public function create_id($userid){
         $user = $this->user->find($userid);
         if(!$user || !$user->userbarcode)return redirect()->back()->withErrors('Could not find user');
-        $this->user->create_id($user, $user->userbarcode);
+        $useridcard = $this->useridcard->create_id($user, $user->userbarcode);
+        if($useridcard)return redirect()->back()->with('flash_message'  , 'Successfully created a new id card for '.$user->getName());
+        return redirect()->back()->withErrors('Could not create a new id card for '.$user->getName());
 
     }
 

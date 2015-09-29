@@ -8,9 +8,13 @@ use bepc\Http\Controllers\Controller;
 use bepc\Models\Product;
 use bepc\Models\Recipe;
 use bepc\Models\Ingredient;
+use bepc\Repositories\Contracts\ProductContract;
 
 class RecipeController extends Controller
 {
+    function __construct(ProductContract $pc){
+        $this->product = $pc;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -29,7 +33,9 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        //
+        $products = $this->product->getNullRecipe()->lists('name', 'id');
+        $items = Item::all();
+        return view('self.blade.recipe.create')->with(compact('products' , 'items'));
     }
 
     /**
@@ -40,7 +46,10 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //validate this
+       $recipe = Recipe::create($request->all());
+       if($recipe)return redirect()->back()->with('flash_message' , 'Recipe has been successfully saved.');
+       return redirect()->back()->withErrors('Could not save recipe');
     }
 
     /**
