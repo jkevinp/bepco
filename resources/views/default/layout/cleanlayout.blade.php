@@ -79,6 +79,7 @@
     {!! Html::script($env.'/js/date/bootstrap-timepicker.js')  !!}
     {!! Html::script($env.'/js/advanced-form-components.js')  !!}
     {!! Html::script('libs/js/sweetalert.min.js')  !!}
+   
     <!--footer js end-->
     @if(isset($errors) && ($errors->first()))
       <script type="text/javascript">

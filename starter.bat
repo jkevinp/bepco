@@ -1,0 +1,1 @@
+START P:\LaravelApps\barcode\laravel\server.bat

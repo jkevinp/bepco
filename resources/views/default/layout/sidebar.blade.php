@@ -81,6 +81,16 @@
                 <li><a  href="{{route('order.create')}}" class="order-create"><i class="fa fa-plus"></i> Create Order</a></li>
               </ul>
           </li>
+          <li class="sub-menu">
+              <a href="javascript:;" class="user" >
+                  <i class="fa fa-book"></i>
+                  <span>User</span>
+              </a>
+              <ul class="sub">
+                <li><a  href="{{route('user.list')}}" class="user-list"><i class="fa fa-navicon"></i> List User</a></li>
+                <li><a  href="{{route('user.create')}}" class="user-create"><i class="fa fa-plus"></i> Create User</a></li>
+              </ul>
+          </li>
           
           
       </ul>

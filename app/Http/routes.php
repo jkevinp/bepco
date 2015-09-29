@@ -18,6 +18,7 @@ Route::group(['prefix' => 'user'] , function(){
 	Route::get('/create/{type?}' , ['uses' => 'UserController@create' ,  'as' => 'user.create']);
 	Route::post('/registration/' , ['uses' => 'UserController@store' ,  'as' => 'user.store']);
 	Route::get('/list' , ['uses' => 'UserController@index'  , 'as' => 'user.list']);
+	Route::get('/create-id/{userid}' , ['uses' => 'UserController@create_id'  , 'as' => 'user.id']);
 });
 
 Route::group(['prefix' => 'user/barcode'],function(){
