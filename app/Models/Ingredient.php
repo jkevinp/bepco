@@ -20,5 +20,8 @@ class Ingredient extends Model
  	public function recipe(){
  		return $this->belongsToMany('bepc\Models\Recipe');
  	}
+ 	public function item(){
+ 		return $this->hasOne('bepc\Models\Item' , 'id' ,'item_id');
+ 	}
 
 }

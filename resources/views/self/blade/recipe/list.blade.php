@@ -2,68 +2,98 @@
 
 @section('content')
 <div class="row mt">
-    <div class="col-md-8 col-md-offset-2">
-        <div class="row mt">
-                <div class="form-panel">
-                    <div class=" form">
-                        <form class="cmxform form-horizontal style-form"  method="post" action="{{route('barcode.store')}}">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <h2 class="violet">Recipe Listing<span class="pull-right"><a href="{{route('barcode.print')}}" class="btn btn-theme"><i class="fa fa-print"></i> Print</a></span></h2>
-                            
-                            @foreach($recipe as $r)
-                            <hr>
-                            <div class="form-group">
-                                    <label for="readingdate" class="control-label col-lg-2">
-                                        Recipe ID*
-                                    </label>  
-                                    <div class="col-lg-3">
-                                        <input name="barcodekey"class="form-control input-medium " value="{{$r->id}}" size="16" type="text">
-                                    </div>
-                                    <div class='col-lg-7'>
-                                        <img src="{{URL::asset(url('/').$r->product['imageurl'])}}"   />
-                                    </div>
-                            </div>
-                            <div class="form-group">
-                                    <label for="readingdate" class="control-label col-lg-2">Recipe Name for {{$r->product['name']}}</label>  
-                                    <div class="col-lg-3">
-                                        <input name="barcodekey"class="form-control input-medium " value="{{$r->name}}" size="16" type="text">
-                                    </div>
-                            </div>
-                            <div class="form-group">
-                                    <label for="readingdate" class="control-label col-lg-2">Description*</label>  
-                                    <div class="col-lg-3">
-                                        <input name="barcodekey"class="form-control input-medium " value="{{$r->description}}" size="16" type="text">
-                                    </div>
-                            </div>
-                            <a class="btn btn-primary ingredient" data-id="{{$r->id}}">Show Ingredients</a>
-
-                            <div class="form-group ingredient{{$r->id}}" style="display:none;" >
-                                
-                                    <label for="readingdate" class="control-label col-lg-2">Ingredients</label> 
-                                    <div class="col-md-12">
-                                    <ul> 
+    <div class="col-md-12">
+        <div class="content-panel"> 
+            <h2 class="violet"><i class="fa fa-angle-right"></i> Recipe List</h2>
+            <div class='row mt'>
+              <div class="col-md-12">
+                  <span class="col-md-8">
+                    <i class='fa fa-info '></i> 
+                    Recipe contains a list of ingredients or items that are required to produce a specific product.
+                </span>
+                 <a href="{{route('recipe.create')}}" class="btn btn-theme btn-lg col-md-3 col-md-offset-1 pull-right"><i class="fa fa-plus"></i> Create New recipe</a>
+              </div>
+            </div>
+            <hr>
+            <table class="table table-striped table-advance table-hover table-bordered">
+              <thead>
+              <tr>
+                  <th><i class="fa fa-bullhorn"></i> Recipe ID</th>
+                  <th class="hidden-phone"><i class="fa fa-question-circle"></i>Recipe Name</th>
+                  <th><i class="fa fa-bookmark"></i>Recipe for Product</th>
+                  <th><i class=" fa fa-edit"></i> Actions</th>
+                 
+              </tr>
+              </thead>
+              <tbody>
+              @foreach($recipe as $r)
+              <tr>
+                  <td><a href="{{route('recipe.show' , $r->id)}}">{{$r->id}}</a></td>
+                  <td>
+                    <span class="">{{$r->name}}</span>
+                  </td>
+                  <td>
+                    <span class="violet"><a href="{{route('product.show' , $r->product->id)}}">{{$r->product->name}}</a></span>
+                  </td>
+                  <td>
+                        <button class="btn btn-primary btn-xs" title="edit {{$r->name}}"><i class="fa fa-pencil"></i></button>
+                        <button class="btn btn-danger btn-xs" title="delete {{$r->name}}"><i class="fa fa-trash-o "></i></button>
+                        <a class="btn btn-theme02 ingredient btn-xs showdetails" data-id="{{$r->id}}" title="view ingredients for {{$r->name}}"
+                             href="#showdetails{{$r->id}}" data-toggle="modal" data-target="showdetails{{$r->id}}"
+                            ><i class="fa fa-eye"></i></a>
+                  </td>
+              </tr>
+             </tbody>
+             {{-- Modal--}}
+              <div id="showdetails{{$r->id}}" class="modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="col-md-offset-3 col-md-6" style="top:150px;">
+                          <div class="content-panel">
+                            <div id="content-body">
+                                <div class="">
+                                    
+                                    <h4>Recipe for {{$r->product->name}}</h4>
+                                        @if(count($r->ingredient) == 0)
+                                            <span class="red">No ingredients found for this recipe</span>
+                                        @endif
                                         @foreach($r->ingredient as $i)
-                                            <li> {{$i->quantity}} x {{$i->name}}</li>
+                                         <div class="accordion col-md-12" style="background:rgba(255,255,255,0.7)">
+                                            <div class="row mt">
+                                              <div class="col-md-12">
+                                                <div class="white" style="background:#79589F;">Ingredient Name: {{$i['name']}}</div>
+                                                <div>Quantity: {{$i['quantity']}}</div>
+                                                <div>Item to use: {{$i->item->name}}</div>
+                                              </div>
+                                            </div>
+                                          </div>
                                         @endforeach
-                                    </ul>
+                                   
                                 </div>
                             </div>
-                            @endforeach
+                            <div class="pr2-social centered">
+
+                                <button class="btn btn-primary btn-xs">Edit Recipe</button>
+                                <button class="btn btn-theme btn-xs" data-dismiss="modal" aria-hidden="true">Close</button>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
+             @endforeach
+            </table>
         </div>
     </div>
 </div>
+
 @stop
 
 @section('script')
     <script type="text/javascript">
-        $(document).ready(function(){
-           $('a.ingredient').click(function(){
-            var id = $(this).data('id');
-            $('.ingredient' + id).fadeToggle();
+         $(document).ready(function(){
+             $( ".accordion" ).accordion({
+                  heightStyle: "content"
+              });
+           $('.showdetails').click(function(e){
+                var target = "#"  + $(this).data('target');
+                $(target).fadeToggle().modal('toggle');
            });
         });
     </script>

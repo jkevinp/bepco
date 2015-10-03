@@ -16,11 +16,12 @@ class CreateItemTable extends Migration
             $t->increments('id');
             $t->string('name');
             $t->string('description');
-            $t->decimal('quantity');
+            $t->integer('quantity')->default(0);
             $t->integer('alert_quantity')->default(10);
             $t->integer('safe_quantity')->default(10);
             $t->string('imageurl');
             $t->string('supplier_id');
+            $t->string('itemgroup_id');
             $t->timestamps();
             $t->softDeletes();
         });

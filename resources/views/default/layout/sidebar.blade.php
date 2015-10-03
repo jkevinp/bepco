@@ -12,7 +12,8 @@
         <h6 class="centered">
           @if(Auth::check())
             {{Auth::user()->getUserGroupName()}}
-            @endif
+          @endif
+
         </h6>
           <li class="mt">
               <a href="{{route('default.home')}}">
@@ -62,13 +63,13 @@
               </ul>
           </li>
           <li class="sub-menu">
-              <a href="javascript:;" class="recipe" >
+              <a href="javascript:;" class="item" >
                   <i class="fa fa-book"></i>
                   <span>Raw Items</span>
               </a>
               <ul class="sub">
-                <li><a  href="{{route('recipe.list')}}" class="recipe-list"><i class="fa fa-navicon"></i> List Recipe</a></li>
-                <li><a  href="{{route('recipe.create')}}" class="recipe-create"><i class="fa fa-plus"></i> Create Recipe</a></li>
+                <li><a  href="{{route('item.list')}}" class="item-list"><i class="fa fa-navicon"></i> List Item</a></li>
+                <li><a  href="{{route('item.create')}}" class="item-create"><i class="fa fa-plus"></i> Create Recipe</a></li>
               </ul>
           </li>
            <li class="sub-menu">
@@ -83,7 +84,7 @@
           </li>
           <li class="sub-menu">
               <a href="javascript:;" class="user" >
-                  <i class="fa fa-book"></i>
+                  <i class="fa fa-user"></i>
                   <span>User</span>
               </a>
               <ul class="sub">

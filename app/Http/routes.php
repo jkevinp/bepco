@@ -13,6 +13,7 @@
 Route::get('/', ['uses' => 'PageController@index' , 'as' => 'default.home']);
 Route::get('/auth/login', ['uses' => 'AuthController@index' , 'as' => 'auth.login']);
 Route::post('/auth/login', ['uses' => 'AuthController@signin' , 'as' => 'auth.login']);
+Route::get('/auth/logout', ['uses' => 'AuthController@destroy' , 'as' => 'auth.logout']);
 
 Route::group(['prefix' => 'user'] , function(){
 	Route::get('/create/{type?}' , ['uses' => 'UserController@create' ,  'as' => 'user.create']);
@@ -56,10 +57,22 @@ Route::group(['prefix' => 'user/ingredient'],function(){
 });
 Route::group(['prefix' => 'ajax'], function(){
 	Route::get('/recipe' , ['uses' => 'AjaxController@recipe' , 'as' => 'ajax.recipe']);
+	Route::get('/getUser' , ['uses' => 'AjaxController@getUser' , 'as' => 'ajax.get.user']);
 });
 
 Route::group(['prefix' => 'user/order'],function(){
 	Route::get('/create' , ['uses' => 'OrderController@create' , 'as' => 'order.create']);
 	Route::post('/save' , ['uses' => 'OrderController@save' , 'as' => 'order.ajaxstore']);
 	Route::get('/index' , ['uses' => 'OrderController@index' , 'as' => 'order.list']);
+});
+Route::group(['prefix' => 'inventory/item'],function(){
+	Route::get('/create' , ['uses' => 'ItemController@create' , 'as' => 'item.create']);
+	Route::post('/store' , ['uses' => 'ItemController@store' , 'as' => 'item.store']);
+	Route::get('/index' , ['uses' => 'ItemController@index' , 'as' => 'item.list']);
+	Route::get('/withdraw/{id?}' , ['uses' => 'ItemController@withdraw' , 'as' => 'item.withdraw']);
+	Route::get('/deposit/{id?}' , ['uses' => 'ItemController@deposit' , 'as' => 'item.deposit']);
+	Route::post('/proccess-withdrawal/' , ['uses' => 'ItemController@proccessWithdrawal' , 'as' => 'item.process.withdraw']);
+	Route::post('/proccess-deposit/' , ['uses' => 'ItemController@proccessDeposit' , 'as' => 'item.process.deposit']);
+
+	
 });

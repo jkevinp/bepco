@@ -22,4 +22,8 @@ class AuthController extends Controller
             return redirect()->back()->withErrors('Invalid Credentials');
         }
     }
+    public function destroy(){
+        Auth::logout();
+        return redirect(route('default.home'))->with('flash_message' , 'Successfully logged out.');
+    }
 }

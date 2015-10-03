@@ -16,7 +16,8 @@ class Item extends Model
 								'safe_quantity',
 								'imageurl',
 								'supplier_id',
-								'quantity'
+								'quantity',
+								'itemgroup_id'
 							];
  	public function ingredient(){
  		return $this->hasMany('bepc\Models\Ingredient');
@@ -26,6 +27,9 @@ class Item extends Model
  	}
  	public function barcode(){
  		return $this->hasOne('bepc\Models\Barcode');
+ 	}
+ 	public function itemgroup(){
+ 		return $this->belongsTo('bepc\Models\ItemGroup');
  	}
 
 }

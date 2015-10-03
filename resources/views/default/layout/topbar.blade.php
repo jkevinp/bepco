@@ -4,7 +4,7 @@
         <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
     </div>
     <!--logo start-->
-    <a href="" class="logo"><b>Admin Portal</b></a>
+    <a href="{{route('default.home')}}" class="logo"><b>{{env('APP_TITLE')}}</b></a>
     <!--logo end-->
     <div class="nav notify-row" id="top_menu">
         <!--  notification start -->
@@ -20,24 +20,17 @@
                 <ul class="dropdown-menu extended inbox" >
                   <div class="notify-arrow notify-arrow-green"></div>
                     <li>
-                        <p class="green"> 
-                        
-                            pending Transactions</p>
+                        <p class="green">pending Transactions</p>
                     </li>
-                   
-
-                          <li>
+                    <li>
                         <a href="">
-                           
                             <div class="subject">
                             <div class="from"></div>
                             <div class="from"></div>
                             <div class="time"></div>
                         </div>
                             <div class="message">
-                                
                             </div>
-
                         </a>
                     </li>
                    
@@ -56,18 +49,24 @@
                 <ul class="dropdown-menu extended inbox">
                     <div class="notify-arrow notify-arrow-green"></div>
                     <li>
-                        <p class="green">You have 
-                           
-                            messages</p>
+                        <p class="green">You have messages</p>
                     </li>
-                 
                     <li>
                     </li>
                 </ul>
             </li>
+
             <!-- inbox dropdown end -->
+           
         </ul>
+
         <!--  notification end -->
+    </div>
+     <div class="top-menu">
+        <ul class="nav pull-right top-menu">
+            <li><a class="logout" href="{{route('auth.logout')}}"><i class="fa fa-gear"></i> Settings</a></li>
+            <li><a class="logout" href="{{route('auth.logout')}}"><i class="fa fa-sign-out"></i> Logout</a></li>
+        </ul>
     </div>
 </header>
 <!--header end-->

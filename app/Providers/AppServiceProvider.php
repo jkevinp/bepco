@@ -29,5 +29,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('bepc\Repositories\Contracts\ProductContract', 'bepc\Repositories\Eloquent\EloquentProductRepository');
         $this->app->bind('bepc\Repositories\Contracts\UserBarcodeContract', 'bepc\Repositories\Eloquent\EloquentUserBarcodeRepository');
         $this->app->bind('bepc\Repositories\Contracts\UserIdCardContract', 'bepc\Repositories\Eloquent\EloquentUserIdCardRepository');
+
+        $this->app->bind('bepc\Repositories\Contracts\RecipeContract', 'bepc\Repositories\Eloquent\EloquentRecipeRepository');
+        $this->app->bind('bepc\Repositories\Contracts\ItemContract', 'bepc\Repositories\Eloquent\EloquentItemRepository');
+        $this->app->bind('bepc\Repositories\Contracts\ItemGroupContract', 'bepc\Repositories\Eloquent\EloquentItemGroupRepository');
+        $this->app->bind('bepc\Repositories\Contracts\IngredientContract', 'bepc\Repositories\Eloquent\EloquentIngredientRepository');
+        
     }
 }

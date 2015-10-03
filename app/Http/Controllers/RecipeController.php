@@ -5,15 +5,19 @@ namespace bepc\Http\Controllers;
 use Illuminate\Http\Request;
 use bepc\Http\Requests;
 use bepc\Http\Controllers\Controller;
-use bepc\Models\Product;
+
 use bepc\Models\Recipe;
 use bepc\Models\Ingredient;
 use bepc\Repositories\Contracts\ProductContract;
+use bepc\Repositories\Contracts\RecipeContract;
+use bepc\Repositories\Contracts\ItemContract;
 
 class RecipeController extends Controller
 {
-    function __construct(ProductContract $pc){
+    function __construct(ProductContract $pc , RecipeContract $rc, ItemContract $ic){
         $this->product = $pc;
+        $this->recipe = $rc;
+        $this->item = $ic;
     }
     /**
      * Display a listing of the resource.
@@ -22,7 +26,7 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        $recipe = Recipe::all();
+        $recipe = $this->recipe->all();
         return view('self.blade.recipe.list')->with(compact('recipe'));
     }
 
@@ -34,7 +38,7 @@ class RecipeController extends Controller
     public function create()
     {
         $products = $this->product->getNullRecipe()->lists('name', 'id');
-        $items = Item::all();
+        $items = $this->item->all();
         return view('self.blade.recipe.create')->with(compact('products' , 'items'));
     }
 
@@ -47,8 +51,32 @@ class RecipeController extends Controller
     public function store(Request $request)
     {
         //validate this
-       $recipe = Recipe::create($request->all());
-       if($recipe)return redirect()->back()->with('flash_message' , 'Recipe has been successfully saved.');
+        var_dump($request->all());
+        $input = $request->all();
+        $params = [];
+        $quantities = $input['quantities'] = explode(',', $input['quantities']);
+        $items= $this->item->getIn('id',  explode(',', $input['ids']));
+        $ctr = 0;
+        $recipe = Recipe::create($request->all());
+      
+        foreach ($items as $key => $value) {
+            $ing = [
+                        'name' => $value['name'] ." for ".$recipe->name,
+                        'recipe_id' => $recipe->id,
+                        'item_id' => $value['id'],
+                        'quantity' => (int)$quantities[$ctr]
+                    ];
+           
+            array_push($params, $ing);
+            $ctr++;
+        }
+        $ingredients = Ingredient::insert($params);
+
+       if($recipe && $ingredients)return redirect()->back()->with('flash_message' , 'Recipe has been successfully saved.');
+       $this->recipe->fdelete($recipe);
+       foreach ($ingredients as $key) {
+           $key->forceDelete();
+       }
        return redirect()->back()->withErrors('Could not save recipe');
     }
 

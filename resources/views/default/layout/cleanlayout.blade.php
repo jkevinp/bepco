@@ -18,20 +18,20 @@
 
       }
     ?>
-    <link rel="shortcut icon" href="{{ asset($env) }}/img/icons/favicon.ico">
+    <link rel="shortcut icon" href="{{ asset($env) }}/img/icons/favicon.ico" />
     <!-- Bootstrap core CSS -->
-    <link href="{{URL::asset($env)}}/css/bootstrap.css" rel="stylesheet">
-    <link href="{{URL::asset($env)}}/css/selectize.css" rel="stylesheet">
-    <link href="{{URL::asset($env)}}/css/bootstrap-fileupload.css" rel="stylesheet">
+    <link href="{{URL::asset($env)}}/css/bootstrap.css" rel="stylesheet" />
+    <link href="{{URL::asset($env)}}/css/selectize.css" rel="stylesheet" />
+    <link href="{{URL::asset($env)}}/css/bootstrap-fileupload.css" rel="stylesheet" />
     <!--external css-->
     <link href="{{URL::asset($env)}}/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="{{URL::asset($env)}}/js/gritter/css/jquery.gritter.css" />   
     <!-- Custom styles for this template -->
-    <link href="{{URL::asset($env)}}/css/style.css" rel="stylesheet">
-    <link href="{{URL::asset($env)}}/css/style-responsive.css" rel="stylesheet">
-    <link href="{{URL::asset('default')}}/css/table-responsive.css" rel="stylesheet">
-    <link href="{{URL::asset($env)}}/css/lightbox.css" rel="stylesheet">
-    <link href="{{URL::asset('libs')}}/css/sweetalert.css" rel="stylesheet">
+    <link href="{{URL::asset($env)}}/css/style.css" rel="stylesheet" />
+    <link href="{{URL::asset($env)}}/css/style-responsive.css" rel="stylesheet" />
+    <link href="{{URL::asset('default')}}/css/table-responsive.css" rel="stylesheet" />
+    <link href="{{URL::asset($env)}}/css/lightbox.css" rel="stylesheet" />
+    <link href="{{URL::asset('libs')}}/css/sweetalert.css" rel="stylesheet" />
 
     
     @yield('header')
@@ -119,7 +119,6 @@
 
     @yield('script')
      <script type="text/javascript">
-   
        $(document).ready(function () {  
           $('.selectize').selectize();
           $('select.styled').customSelect();
