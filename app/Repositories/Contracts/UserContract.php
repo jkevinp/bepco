@@ -6,7 +6,7 @@ interface UserContract{
 	public function store($param);
 	public function sdelete(User $user);
 	public function fdelete(User $user);
-	
+	public function generate_id();
 	public function search($fields,$param);
 	public function all();
 }

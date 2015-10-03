@@ -14,11 +14,12 @@ class Ingredient extends Model
 								'name',
 								'description',
 								'item_id',
-								'quantity'
+								'quantity',
+								'recipe_id'
 							];
  	
  	public function recipe(){
- 		return $this->belongsToMany('bepc\Models\Recipe');
+ 		return $this->belongsTo('bepc\Models\Recipe' , 'recipe_id' , 'id' );
  	}
  	public function item(){
  		return $this->hasOne('bepc\Models\Item' , 'id' ,'item_id');

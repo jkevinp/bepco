@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use bepc\Http\Requests;
 use bepc\Http\Controllers\Controller;
 use bepc\Models\Product;
+use bepc\Models\OrderDetail;
+
 use bepc\Models\Ingredient;
 use bepc\Repositories\Contracts\UserContract;
 use Response;
+use DB;
 class AjaxController extends Controller
 {
 	public function __construct(UserContract $uc){
@@ -23,6 +26,20 @@ class AjaxController extends Controller
             return ['recipe' => $p->recipe , 'ingredient' => $i->lists('quantity','name')];
         }
     }
+    public function order(Request $r){
+        return DB::table('orderdetail')
+                ->join('product', 'orderdetail.product_id' , '=' , 'product.id')
+                ->select(DB::raw('sum(orderdetail.product_quantity) as product_count , product.name'))
+                ->groupBy('product.name')
+                ->get();
+    }
+    public function ordernumber(Request $r){
+        return DB::table('order')
+        ->select(DB::raw('created_at , count(*) as order_count'))
+        ->groupBy('created_at')
+        ->get();
+    }
+
     public function getUser(Request $r){
     	if($r->Ajax()){
 

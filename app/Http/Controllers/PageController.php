@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use bepc\Http\Requests;
 use bepc\Http\Controllers\Controller;
 
+use bepc\Models\Order;
 class PageController extends Controller
 {
     /**

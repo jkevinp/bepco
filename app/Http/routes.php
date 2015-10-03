@@ -58,6 +58,9 @@ Route::group(['prefix' => 'user/ingredient'],function(){
 Route::group(['prefix' => 'ajax'], function(){
 	Route::get('/recipe' , ['uses' => 'AjaxController@recipe' , 'as' => 'ajax.recipe']);
 	Route::get('/getUser' , ['uses' => 'AjaxController@getUser' , 'as' => 'ajax.get.user']);
+	Route::get('/order' , ['uses' => 'AjaxController@order' , 'as' => 'ajax.get.order']);
+	Route::get('/ordernumber' , ['uses' => 'AjaxController@ordernumber' , 'as' => 'ajax.get.ordernumber']);
+	
 });
 
 Route::group(['prefix' => 'user/order'],function(){

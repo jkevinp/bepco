@@ -69,7 +69,7 @@
               </a>
               <ul class="sub">
                 <li><a  href="{{route('item.list')}}" class="item-list"><i class="fa fa-navicon"></i> List Item</a></li>
-                <li><a  href="{{route('item.create')}}" class="item-create"><i class="fa fa-plus"></i> Create Recipe</a></li>
+                <li><a  href="{{route('item.create')}}" class="item-create"><i class="fa fa-plus"></i> Create Item</a></li>
               </ul>
           </li>
            <li class="sub-menu">

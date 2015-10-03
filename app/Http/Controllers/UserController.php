@@ -10,10 +10,11 @@ use bepc\Models\UserGroup;
 use Validator;
 use bcrypt;
 use URL;
-use bepc\Libraries\BarcodeGenerator\BarcodeGenerator as BgcOutput;
+use bepc\Libraries\BarcodeGenerator\BarcodeGenerator13 as BgcOutput;
 use bepc\Repositories\Contracts\UserContract;
 use bepc\Repositories\Contracts\UserBarcodeContract;
 use bepc\Repositories\Contracts\UserIdCardContract;
+use bepc\Libraries\Generic\Helper;
 class UserController extends Controller
 {
     /**
@@ -66,23 +67,24 @@ class UserController extends Controller
                 ];
         $v = validator::make($input , $rules);
         if($v->fails())return redirect()->back()->withErrors($v->messages()->first())->withInput($input);
-        
-
+        //20151007
+        $extension = "png";
+        $input['id'] = $file = $this->BgcOutput->output($this->user->generate_id() , $extension , public_path('img-id')); 
+        //dd(file_exists(public_path('img-id').'/'.$file.".".$extension)."-".public_path('img-id').'/'.$file.".".$extension."-".$file);    
         if($user = $this->user->store($input)){
-            $extension = "png";
-            $file = $this->BgcOutput->output($user->id ?  str_pad($user->id, 7, "0", STR_PAD_LEFT) : str_pad($input['product_id'], 7, "0", STR_PAD_LEFT) ,  $extension , public_path('img-id')); 
-            $userbarcode = $this->userbarcode->store($user,$file);
+            $userbarcode = $this->userbarcode->store($user,$file.".".$extension);
             $user->barcode_id = $userbarcode->id;
-            $user = $user->save();
-            if(file_exists(public_path('img-id').'/'.$file) && $user && $userbarcode ){
-               $url =public_path('img-id').'/'.$file;
-               //$this->create_id($user, $url);
-               return redirect(route('auth.login'))->with('flash_message' , 'User successfully registered.');
-            }else{
-                $this->userbarcode->fdelete($userbarcode);
-                $this->user->fdelete($user);
-                return redirect()->back()->withErrors('Cannot save userbarcode. Try Again');
-            }
+            if(file_exists(public_path('img-id').'/'.$file.".".$extension) && $user && $userbarcode ){
+                    $user->save();
+                   $url =public_path('img-id').'/'.$file.".".$extension;
+                   return redirect(route('auth.login'))->with('flash_message' , 'User successfully registered.');
+                }else{
+
+                    if($userbarcode)$this->userbarcode->fdelete($userbarcode);
+                    if($user)$this->user->fdelete($user);
+                    return redirect()->back()->withErrors('Cannot save userbarcode. Try Again');
+                }
+            
         }
         return redirect()->back()->withErrors('Could not save user');
 

@@ -20,13 +20,14 @@ class User extends Model implements AuthenticatableContract,AuthorizableContract
      * @var string
      */
     protected $table = 'user';
+    public $incrementing =false;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['firstname' , 'lastname', 'middlename', 'usergroup_id', 'email', 'password' , 'username' ,'barcode_id' ];
+    protected $fillable = ['id',  'firstname' , 'lastname', 'middlename', 'usergroup_id', 'email', 'password' , 'username' ,'barcode_id' ];
 
 
     /**

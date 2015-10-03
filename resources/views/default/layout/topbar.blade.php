@@ -12,47 +12,66 @@
             <!-- settings start -->
             <li class="dropdown">
                 <a data-toggle="dropdown" class="dropdown-toggle" href="#"  style="color:white">
-                    <i class="fa fa-tasks"></i>
+                    <i class="fa fa-warning" style="color:yellow;"></i>
                     <span class="badge bg-theme">
-                    
+                        {{count(bepc\Models\Item::where('quantity', '<=' ,0)->get())}}
                     </span>
                 </a>
                 <ul class="dropdown-menu extended inbox" >
                   <div class="notify-arrow notify-arrow-green"></div>
                     <li>
-                        <p class="green">pending Transactions</p>
+                        <p class="green">Out of stock Items</p>
                     </li>
+                    @foreach(bepc\Models\Item::where('quantity', '<=' ,0)->get() as $item)
                     <li>
                         <a href="">
                             <div class="subject">
-                            <div class="from"></div>
-                            <div class="from"></div>
-                            <div class="time"></div>
-                        </div>
-                            <div class="message">
+                                <div class="from">Item ID: {{$item->id}}</div>
+                                <div class="from">Item Name: {{$item->name}}</div>
+                                <div class="from">Quantity: {{$item->quantity}}</div>
                             </div>
                         </a>
+                            <div class="time">
+                                <a class="btn btn-theme04 btn-xs"  title="Deposit {{$item->name}}" href="{{route('item.deposit' , $item->id)}}" >
+                                    <i class="fa fa-reply"></i> Deposit</a>
+                            </div>
+                        
                     </li>
+                    @endforeach
                    
                     <li class="external">
-                        <a href="">See All Pending Transactions</a>
+                        <a href="">See All Out of stock Items</a>
                     </li>
                 </ul>
             </li>
             <!-- settings end -->
             <!-- inbox dropdown start-->
-            <li id="header_inbox_bar" class="dropdown">
-                <a data-toggle="dropdown" class="dropdown-toggle" href="#" style="color:white">
+            <li  class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#" style="color:white;">
                     <i class="fa fa-envelope-o"></i>
-                    <span class="badge bg-theme"> </span>
+                    <span class="badge bg-theme">{{count(bepc\Models\InventoryLog::all())}}</span>
                 </a>
-                <ul class="dropdown-menu extended inbox">
-                    <div class="notify-arrow notify-arrow-green"></div>
-                    <li>
-                        <p class="green">You have messages</p>
+                <ul class="dropdown-menu inbox" style="padding:0px !important" >
+                    <div class="notify-arrow notify-arrow-green" ></div>
+                    <li  style="background-color:#68dff0;">
+                        <div class="green"  style="background-color:#68dff0;color:white;padding:10px !important">Inventory Logs</div>
                     </li>
-                    <li>
+                    @foreach(bepc\Models\InventoryLog::all() as $log)
+                    <li >
+                    <a href="">
+                            <div class="subject">
+                                <div class="from"><h6>{{$log->message}}</h6></div>
+                            </div>
+                        </a>
+                            <div class="time">
+                               
+                            </div>
+                        </li>
+                    @endforeach
+                      <li class="external">
+                        <a href="">See All Inventory Logs</a>
                     </li>
+
                 </ul>
             </li>
 

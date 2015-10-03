@@ -102,6 +102,7 @@ class BCGDrawing {
 	 */
 	public function setBarcode(BCGBarcode $barcode) {
 		$this->barcode = $barcode;
+		return $this->barcode;
 	}
 
 	/**

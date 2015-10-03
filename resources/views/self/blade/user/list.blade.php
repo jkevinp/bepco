@@ -1,11 +1,9 @@
 @extends('default.layout.layout')
-
-
 @section('content')
 <div class="row mt">
 	<div class="col-md-8 col-md-offset-2">
 		<div class="content-panel">	
-			<h4><i class="fa fa-angle-right"></i> Advanced Table</h4><hr>
+			<h4><i class="fa fa-angle-right"></i> User List</h4><hr>
 			<table class="table table-striped table-advance table-hover">
 			  <thead>
 			  <tr>
@@ -28,10 +26,14 @@
 			      <td>
 			      	  @if($user->userbarcode)
 			          <a href="{{route('user.id' , $user->id)}}" class="btn btn-success btn-sm"><i class="fa fa-user"></i> Create ID</a>
-			          @endif
+			          @else 
 			          <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
 			          <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+			          @if($user->useridcard)
 			          <img src="{{URL::asset('img-idcard')}}/{{$user->useridcard->filename}}" />
+			          @endif
+			          @endif
+			          
 			      </td>
 			  </tr>
 			 </tbody>

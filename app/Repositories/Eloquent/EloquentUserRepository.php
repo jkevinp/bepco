@@ -7,6 +7,7 @@ use bepc\Models\UserBarcode;
 use bepc\Models\UserIdCard;
 use bepc\Libraries\BarcodeGenerator\BarcodeGenerator as BgcOutput;
 use bcrypt;
+use bepc\Libraries\Generic\Helper;
 class EloquentUserRepository implements UserContract
 {
 
@@ -15,8 +16,13 @@ class EloquentUserRepository implements UserContract
 	}
 	public function store($param){
 		$param['password'] = bcrypt($param['password']);
-		return User::create($param);
+		
+		$user =User::create($param);
+		return $user;
 
+	}
+	public function generate_id(){
+		return Helper::generate_user_id();
 	}
 	public function sdelete(User $user){
 		$user->delete();

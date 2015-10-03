@@ -70,6 +70,7 @@
     <script class="include" type="text/javascript" src="{{URL::asset($env)}}/js/jquery.dcjqaccordion.2.7.js"></script>
     <script type="text/javascript" src="{{URL::asset($env)}}/js/jquery.scrollTo.min.js"></script>
     <script type="text/javascript" src="{{URL::asset($env)}}/js/jquery.nicescroll.js"></script>
+
     <!--common script for all pages-->
     <script type="text/javascript" src="{{URL::asset($env)}}/js/common-scripts.js"></script>
     <!--script for this page-->
@@ -103,7 +104,7 @@
         var x= "{{$errors->first()}}";
         if(x !== "")
         {
-             $(document).ready(function () {
+        $(document).ready(function () {
           var unique_id = $.gritter.add({
             title: '<font color="red">Error!</font><hr>',
             text: x,

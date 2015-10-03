@@ -8,6 +8,7 @@ use URL;
 use bepc\Models\Item;
 use DB;
 use bepc\Models\User;
+use bepc\Libraries\Generic\Helper;
 
 class EloquentItemRepository  implements ItemContract
 {
@@ -66,14 +67,22 @@ class EloquentItemRepository  implements ItemContract
 		}
 		else{
 			$item->quantity = $item->quantity - $quantity;
-			return $item->save();
+			if($result = $item->save()){
+				Helper::log('induct', 'withdraw' , $user , 'EIR' , 'Quantity' , $quantity);
+			}
+			return $result;
 		}
 
 		//process save record withdraw here
 	}
+	//    public static function log($processname , $action, User $user , $fired_at , $field , $param){
 	public function induct(Item $item ,User $user,  $quantity){
+
 		$item->quantity = $item->quantity + $quantity;
-		return $item->save();
+		if($result= $item->save()){
+			Helper::log('induct', 'deposit' , $user , 'EIR' , 'Quantity' , $quantity);
+		}
+		return $result;
 
 		//process save record withdraw here
 	}

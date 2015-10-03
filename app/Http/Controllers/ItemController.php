@@ -97,7 +97,6 @@ class ItemController extends Controller
        if( $item = $this->item->find($input['id'])){
            if( $this->item->deduct($item ,$user , $input['quantity']))
             return redirect()->back()->with('flash_message' , "Proccess has been saved!");
-
        }
         return redirect()->back()->withErrors('Failed to process withdrawal');
 

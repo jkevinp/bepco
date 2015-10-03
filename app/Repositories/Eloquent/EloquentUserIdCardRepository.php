@@ -66,23 +66,24 @@ class EloquentUserIdCardRepository implements UserIdCardContract
         imagecopyresized($img, $background_img,0,0, 0 , 0 , $imagewidth, $imageheight,$sizex1,$sizey1); //41 is the width of the barcode
         imagefilledrectangle($img,0,0,$imagewidth,$imageheight,$header_color);  //create the header
 
-        imagerectangle($img,1,1,$imagewidth-1,$imageheight-1,$border_color); //create the border
+        // imagerectangle($img,1,1,$imagewidth-1,$imageheight-1,$border_color); //create the border
         
         imagettftext($img, 14, 0, 5, 40,$text_colour,public_path()."/font/Arial.ttf" ,env('APP_TITLE'));
         imagettftext($img, 14, 0, 5, 65,$text_colour,public_path()."/font/Arial.ttf" , "Identity Card");
-        imagettftext($img, 9, 0, $imagewidth * 0.75, 20,$text_colour,public_path()."/font/Arial.ttf" , "ID:".str_pad($user->id, 7, "0", STR_PAD_LEFT));
-        imagettftext($img, 9, 0, $imagewidth * 0.35, $imageheight * 0.45,$label_color,public_path()."/font/Arial.ttf" , "Name");
-        imagettftext($img, 9, 0, $imagewidth * 0.35, $imageheight * 0.5,$text_black,public_path()."/font/Arial.ttf" , $user->getName());
-        imagettftext($img, 9, 0, $imagewidth * 0.35, $imageheight * 0.6,$label_color,public_path()."/font/Arial.ttf" , "Username");
-        imagettftext($img, 9, 0, $imagewidth * 0.35, $imageheight * 0.65,$text_black,public_path()."/font/Arial.ttf" , $user->username);
-        imagettftext($img, 9, 0, $imagewidth * 0.35, $imageheight * 0.75,$label_color,public_path()."/font/Arial.ttf" , "Group");
-        imagettftext($img, 9, 0, $imagewidth * 0.35, $imageheight * 0.8,$text_black,public_path()."/font/Arial.ttf" , $user->getUserGroupName()); 
+        imagettftext($img, 9, 0, $imagewidth * 0.7, 20,$text_colour,public_path()."/font/Arial.ttf" , "ID:".$user->id);
+        imagettftext($img, 9, 0, $imagewidth * 0.35, $imageheight * 0.45,$label_color,public_path()."/font/Arial.ttf" , "NAME");
+        imagettftext($img, 9, 0, $imagewidth * 0.35, $imageheight * 0.5,$text_black,public_path()."/font/Arial.ttf" , strtoupper($user->getName()));
+        imagettftext($img, 9, 0, $imagewidth * 0.35, $imageheight * 0.6,$label_color,public_path()."/font/Arial.ttf" , "USERNAME");
+        imagettftext($img, 9, 0, $imagewidth * 0.35, $imageheight * 0.65,$text_black,public_path()."/font/Arial.ttf" , strtoupper($user->username));
+        imagettftext($img, 9, 0, $imagewidth * 0.35, $imageheight * 0.75,$label_color,public_path()."/font/Arial.ttf" , "GROUP");
+        imagettftext($img, 9, 0, $imagewidth * 0.35, $imageheight * 0.8,$text_black,public_path()."/font/Arial.ttf" , strtoupper($user->getUserGroupName())); 
         imagettftext($img, 9, 0, $imagewidth * 0.03, $imageheight * 0.96,$text_black,public_path()."/font/Arial.ttf" , $user->email);
 
         $barcode = imagerotate($barcode, 90,$background );
-
         imagecopyresized($img, $image_upload, $imagewidth * 0.05, $imageheight * 0.4, 0, 0, 90, 90,$sizex,$sizey);
-        imagecopy($img, $barcode, $imagewidth - 45, $imageheight - 144, 0, 0, 41, 134);
+        imagecopy($img, $barcode, $imagewidth - 30, $imageheight - 105, 0, 0, 26, 105);
+        //   imagecopy($img, $barcode, $imagewidth -205 , $imageheight - 43, 0, 0, 200, 41);
+
         
         //header("Content-type: image/png");
         imagepng( $img , $saveurl ); //save the file
