@@ -107,9 +107,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id , $name= false)
     {
-        
+        $user = $this->user->find($id);
+        if($name)return view('self.blade.user.show')->withUser($user);
+
     }
 
     /**
@@ -185,5 +187,19 @@ class UserController extends Controller
         imagecolordeallocate( $img,$background );
 
         imagedestroy( $img );
+    }
+    public function uploadphoto($userid){
+       if($user = $this->user->find($userid)){
+            return view('self.blade.user.uploadphoto')->withUser($user);
+       }
+       else return redirect(route('user.list'))->withErrors('Could not find user with user id: '.$userid);
+
+    }
+    public function storephoto(Request $r){
+        if($result = $this->user->uploadphoto($r)){
+            return redirect(route('user.list'))->with('flash_message', 'Photo has been successfully uploaded.');
+        }   
+        else return redirect()->back()->withErrors('Could not upload the file or invalid image file');
+
     }
 }

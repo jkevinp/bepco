@@ -17,9 +17,12 @@ Route::get('/auth/logout', ['uses' => 'AuthController@destroy' , 'as' => 'auth.l
 
 Route::group(['prefix' => 'user'] , function(){
 	Route::get('/create/{type?}' , ['uses' => 'UserController@create' ,  'as' => 'user.create']);
+	Route::get('/show/{id}/{name?}' , ['uses' => 'UserController@show' ,  'as' => 'user.show']);
 	Route::post('/registration/' , ['uses' => 'UserController@store' ,  'as' => 'user.store']);
 	Route::get('/list' , ['uses' => 'UserController@index'  , 'as' => 'user.list']);
 	Route::get('/create-id/{userid}' , ['uses' => 'UserController@create_id'  , 'as' => 'user.id']);
+	Route::get('/uploadphoto/{userid}' , ['uses' => 'UserController@uploadphoto'  , 'as' => 'user.upload.photo']);
+	Route::post('/storephoto/' , ['uses' => 'UserController@storephoto'  , 'as' => 'user.store.photo']);
 });
 
 Route::group(['prefix' => 'user/barcode'],function(){

@@ -5,8 +5,15 @@ use bepc\Models\User;
 use bepc\Models\UserIdCard;
 use bepc\Models\UserBarcode;
 use bepc\Libraries\BarcodeGenerator\BarcodeGenerator as BgcOutput;
+use bepc\Models\Setting;
 class EloquentUserIdCardRepository implements UserIdCardContract
 {
+    public $imagetype = [
+ 1 => 'GIF',
+2 => 'JPG',
+3 =>'PNG'
+    ];
+
 
 	public function find($id){
 		return UserIdCard::find($id);
@@ -19,7 +26,7 @@ class EloquentUserIdCardRepository implements UserIdCardContract
 		 return UserIdCard::create($param);
 	}
 	public function sdelete(UserIdCard $userbarcode){
-		
+		$userbarcode->delete();
 	}
 	public function fdelete(UserIdCard $userbarcode){
 		$userbarcode->forceDelete();
@@ -33,11 +40,11 @@ class EloquentUserIdCardRepository implements UserIdCardContract
         $background_url = public_path().'/img-template/background.png'; //the background
        	$filename = $user->lastname.$user->id.'.png';
         $saveurl =public_path().'/img-idcard/'.$filename; //the name of the id
-
+        $image_upload = false;
         $file_exists =file_exists($url); 
         
-        $imagewidth = 336;
-        $imageheight  = 220;
+        $imagewidth = Setting::where('keyname' , '=' , 'useridcardwidth')->first()->value;
+        $imageheight  = Setting::where('keyname' , '=' , 'useridcardheight')->first()->value;
 
         $img = imagecreatetruecolor($imagewidth,$imageheight); //create the image
         imagealphablending($img, true);
@@ -49,12 +56,33 @@ class EloquentUserIdCardRepository implements UserIdCardContract
         $label_color=  imagecolorallocate($img, 231, 76, 60   );
         $border_color= imagecolorallocate($img, 0, 0, 0); //create the border color
         $header_color= imagecolorallocatealpha($img, 255, 255, 255, 70);
+        $barcode =  imagecreatefrompng($barcodeurl);
+        if($user->userphoto){
+            $url = public_path().'/img-photo/'.$user->userphoto->filename; //the image to use
+            list($width, $height, $type, $attr) = getimagesize($url);
 
-
-        $barcode =          imagecreatefrompng($barcodeurl) ;
-        $image_upload =     imagecreatefrompng(public_path().'/img-template/id.png');
+            if(array_key_exists($type, $this->imagetype))
+            {
+                switch ($type) {
+                    case 1:
+                     $image_upload =     imagecreatefromgif($url);
+                    break;
+                    case 2:
+                        $image_upload =     imagecreatefromjpeg($url);
+                    break;
+                    case 3:
+                     $image_upload =     imagecreatefrompng($url);
+                     
+                    break;
+                    default:
+                    return false;
+                    break;
+                }
+            }
+            else return false;
+        }
+        else $image_upload = imagecreatefrompng(public_path().'/img-template/id.png');  
         $background_img =   imagecreatefrompng($background_url);
-
 
         $sizex1=getimagesize($background_url)[0];
         $sizey1=getimagesize($background_url)[1];

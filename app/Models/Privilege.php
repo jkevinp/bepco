@@ -4,14 +4,13 @@ namespace bepc\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Setting extends Model
+class UserPrivilege extends Model
 {
- 	protected $table='setting'; 
+ 	protected $table='privilege'; 
  	public $incrementing = true;
  	protected $dates = [ 'created_at' , 'updated_at'];
-	protected $fillable = 	['keyname','value'];
+	protected $fillable = 	['name','action'];
  	public function usergroup(){
  		return $this->belongsTo('bepc\Models\UserGroup');
  	}
-
 }

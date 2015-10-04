@@ -17,21 +17,27 @@
 			  <tbody>
 			  @foreach($users as $user)
 			  <tr>
-			      <td><a href="basic_table.html#">{{$user->id}}</a></td>
+			      <td><a href="{{route('user.show' , [$user->id,    str_replace(' ', '-', $user->getNAme())])}}">{{$user->id}}</a></td>
 			      <td class="hidden-phone">{{$user->getName()}}</td>
 			      <td>{{$user->getUserGroupName()}}</td>
 			      <td>
 			      	<span class="label label-info label-mini">Due</span>
 			      </td>
 			      <td>
-			      	  @if($user->userbarcode)
+			      	  @if($user->userbarcode && $user->userphoto)
 			          <a href="{{route('user.id' , $user->id)}}" class="btn btn-success btn-sm"><i class="fa fa-user"></i> Create ID</a>
-			          @else 
-			          <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-			          <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-			          @if($user->useridcard)
-			          <img src="{{URL::asset('img-idcard')}}/{{$user->useridcard->filename}}" />
+			          @elseif($user->userbarcode && $user->userphoto)
+				          @if($user->useridcard)
+				          <img src="{{URL::asset('img-idcard')}}/{{$user->useridcard->filename}}" />
+				          @endif
 			          @endif
+			           <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
+			          <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+
+			          @if($user->userphoto)
+
+			          @else
+			            <a href="{{route('user.upload.photo' , $user->id)}}" class="btn btn-success btn-sm"><i class="fa fa-user"></i> Upload Photo</a>
 			          @endif
 			          
 			      </td>

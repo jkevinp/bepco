@@ -52,4 +52,13 @@ class User extends Model implements AuthenticatableContract,AuthorizableContract
     public function useridcard(){
         return $this->hasOne('bepc\Models\UserIdCard');
     }
+     public function userphoto(){
+        return $this->hasOne('bepc\Models\UserPhoto');
+    }
+    public function userprivilege(){
+        return $this->hasOne('bepc\Models\UserPrivilege');
+    }
+    public function inventorylog(){
+        return $this->hasMany('bepc\Models\InventoryLog');
+    }
 }
