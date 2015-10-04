@@ -3,9 +3,12 @@
 use bepc\Repositories\Contracts\UserBarcodeContract;
 use bepc\Models\User;
 use bepc\Models\UserBarcode;
-use bepc\Libraries\BarcodeGenerator\BarcodeGenerator as BgcOutput;
+use bepc\Libraries\BarcodeGenerator\BarcodeGenerator13 as BgcOutput;
 class EloquentUserBarcodeRepository implements UserBarcodeContract
 {
+	public function __construct(BgcOutput $b){
+		$this->BgcOutput = $b;
+	}
 
 	public function find($id){
 		return UserBarcode::find($id);
@@ -19,13 +22,13 @@ class EloquentUserBarcodeRepository implements UserBarcodeContract
 		 return UserBarcode::create($param);
 	}
 	public function sdelete(UserBarcode $userbarcode){
-		
+		$userbarcode->delete();
 	}
 	public function fdelete(UserBarcode $userbarcode){
 		$userbarcode->forceDelete();
 	}
-	public function create_id(User $user){
-
+	public function create_barcode($userid, $extension , $path){
+		return $this->BgcOutput->output($userid , $extension , $path);
 	}
 	public function search($fields, $param){
 
@@ -33,4 +36,7 @@ class EloquentUserBarcodeRepository implements UserBarcodeContract
 	public function all(){
 		return UserBarcode::all();
 	}
+	public function checkbarcodefile($fullpath){
+        return file_exists($fullpath);
+    }
 } 

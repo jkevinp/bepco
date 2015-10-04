@@ -24,9 +24,14 @@
                 </p>
               </div>
             </div><! --/col-md-4 -->
-
             <div class="col-md-4 profile-text">
-              <h2>{{$user->getName()}} <img class="imageidcard" src="{{URL::asset('img-id')}}/{{$user->userbarcode->filename}}" class="img-thumbnail"></h2>
+              <h2>{{$user->getName()}} 
+                @if($user->userbarcode)
+                <img class="imageidcard" src="{{URL::asset('img-id')}}/{{$user->userbarcode->filename}}" class="img-thumbnail">
+                @else
+                <a class="btn btn-theme" href="{{route('user.upload.photo' , $user->id)}}"><i class="fa fa-check"></i>Generate Barcode</a>
+                @endif
+              </h2>
               <h5>Group: {{$user->getUserGroupName()}}</h5>
               <h5>Username: {{$user->username}}</h5>
               <h5>Email: {{$user->email}}</h5>
@@ -34,7 +39,6 @@
                 
               </p>
               <br>
-              <p><button class="btn btn-theme"><i class="fa fa-envelope"></i> Send Message</button></p>
             </div><! --/col-md-4 -->
 
             <div class="col-md-4 profile-text mt mb centered">
@@ -105,77 +109,54 @@
                         </div><! --/col-md-6 -->
                       
                       <div class="col-md-6 detailed">
+                         <?php
+                                $progress = 0;
+                                if(isset($user->userbarcode))$progress+= 100 /3;
+                                if(isset($user->userphoto))$progress+= 100 /3;
+                                if(isset($user->useridcard))$progress+= 100 /3;
+                                $progress = number_format($progress ,2);
+                            ?>
                         <h4>User Stats</h4>
                         <div class="row centered mt mb">
                           <div class="col-sm-4">
-                            <h1><i class="fa fa-money"></i></h1>
-                            <h3>$22,980</h3>
-                            <h6>LIFETIME EARNINGS</h6>
+                            <h1><i class="fa fa-barcode" style=""></i></h1>
+                            @if($user->userbarcode)
+                             <h3><i class="fa fa-check" style="color:green;"></i> </h3>
+                            @else
+                            <h3><i class="fa fa-remove" style="color:red;"></i> </h3>
+                            @endif
+                            <h6>BARCODE ID</h6>
                           </div>
                           <div class="col-sm-4">
-                            <h1><i class="fa fa-trophy"></i></h1>
-                            <h3>37</h3>
-                            <h6>COMPLETED TASKS</h6>
+                            <h1><i class="fa fa-credit-card"></i></h1>
+                             @if($user->useridcard)
+                             <h3><i class="fa fa-check" style="color:green;"></i> </h3>
+                            @else
+                            <h3><i class="fa fa-remove" style="color:red;"></i> </h3>
+                            @endif
+                            <h6>IDENTIFICATION CARD</h6>
                           </div>
                           <div class="col-sm-4">
-                            <h1><i class="fa fa-shopping-cart"></i></h1>
-                            <h3>1980</h3>
-                            <h6>ITEMS SOLD</h6>
+                            <h1><i class="fa fa-picture-o"></i></h1>
+                             @if($user->userphoto)
+                             <h3><i class="fa fa-check" style="color:green;"></i> </h3>
+                            @else
+                            <h3><i class="fa fa-remove" style="color:red;"></i> </h3>
+                            @endif
+                            <h6>PHOTO ID</h6>
                           </div>
                         </div><!-- /row -->
-                        <h4>My Friends</h4>
-                        <div class="row centered mb">
-                          <ul class="my-friends">
-                          <li><div class="friends-pic"><img class="img-circle" width="35" height="35" src="assets/img/friends/fr-01.jpg"></div></li>
-                          <li><div class="friends-pic"><img class="img-circle" width="35" height="35" src="assets/img/friends/fr-02.jpg"></div></li>
-                          <li><div class="friends-pic"><img class="img-circle" width="35" height="35" src="assets/img/friends/fr-03.jpg"></div></li>
-                          <li><div class="friends-pic"><img class="img-circle" width="35" height="35" src="assets/img/friends/fr-04.jpg"></div></li>
-                          <li><div class="friends-pic"><img class="img-circle" width="35" height="35" src="assets/img/friends/fr-05.jpg"></div></li>
-                          <li><div class="friends-pic"><img class="img-circle" width="35" height="35" src="assets/img/friends/fr-06.jpg"></div></li>
-                          <li><div class="friends-pic"><img class="img-circle" width="35" height="35" src="assets/img/friends/fr-07.jpg"></div></li>
-                          <li><div class="friends-pic"><img class="img-circle" width="35" height="35" src="assets/img/friends/fr-08.jpg"></div></li>
-                          <li><div class="friends-pic"><img class="img-circle" width="35" height="35" src="assets/img/friends/fr-09.jpg"></div></li>
-                          <li><div class="friends-pic"><img class="img-circle" width="35" height="35" src="assets/img/friends/fr-10.jpg"></div></li>
-                          <li><div class="friends-pic"><img class="img-circle" width="35" height="35" src="assets/img/friends/fr-11.jpg"></div></li>
-                          </ul>
-                          <div class="row mt">
-                            <div class="col-md-4 col-md-offset-4">
-                              <h6><a href="#">VIEW ALL</a></h6>
-                            </div>
-                          </div>
-                        </div><! --/row -->
-                        
-                        <h4>Pending Tasks</h4>
+                           
+                        <h4>User Status</h4>
                         <div class="row centered">
                           <div class="col-md-8 col-md-offset-2">
-                            <h5>Dashboard Update (40%)</h5>
-                                              <div class="progress">
-                                                  <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                                      <span class="sr-only">40% Complete (success)</span>
-                                                  </div>
-                                              </div>
-                                              
-                            <h5>Unanswered Messages (80%)</h5>
-                                              <div class="progress">
-                                                  <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                                      <span class="sr-only">80% Complete (success)</span>
-                                                  </div>
-                                              </div>
-                                              
-                            <h5>Product Review (60%)</h5>
-                                              <div class="progress">
-                                                  <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                                      <span class="sr-only">60% Complete (success)</span>
-                                                  </div>
-                                              </div>
-                                              
-                            <h5>Friend Requests (90%)</h5>
-                                              <div class="progress">
-                                                  <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 90%">
-                                                      <span class="sr-only">90% Complete (success)</span>
-                                                  </div>
-                                              </div>
-                                              
+                            <h5>Profile Completeness ({{$progress}})%</h5>
+                          
+                              <div class="progress">
+                                  <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{$progress}}" aria-valuemin="0" aria-valuemax="100" style="width:{{$progress}}%">
+                                      <span class="sr-only">{{$progress}}% Complete (success)</span>
+                                  </div>
+                              </div>       
                           </div><! --/col-md-8 -->
                         </div><! --/row -->
                       </div><!-- /col-md-6 -->

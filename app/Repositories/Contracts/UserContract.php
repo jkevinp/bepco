@@ -12,5 +12,6 @@ interface UserContract{
 	public function search($fields,$param);
 	public function all();
 	public function uploadphoto($file);
+	public function generate_barcode(User $user);
 	public function getphoto(User $user);
 }

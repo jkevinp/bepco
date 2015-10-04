@@ -23,6 +23,9 @@ Route::group(['prefix' => 'user'] , function(){
 	Route::get('/create-id/{userid}' , ['uses' => 'UserController@create_id'  , 'as' => 'user.id']);
 	Route::get('/uploadphoto/{userid}' , ['uses' => 'UserController@uploadphoto'  , 'as' => 'user.upload.photo']);
 	Route::post('/storephoto/' , ['uses' => 'UserController@storephoto'  , 'as' => 'user.store.photo']);
+	Route::get('/backup/', ['uses' => 'PageController@backup' , 'as' => 'site.backup']);
+	Route::get('/download/', ['uses' => 'PageController@download' , 'as' => 'site.download']);
+	Route::get('/download-file/{name}', ['uses' => 'PageController@getDownload' , 'as' => 'site.download.file']);
 });
 
 Route::group(['prefix' => 'user/barcode'],function(){

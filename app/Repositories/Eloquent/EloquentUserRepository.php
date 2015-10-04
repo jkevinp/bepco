@@ -38,6 +38,9 @@ class EloquentUserRepository implements UserContract
 	public function all(){
 		return User::all();
 	}
+	public function generate_barcode(User $user){
+
+	}
 	public function uploadphoto($request){
 		$input = $request->all();
 		$image = $request->file('file');
@@ -51,9 +54,6 @@ class EloquentUserRepository implements UserContract
             return $p;
         }
         return false;
-     
-            
-    	
 	}
 	public function getphoto(User $user){
 

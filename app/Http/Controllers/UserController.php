@@ -10,7 +10,6 @@ use bepc\Models\UserGroup;
 use Validator;
 use bcrypt;
 use URL;
-use bepc\Libraries\BarcodeGenerator\BarcodeGenerator13 as BgcOutput;
 use bepc\Repositories\Contracts\UserContract;
 use bepc\Repositories\Contracts\UserBarcodeContract;
 use bepc\Repositories\Contracts\UserIdCardContract;
@@ -22,12 +21,16 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public $imagebarcodepath = "";
+    public $imagebarcodetype = "png";
 
-    public function __construct(BgcOutput $b ,UserContract $uc, UserBarcodeContract $ubc , UserIdCardContract $uicc){
-        $this->BgcOutput = $b;
+
+    public function __construct(UserContract $uc, UserBarcodeContract $ubc , UserIdCardContract $uicc){
         $this->user = $uc;
         $this->userbarcode = $ubc;
         $this->useridcard = $uicc;
+        $this->imagebarcodepath = public_path('img-id');
+        $this->imagebarcodetype = "png";
     }
     public function index(){   
         $users = $this->user->all();
@@ -67,16 +70,17 @@ class UserController extends Controller
                 ];
         $v = validator::make($input , $rules);
         if($v->fails())return redirect()->back()->withErrors($v->messages()->first())->withInput($input);
-        //20151007
-        $extension = "png";
-        $input['id'] = $file = $this->BgcOutput->output($this->user->generate_id() , $extension , public_path('img-id')); 
-        //dd(file_exists(public_path('img-id').'/'.$file.".".$extension)."-".public_path('img-id').'/'.$file.".".$extension."-".$file);    
+
+        $input['id'] = $file = $this->create_barcode($this->user->generate_id()); //create the barcode first
+        $filename = $file.".".$this->imagebarcodetype; //create the filename based on the barcode.
+        $filepath = $this->imagebarcodepath."/"; //create the full path of the file
+        $endfile = $filepath.$filename; //create the final path + name of the file
+
         if($user = $this->user->store($input)){
-            $userbarcode = $this->userbarcode->store($user,$file.".".$extension);
+            $userbarcode = $this->userbarcode->store($user, $filename);
             $user->barcode_id = $userbarcode->id;
-            if(file_exists(public_path('img-id').'/'.$file.".".$extension) && $user && $userbarcode ){
-                    $user->save();
-                   $url =public_path('img-id').'/'.$file.".".$extension;
+            if(file_exists($endfile) && $user && $userbarcode ){
+                   $user->save();
                    return redirect(route('auth.login'))->with('flash_message' , 'User successfully registered.');
                 }else{
 
@@ -87,10 +91,15 @@ class UserController extends Controller
             
         }
         return redirect()->back()->withErrors('Could not save user');
-
-        
-        
     }
+    public function create_barcode($userid){
+        if($barcodefile = $this->userbarcode->find($userid)) return $barcodefile->barcodekey;
+        $barcodefile = $this->userbarcode->create_barcode($userid,$this->imagebarcodetype, $this->imagebarcodepath);
+        if($this->userbarcode->checkbarcodefile($this->imagebarcodepath."/".$barcodefile.".".$this->imagebarcodetype))return $barcodefile;
+        return false;
+    }
+
+
     public function create_id($userid){
         $user = $this->user->find($userid);
         if(!$user || !$user->userbarcode)return redirect()->back()->withErrors('Could not find user');
@@ -99,6 +108,7 @@ class UserController extends Controller
         return redirect()->back()->withErrors('Could not create a new id card for '.$user->getName());
 
     }
+
 
 
     /**
