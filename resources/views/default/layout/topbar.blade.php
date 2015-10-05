@@ -4,7 +4,7 @@
         <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
     </div>
     <!--logo start-->
-    <a href="{{route('default.home')}}" class="logo"><b>{{env('APP_TITLE')}}    {{date("Y-m-d H:i:s")}}     </b></a>
+    <a href="{{route('default.home')}}" class="logo"><b>{{env('APP_TITLE')}}       </b></a>
     <!--logo end-->
     <div class="nav notify-row" id="top_menu">
         <!--  notification start -->

@@ -40,6 +40,9 @@ class User extends Model implements AuthenticatableContract,AuthorizableContract
     public function getName(){
         return $this->firstname. " ".$this->middlename." ".$this->lastname;
     }
+    public function getNoMiddleName(){
+        return $this->firstname. " ".substr($this->middlename, 0,1).". ".$this->lastname;
+    }
     public function getUserGroupName(){
         return $this->usergroup->name;
     }
@@ -61,4 +64,5 @@ class User extends Model implements AuthenticatableContract,AuthorizableContract
     public function inventorylog(){
         return $this->hasMany('bepc\Models\InventoryLog');
     }
+    
 }

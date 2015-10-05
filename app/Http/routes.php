@@ -10,6 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+  
 Route::get('/', ['uses' => 'PageController@index' , 'as' => 'default.home']);
 Route::get('/auth/login', ['uses' => 'AuthController@index' , 'as' => 'auth.login']);
 Route::post('/auth/login', ['uses' => 'AuthController@signin' , 'as' => 'auth.login']);
@@ -82,6 +83,13 @@ Route::group(['prefix' => 'inventory/item'],function(){
 	Route::get('/deposit/{id?}' , ['uses' => 'ItemController@deposit' , 'as' => 'item.deposit']);
 	Route::post('/proccess-withdrawal/' , ['uses' => 'ItemController@proccessWithdrawal' , 'as' => 'item.process.withdraw']);
 	Route::post('/proccess-deposit/' , ['uses' => 'ItemController@proccessDeposit' , 'as' => 'item.process.deposit']);
+});
 
-	
+Route::group(['prefix' => 'user/controlpanel'] , function(){
+
+	Route::get('/index' , ['uses' => 'ControlPanelController@index' , 'as' => 'cpanel.index']);
+
+});
+Route::group(['prefix' => 'user/setting'] , function(){
+	Route::get('set/{id}/{value}' , ['uses' => 'SettingController@change' , 'as' => 'setting.change']);
 });

@@ -16,6 +16,7 @@ class CreatePrivilegeTable extends Migration
             $t->increments('id');
             $t->string('name');
             $t->string('action');
+            $t->string('control');
              $t->timeStamps();
             $t->softDeletes();
         });

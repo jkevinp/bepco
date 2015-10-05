@@ -22,10 +22,13 @@
                   <a class="btn btn-theme" href="{{route('user.upload.photo' , $user->id)}}"><i class="fa fa-check"></i>Upload Photo</a>
                   @endif
                 </p>
+
               </div>
+
+             
             </div><! --/col-md-4 -->
             <div class="col-md-4 profile-text">
-              <h2>{{$user->getName()}} 
+              <h2>{{$user->getNoMiddleName()}} 
                 @if($user->userbarcode)
                 <img class="imageidcard" src="{{URL::asset('img-id')}}/{{$user->userbarcode->filename}}" class="img-thumbnail">
                 @else
@@ -35,6 +38,7 @@
               <h5>Group: {{$user->getUserGroupName()}}</h5>
               <h5>Username: {{$user->username}}</h5>
               <h5>Email: {{$user->email}}</h5>
+
               <p>
                 
               </p>
@@ -75,7 +79,7 @@
                     <a data-toggle="tab" href="#overview">Overview</a>
                   </li>
                   <li>
-                    <a data-toggle="tab" href="#contact" class="contact-map">Contact</a>
+                    <a data-toggle="tab" href="#contact" class="contact-map">Permissions & Contact</a>
                   </li>
                   <li>
                     <a data-toggle="tab" href="#edit">Edit Profile</a>
@@ -166,35 +170,31 @@
                   <div id="contact" class="tab-pane">
                     <div class="row">
                       <div class="col-md-6">
-                        <div id="map"></div>
+                        <div>
+                             <table class="table table-hover table-bordered table-striped">
+                              <thead>
+                                <th>Privilege ID</th>
+                                <th>Action</th>
+                                <th>Name</th>
+                                <th>Permission Level</th>
+                              </thead>  
+                             @foreach($user->usergroup->getPrivileges() as $p)
+                            <tr>
+                              <td>{{$p->id}}</td>
+                              <td>{{$p->name}}</td>
+                              <td>{{$p->action}}</td>
+                              <td>{{$p->control}}</td>
+                            </tr>
+                             @endforeach
+                             </table>
+                        </div>
                       </div><! --/col-md-6 -->
                       
                       <div class="col-md-6 detailed">
-                        <h4>Location</h4>
+                        <h4>Contact</h4>
                         <div class="col-md-8 col-md-offset-2 mt">
                           <p>
-                            Postal Address<br/>
-                            PO BOX 12988, Sutter Ave<br/>
-                            Brownsville, New York.
-                          </p>
-                          <br>
-                          <p>
-                            Headquarters<br/>
-                            844 Sutter Ave,<br/>
-                            9003, New York.
-                          </p>
-                        </div>
-                        <h4>Contacts</h4>
-                        <div class="col-md-8 col-md-offset-2 mt">
-                          <p>
-                            Phone: +33 4898-4303<br/>
-                            Cell: 48 4389-4393<br/>
-                          </p>
-                          <br>
-                          <p>
-                            Email: hello@dashgumtheme.com<br/>
-                            Skype: UseDash<br/>
-                            Website: http://Alvarez.is
+                            {{$user->email}}<br/>
                           </p>
                         </div>
                       </div><! --/col-md-6 -->

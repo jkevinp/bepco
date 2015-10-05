@@ -27,7 +27,13 @@
     <link href="{{URL::asset($env)}}/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="{{URL::asset($env)}}/js/gritter/css/jquery.gritter.css" />   
     <!-- Custom styles for this template -->
+    @if(bepc\Models\Setting::where('keyname', '=' , 'theme')->first()->value == 'yellow')
+    <link href="{{URL::asset($env)}}/css/style-yellow.css" rel="stylesheet">
+    @elseif(bepc\Models\Setting::where('keyname', '=' , 'theme')->first()->value == 'blue')
+    <link href="{{URL::asset($env)}}/css/style-blue.css" rel="stylesheet">
+    @else
     <link href="{{URL::asset($env)}}/css/style.css" rel="stylesheet">
+    @endif
     <link href="{{URL::asset($env)}}/css/style-responsive.css" rel="stylesheet">
     <link href="{{URL::asset('default')}}/css/table-responsive.css" rel="stylesheet">
     <link href="{{URL::asset($env)}}/css/lightbox.css" rel="stylesheet">
@@ -59,7 +65,14 @@
     </section>
     <!--footer start-->
        <footer class="site-footer black-bg" style="position:fixed;bottom:0;left:0;right:0;">
-          <div class="text-center">{{env('APP_TITLE' ,'BEPC')}}<a href="" class="go-top"><i class="fa fa-angle-up"></i></a>
+          <div class="text-center">{{env('APP_TITLE' ,'BEPC')}}
+             
+              <a href="" class="go-top">
+                <i class="fa fa-angle-up"></i>
+              </a>
+               <span class="pull-left" style="margin-left:10px;" id="time">
+                 
+                 </span>
           </div>
       </footer>
       <!--footer end-->
@@ -139,8 +152,13 @@
      <script type="text/javascript">
    
        $(document).ready(function () {  
-          $('.selectize').selectize();
-          $('select.styled').customSelect();
+        
+        setInterval(function(){$('#time').text("DateTime: " +new Date($.now()).toUTCString());}, 1000);
+
+
+          if($('.selectize').length)$('.selectize').selectize();
+         if($('select.styled').length) $('select.styled').customSelect();
+          
         });
     </script>
   </body>

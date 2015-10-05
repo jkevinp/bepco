@@ -2,11 +2,23 @@
 <aside>
   <div id="sidebar"  class="nav-collapse ">
       <ul class="sidebar-menu" id="nav-accordion">
-        <h5 class="centered"><span class="glyphicon glyphicon-user"></span>
+        <p class="centered">
           @if(Auth::check())
-          {{Auth::user()->firstname}}
-          {{Auth::user()->middlename}}
-          {{Auth::user()->lastname}}
+          <a href="{{route('user.show' , [Auth::user()->id , str_replace(' ' , '-' ,Auth::user()->getName())] )}}">
+         
+              @if(Auth::user()->userphoto)
+                    <img src="{{URL::asset('img-photo')}}/{{Auth::user()->userphoto->filename}}"width="60" class="img-circle">
+              @else
+                    <img src="{{URL::asset('img-template')}}/id.png" width="60" class="img-circle">
+              @endif
+          </a>
+           @endif
+        </p>
+        <h5 class="centered">
+          @if(Auth::check())
+            {{Auth::user()->firstname}}
+            {{Auth::user()->middlename}}
+            {{Auth::user()->lastname}}
           @endif
         </h5>
         <h6 class="centered">
@@ -91,6 +103,12 @@
                 <li><a  href="{{route('user.list')}}" class="user-list"><i class="fa fa-navicon"></i> List User</a></li>
                 <li><a  href="{{route('user.create')}}" class="user-create"><i class="fa fa-plus"></i> Create User</a></li>
               </ul>
+          </li>
+           <li class="sub-menu">
+              <a href="{{route('cpanel.index')}}" class="controlpanel" >
+                  <i class="fa fa-user"></i>
+                  <span>Control Panel</span>
+              </a>
           </li>
           
           
