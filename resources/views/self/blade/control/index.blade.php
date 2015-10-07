@@ -8,9 +8,9 @@
         <h2 class='violet'>Control Panel</h2>
         <hr/>
         <div class="col-md-4">
-          <h4 class=''>Backup Manager</h4>
+          <h4 class=''>Backup Manager <span class="pull-right violet"><a href="{{route('cpanel.git.cmd')}}" target="_newtab">Launch Cmd</a></span></h4>
             <a href="{{route('site.backup')}}" class="btn btn-lg btn-theme btn-block">Create Backup</a><br/>
-            <a href="{{route('site.download')}}" class="btn btn-lg btn-theme btn-block">Download Backup</a>
+            <a href="{{route('site.download')}}" class="btn btn-lg btn-theme btn-block">Download Backup</a><br/>
             <a href="{{route('cpanel.git.pull')}}" class="btn btn-lg btn-theme btn-block">Restore Repository</a>
         </div>
         <div class="col-md-4">
@@ -28,4 +28,3 @@
 
 @section('script')
 @stop
-

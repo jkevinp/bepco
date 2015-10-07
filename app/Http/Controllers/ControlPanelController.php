@@ -83,6 +83,10 @@ class ControlPanelController extends Controller
     {
         //
     }
+    public function commandprompt(){
+        return view('self.blade.control.command');
+    }
+
     public static function pull() {
         $git_url = 'git://github.com/jkevindp/barcode.git';
     // validate contains git://github.com/
@@ -96,14 +100,14 @@ class ControlPanelController extends Controller
         // change dir to the new path
         $new_dir = chdir($file_path);
         // Git init
-        $git_init = shell_exec('git init');
+        
         // Git clone
-        $git_clone = shell_exec('git clone '. $git_url);
+        echo shell_exec('git clone '. $git_url);
         // Git pull
-        $git_pull = shell_exec('git pull');
+        echo shell_exec('git pull origin master');
         // change dir back
         $change_dir_back = chdir($first_dir);
-         return redirect()->back()->with('flash_message', 'Successfully pulled repository');
+       //  return redirect()->back()->with('flash_message', 'Successfully pulled repository');
       }
     }
     else {

@@ -15,4 +15,5 @@ interface ItemContract{
 	public function getIn($field, $param);
 	public function deduct(Item $item , User $user ,$quantity);
 	public function induct(Item $item , User $user ,$quantity);
+	public function update(Item $item,$request);
 }

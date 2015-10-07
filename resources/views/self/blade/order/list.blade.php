@@ -14,6 +14,7 @@
                                         @foreach($fieldlist as $field)
                                             <th>{{$field}}</th>
                                         @endforeach
+                                        <th>Days before delivery</th>
                                         <th>Actions</th>
                                 </thead>
                                 <tbody>
@@ -22,6 +23,21 @@
                                     @foreach($fieldlist as $field)
                                         <td>{{$order[$field]}}</td>
                                     @endforeach
+                                    <?php 
+                                        // dd(date('Y-m-d'));
+                                        // dd(date_create($order->deliverydate));
+                                        $today = DateTime::createFromFormat('Y-m-d' , date('Y-m-d'));
+                                        $daysLeft = date_diff( $today ,date_create($order->deliverydate));
+                                        $daysLeft = $daysLeft->format("%r%a");
+                                        
+                                    ?>
+                                    <td>
+                                        @if($daysLeft > 0)
+                                            {{$daysLeft}}
+                                        @else
+                                            Due
+                                        @endif
+                                    </td>
                                     <td>
                                         <button href="#showdetails{{$order->id}}" data-toggle="modal" data-target="showdetails{{$order->id}}" class="showdetails btn btn-xs btn-theme" data-id="{{$order->id}}">
                                             <i class="fa fa-eye"></i>

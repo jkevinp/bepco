@@ -54,4 +54,60 @@ class AjaxController extends Controller
     		return Response::json(['status' => 'error']);
     	//error
     }
+    public function shell(Request $r){
+        $customCommands = ['changedir' , 'homedir'];
+
+        if($r->has('text')){   
+            $textes = explode(' ', $r->get('text'));
+            $textes = array_filter($textes);
+
+            if(in_array(strtolower($textes[0]), $customCommands))
+            {
+                switch (strtolower($textes[0])) {
+                    case 'changedir':
+                       
+                    break;
+                    case 'homedir':
+                        $uri = base_path(); // change this if not in drupal 
+                        $file_path = realpath($uri);  // change this if not in drupal 
+                        if (isset($file_path)) {
+                            $first_dir =  getcwd();
+                            $new_dir = chdir($file_path);
+                            $dir =  getcwd();
+                            $result = $new_dir ?  "Changed dir from ".$first_dir. " to " .$dir : "Failed";
+                           
+                            if(count($textes) > 1){
+                                $text = str_replace($textes[0], ' ', $r->get('text'));
+                                $result .= "\n";
+                                $result .= shell_exec($text);
+                            }
+                            return  Response::json($result);
+                        } 
+                       
+                    break;
+                    
+                    default:
+                        return  Response::json('Custom command not found');
+                    break;
+                }
+            }
+            else
+            {
+                $uri = base_path(); // change this if not in drupal 
+                $file_path = realpath($uri);  // change this if not in drupal 
+                if (isset($file_path)) {
+                        // $first_dir =  getcwd();
+                        // $new_dir = chdir($file_path);
+                        // $change_dir_back = chdir($first_dir);
+                        $result =shell_exec($r->get('text'));
+                        return  Response::json($result);
+                } 
+
+            }
+
+
+
+               
+        }
+    }
 }

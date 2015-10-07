@@ -69,9 +69,17 @@ class ItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id ,$name = false)
     {
-        //
+        if($id){
+            if($item = $this->item->find($id)){
+                if(!$name)return redirect(route('item.edit' ,[$id,  $item->name]));
+                $itemgroups = $this->itemgroup->all()->lists('name' , 'id');
+                return view('self.blade.item.edit')->with(compact('itemgroups' , 'item'));
+            }else{
+                return redirect()->back()->withErrors('Could not find Item');
+            }
+        }
     }
     public function withdraw($id = false){
         if($id){
@@ -123,7 +131,17 @@ class ItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if($id){
+            if($item = $this->item->find($id)){
+                //validation
+                $result = $this->item->update($item,$request);
+                if($result) return redirect()->back()->with('flash_message' , "Item changes saved.");
+                return redirect()->back()->withErrors('Failed to update item');
+            }else{
+                 return redirect()->back()->withErrors('Could not find Item');
+            }
+
+        }
     }
 
     /**

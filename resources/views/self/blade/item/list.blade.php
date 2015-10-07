@@ -20,6 +20,7 @@
               <tr>
                   <th><i class="fa fa-bullhorn"></i>Item ID</th>
                   <th class="hidden-phone"><i class="fa fa-question-circle"></i>Item Name</th>
+                  <th class="hidden-phone"><i class="fa fa-question-circle"></i>Category</th>
                   <th><i class="fa fa-bookmark"></i>Item Description</th>
                   <th><i class="fa fa-bookmark"></i>Avialable  Quantity</th>
                   <th><i class="fa fa-bookmark"></i>Item Safe Stock</th>
@@ -38,6 +39,7 @@
               <tr>
                   <td><a href="#">{{$item->id}}</a></td>
                   <td> <span class="">{{$item->name}}</span></td>
+                  <td> <span class="">{{$item->itemgroup->name}}</span></td>
                   <td> <span class="violet"><a href="#">{{$item->description}}</a></span> </td>
                   <td>{{number_format($item->quantity)}}</td>
                   <td>{{$item->safe_quantity}}</td>
@@ -52,11 +54,9 @@
                     @endif
                   </td>
                   <td>
-                        <button class="btn btn-primary  " title="edit {{$item->name}}"><i class="fa fa-pencil"></i></button>
+                        <a href="{{route('item.edit' , [$item->id , $item->name])}}" class="btn btn-primary  " title="edit {{$item->name}}"><i class="fa fa-pencil"></i></a>
                         <button class="btn btn-danger " title="delete {{$item->name}}"><i class="fa fa-trash-o "></i></button>
-                        <a class="btn btn-theme02 ingredient  showdetails" data-id="{{$item->id}}" title="view ingredients for {{$item->name}}"
-                             href="#showdetails{{$item->id}}" data-toggle="modal" data-target="showdetails{{$item->id}}"
-                            ><i class="fa fa-eye"></i></a>
+                        <a class="btn btn-theme02 ingredient  showdetails" data-id="{{$item->id}}" title="view ingredients for {{$item->name}}"  href="#showdetails{{$item->id}}" data-toggle="modal" data-target="showdetails{{$item->id}}" ><i class="fa fa-eye"></i></a>
                        @if($item->quantity <= 0 )
                         <a class="btn btn-theme03" data-id="{{$item->id}}" disabled title="Withdraw {{$item->name}}"
                              href="{{route('item.withdraw' , $item->id)}}">
@@ -72,6 +72,8 @@
                         <a class="btn btn-theme04"  title="Deposit {{$item->name}}"
                              href="{{route('item.deposit' , $item->id)}}"
                             ><i class="fa fa-reply"></i></a>
+
+                        <a class="btn btn-default"  title="Order {{$item->name}}"  href="{{route('item.deposit' , $item->id)}}" ><i class="fa fa-truck"></i></a>
                   </td>
               </tr>
              </tbody>

@@ -51,6 +51,19 @@ class EloquentItemRepository  implements ItemContract
 	public function search($fields, $param){
 
 	}
+	public function update(Item $item, $r){
+		if($item && $r){
+			//validation
+			$item->name = $r->get('name');
+			$item->itemgroup_id = $r->get('itemgroup_id');
+			$item->description = $r->get('details');
+			$item->quantity = $r->get('quantity');
+			return $item->save();
+
+		}
+	}
+
+
 	public function getIn($field, $param){
 		$items = Item::whereIn('id', $param)->get();
 		return $items;
