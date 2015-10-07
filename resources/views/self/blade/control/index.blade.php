@@ -11,6 +11,7 @@
           <h4 class=''>Backup Manager</h4>
             <a href="{{route('site.backup')}}" class="btn btn-lg btn-theme btn-block">Create Backup</a><br/>
             <a href="{{route('site.download')}}" class="btn btn-lg btn-theme btn-block">Download Backup</a>
+            <a href="{{route('cpanel.git.pull')}}" class="btn btn-lg btn-theme btn-block">Restore Repository</a>
         </div>
         <div class="col-md-4">
           <h4 class=''>Current Theme : {{strtoupper(bepc\Models\Setting::where('keyname', '=' , 'theme')->first()->value)}}</h4>

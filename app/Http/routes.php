@@ -88,6 +88,7 @@ Route::group(['prefix' => 'inventory/item'],function(){
 Route::group(['prefix' => 'user/controlpanel'] , function(){
 
 	Route::get('/index' , ['uses' => 'ControlPanelController@index' , 'as' => 'cpanel.index']);
+	Route::get('/pull' , ['uses' => 'ControlPanelController@pull' , 'as' => 'cpanel.git.pull']);
 
 });
 Route::group(['prefix' => 'user/setting'] , function(){

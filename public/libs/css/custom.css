@@ -1,0 +1,38 @@
+.white{
+    color:white;
+}
+.login-header{
+            background: url('../img/bg-violet.jpg');
+            /*background: url('../../images/login.png');*/
+            background-size: 100% 100%;
+            width: 100%;
+            height:100vh;
+        }
+ul.tree{
+           list-style-type: none;
+       } 
+li.fruit{
+            margin: 0;
+            padding-left:30px;
+            line-height: 20px;
+            background: url('../images/node.png') no-repeat;
+            color: #369;
+            font-weight: bold;
+
+}
+.opacity5{
+    
+    background: transparent !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 2px solid #79589F !important;
+    box-shadow:none !important;
+    outline: none !important;  
+}
+.opacity4{
+    
+    border-bottom: 2px solid #79589F !important;
+    box-shadow:none !important;
+    outline: none !important;  
+}

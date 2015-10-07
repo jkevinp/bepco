@@ -32,6 +32,8 @@
     <link href="{{URL::asset('default')}}/css/table-responsive.css" rel="stylesheet" />
     <link href="{{URL::asset($env)}}/css/lightbox.css" rel="stylesheet" />
     <link href="{{URL::asset('libs')}}/css/sweetalert.css" rel="stylesheet" />
+    
+     <link href="{{URL::asset('libs')}}/css/custom.css" rel="stylesheet">
 
     
     @yield('header')
