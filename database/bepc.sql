@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 06, 2015 at 12:32 AM
+-- Generation Time: Oct 08, 2015 at 12:22 AM
 -- Server version: 5.6.17-log
 -- PHP Version: 5.5.12
 
@@ -36,7 +36,16 @@ CREATE TABLE IF NOT EXISTS `barcode` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `barcode_product_id_unique` (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `barcode`
+--
+
+INSERT INTO `barcode` (`id`, `barcodekey`, `product_id`, `imageurl`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, '0000001', '1', 'http://localhost:8000/img-barcode/0000001.png', '2015-10-07 19:42:59', '2015-10-07 19:42:59', NULL),
+(2, '0000002', '2', 'http://localhost:8000/img-barcode/0000002.png', '2015-10-07 19:43:05', '2015-10-07 19:43:05', NULL),
+(3, '0000003', '3', 'http://localhost:8000/img-barcode/0000003.png', '2015-10-07 19:43:09', '2015-10-07 19:43:09', NULL);
 
 -- --------------------------------------------------------
 
@@ -89,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `inventorylog` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `inventorylog`
@@ -103,7 +112,8 @@ INSERT INTO `inventorylog` (`id`, `proccess`, `action`, `user_id`, `user_name`, 
 (5, 'induct', 'withdraw', '2015100432147', 'John Kevin De Jesus Peralta', 'EIR:John Kevin De Jesus Peralta proccesed induct doing withdraw changing Quantity value to 10000', 'EIR', 'Quantity', '10000', '2015-10-03 03:39:14', '2015-10-03 03:39:14', NULL),
 (6, 'induct', 'deposit', '2015100432147', 'John Kevin De Jesus Peralta', 'EIR:John Kevin De Jesus Peralta proccesed induct doing deposit changing Quantity value to 10', 'EIR', 'Quantity', '10', '2015-10-03 03:39:34', '2015-10-03 03:39:34', NULL),
 (7, 'induct', 'withdraw', '2015100432147', 'John Kevin De Jesus Peralta', 'EIR:John Kevin De Jesus Peralta proccesed induct doing withdraw changing Quantity value to 10', 'EIR', 'Quantity', '10', '2015-10-03 03:39:56', '2015-10-03 03:39:56', NULL),
-(8, 'induct', 'deposit', '2015100432147', 'John Kevin De Jesus Peralta', 'EIR:John Kevin De Jesus Peralta proccesed induct doing deposit changing Quantity value to 1', 'EIR', 'Quantity', '1', '2015-10-03 03:40:10', '2015-10-03 03:40:10', NULL);
+(8, 'induct', 'deposit', '2015100432147', 'John Kevin De Jesus Peralta', 'EIR:John Kevin De Jesus Peralta proccesed induct doing deposit changing Quantity value to 1', 'EIR', 'Quantity', '1', '2015-10-03 03:40:10', '2015-10-03 03:40:10', NULL),
+(9, 'induct', 'withdraw', '2015100436107', 'Registration Registration Registration', 'EIR:Registration Registration Registration proccesed induct doing withdraw changing Quantity value to 500', 'EIR', 'Quantity', '500', '2015-10-07 21:11:33', '2015-10-07 21:11:33', NULL);
 
 -- --------------------------------------------------------
 
@@ -125,33 +135,19 @@ CREATE TABLE IF NOT EXISTS `item` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   `itemgroup_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=22 ;
 
 --
 -- Dumping data for table `item`
 --
 
 INSERT INTO `item` (`id`, `name`, `description`, `quantity`, `alert_quantity`, `safe_quantity`, `imageurl`, `supplier_id`, `created_at`, `updated_at`, `deleted_at`, `itemgroup_id`) VALUES
-(1, 'Pet bottle', '', 1, 10, 10, '', '', '0000-00-00 00:00:00', '2015-10-03 03:40:10', NULL, 1),
-(2, 'Pail', '', 500, 10, 10, '', '', '0000-00-00 00:00:00', '2015-10-03 01:49:02', NULL, 1),
+(1, 'Pet bottle', 'Used to pack small quantity of products', 1, 10, 10, '', '', '0000-00-00 00:00:00', '2015-10-07 21:42:08', NULL, 2),
+(2, 'Pail', 'Used to pack large quantity of product', 1, 10, 10, '', '', '0000-00-00 00:00:00', '2015-10-07 21:42:57', NULL, 2),
 (3, 'Raw Egg', '', 0, 10, 10, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, 3),
-(4, 'test', '', 1, 10, 10, '', '', '2015-10-01 07:56:18', '2015-10-01 07:56:18', NULL, 1),
-(5, 'Chemical Agents', '', 9, 10, 10, '', '', '2015-10-02 22:30:02', '2015-10-02 22:30:02', NULL, 0),
-(6, 'Chemical Agents', '', 9, 10, 10, '', '', '2015-10-02 22:30:04', '2015-10-02 22:30:04', NULL, 0),
-(7, 'Chemical Agents', '', 9, 10, 10, '', '', '2015-10-02 22:30:14', '2015-10-02 22:30:14', NULL, 0),
-(8, 'Chemical Agents', '', 9, 10, 10, '', '', '2015-10-02 22:39:09', '2015-10-02 22:39:09', NULL, 0),
-(9, 'Chemical Agents', '', 9, 10, 10, '', '', '2015-10-02 22:48:10', '2015-10-02 22:48:10', NULL, 0),
-(10, 'Chemical Agents', '', 9, 10, 10, '', '', '2015-10-03 01:09:11', '2015-10-03 01:09:11', NULL, 0),
-(11, 'Chemical Agents', '', 9, 10, 10, '', '', '2015-10-03 01:09:16', '2015-10-03 01:09:16', NULL, 0),
-(12, 'Chemical Agents', '', 9, 10, 10, '', '', '2015-10-03 01:09:18', '2015-10-03 01:09:18', NULL, 0),
-(13, '1', '', 9, 10, 10, '', '', '2015-10-03 01:15:09', '2015-10-03 01:15:09', NULL, 0),
-(14, '1', '', 9, 10, 10, '', '', '2015-10-03 01:15:10', '2015-10-03 01:15:10', NULL, 0),
-(15, '1', '', 9, 10, 10, '', '', '2015-10-03 01:15:11', '2015-10-03 01:15:11', NULL, 0),
-(16, '1', '', 9, 10, 10, '', '', '2015-10-03 01:20:35', '2015-10-03 01:20:35', NULL, 0),
-(17, '1', '', 9, 10, 10, '', '', '2015-10-03 01:21:10', '2015-10-03 01:21:10', NULL, 0),
-(18, '1', '', 9, 10, 10, '', '', '2015-10-03 01:21:36', '2015-10-03 01:21:36', NULL, 0),
-(19, '1', '', 9, 10, 10, '', '', '2015-10-03 01:24:01', '2015-10-03 01:24:01', NULL, 0),
-(20, '1', '', 9, 10, 10, '', '', '2015-10-03 01:27:31', '2015-10-03 01:27:31', NULL, 0);
+(4, 'Muriatic Acid', 'Used to clean the floors of the plant', 1, 10, 10, '', '', '2015-10-01 07:56:18', '2015-10-07 21:45:54', NULL, 1),
+(5, 'Zonrox', 'Used to clean the floor of the plant\r\n', 9, 10, 10, '', '', '2015-10-02 22:30:02', '2015-10-07 21:39:49', NULL, 1),
+(21, 'Marlboro Lights', '', 1, 10, 10, '', '', '2015-10-07 21:14:30', '2015-10-07 21:14:30', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -241,7 +237,8 @@ CREATE TABLE IF NOT EXISTS `order` (
 INSERT INTO `order` (`id`, `deliverydate`, `description`, `status`, `customer_id`, `creator_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
 ('ORDER-2015-09-25Br4', '2015-09-29', 'Auto Generated Order', 'created', '1', '1', '2015-09-23 10:58:32', '2015-09-29 10:58:32', NULL),
 ('ORDER-2015-09-29Br4', '2015-09-29', 'Auto Generated Order', 'created', '1', '1', '2015-09-29 10:58:32', '2015-09-29 10:58:32', NULL),
-('ORDER-2015-09-30tEf', '2015-09-30', 'Auto Generated Order', 'created', '1', '1', '2015-09-25 10:14:11', '2015-09-30 10:14:11', NULL);
+('ORDER-2015-09-30tEf', '2015-09-30', 'Auto Generated Order', 'created', '1', '1', '2015-09-25 10:14:11', '2015-09-30 10:14:11', NULL),
+('ORDER-2015-10-08bOU', '2015-10-08', 'Auto Generated Order', 'created', '1', '1', '2015-10-07 19:44:06', '2015-10-07 19:44:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -269,7 +266,9 @@ INSERT INTO `orderdetail` (`id`, `order_id`, `product_id`, `product_quantity`, `
 ('ORDET-2015-09-29dzTsx', 'ORDER-2015-09-29Br4', '3', 100, '2015-09-24 10:58:32', '2015-09-29 10:58:32', NULL),
 ('ORDET-2015-09-29x5qRk', 'ORDER-2015-09-29Br4', '1', 100, '2015-09-29 10:58:32', '2015-09-29 10:58:32', NULL),
 ('ORDET-2015-09-30dOFPb', 'ORDER-2015-09-30tEy', '1', 10, '2015-09-30 10:14:11', '2015-09-30 10:14:11', NULL),
-('ORDET-2015-09-30RkJXR', 'ORDER-2015-09-30tEy', '1', 10, '2015-09-30 10:14:11', '2015-09-30 10:14:11', NULL);
+('ORDET-2015-09-30RkJXR', 'ORDER-2015-09-30tEy', '1', 10, '2015-09-30 10:14:11', '2015-09-30 10:14:11', NULL),
+('ORDET-2015-10-08cDqHf', 'ORDER-2015-10-08bOU', '2', 1, '2015-10-07 19:44:06', '2015-10-07 19:44:06', NULL),
+('ORDET-2015-10-08fW13j', 'ORDER-2015-10-08bOU', '1', 1, '2015-10-07 19:44:06', '2015-10-07 19:44:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -339,9 +338,9 @@ CREATE TABLE IF NOT EXISTS `product` (
 --
 
 INSERT INTO `product` (`id`, `name`, `price`, `alert_quantity`, `imageurl`, `barcode_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Pasteurized Liquid Egg White', '0.00', 10, 'img-product/Mn3G7k02feLAkhvw.jpg', NULL, '2015-09-29 10:57:09', '2015-09-29 10:57:09', NULL),
-(2, 'Pasteurized Liquid Whole Egg', '0.00', 10, 'img-product/f5Egsq1KWL0bzkWP.jpg', NULL, '2015-09-29 10:57:28', '2015-09-29 10:57:28', NULL),
-(3, 'Pasteurized Liquid Egg Yolk', '0.00', 10, 'img-product/052KFQvW0sR5Fu9w.jpg', NULL, '2015-09-29 10:57:57', '2015-09-29 10:57:57', NULL);
+(1, 'Pasteurized Liquid Egg White', '0.00', 10, 'img-product/Mn3G7k02feLAkhvw.jpg', '1', '2015-09-29 10:57:09', '2015-10-07 19:42:59', NULL),
+(2, 'Pasteurized Liquid Whole Egg', '0.00', 10, 'img-product/f5Egsq1KWL0bzkWP.jpg', '2', '2015-09-29 10:57:28', '2015-10-07 19:43:05', NULL),
+(3, 'Pasteurized Liquid Egg Yolk', '0.00', 10, 'img-product/052KFQvW0sR5Fu9w.jpg', '3', '2015-09-29 10:57:57', '2015-10-07 19:43:09', NULL);
 
 -- --------------------------------------------------------
 
@@ -406,7 +405,7 @@ CREATE TABLE IF NOT EXISTS `setting` (
 INSERT INTO `setting` (`id`, `keyname`, `value`, `created_at`, `updated_at`) VALUES
 (1, 'useridcardwidth', '336', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (2, 'useridcardheight', '220', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 'theme', 'violet', '0000-00-00 00:00:00', '2015-10-05 13:51:27');
+(3, 'theme', 'violet', '0000-00-00 00:00:00', '2015-10-07 11:32:46');
 
 -- --------------------------------------------------------
 
@@ -437,7 +436,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id`, `firstname`, `lastname`, `username`, `middlename`, `email`, `password`, `usergroup_id`, `barcode_id`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
-('2015100436107', 'Registration', 'Registration', 'Registration', 'Registration', 'Registration@gmail.com', '$2y$10$wuS6oDJTl85IBlLl8X49GuRWwLt76RMglGS3air50A6JQKVbMtVSS', '1', '3', NULL, '2015-10-04 10:34:36', '2015-10-04 10:34:36', NULL);
+('2015100436107', 'Registration', 'Registration', 'Registration', 'Registration', 'Registration@gmail.com', '$2y$10$wuS6oDJTl85IBlLl8X49GuRWwLt76RMglGS3air50A6JQKVbMtVSS', '1', '3', 'ZKug0di6SikCydlULvQroJx4RQ4ZVio3inXdwgLMAo6hWZ5HjJUszc5ZRcTD', '2015-10-04 10:34:36', '2015-10-07 19:41:39', NULL);
 
 -- --------------------------------------------------------
 
