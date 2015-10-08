@@ -236,12 +236,12 @@
                           @if(count($user->useraddress))
                             @foreach($user->useraddress as $ua)
                             <tr>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
+                              <td>{{$ua->street}}</td>
+                              <td>{{$ua->state}}</td>
+                              <td>{{$ua->city}}</td>
+                              <td>{{$ua->region}}</td>
+                              <td>{{$ua->country}}</td>
+                              <td>{{$ua->zippostal}}</td>
                               <td><a href="{{route('user.contact.edit' , $uc->id)}}" class="btn btn-theme btn-xs" title="edit contact information"><i class="fa fa-edit" ></a></td>
                             </tr>
                             @endforeach

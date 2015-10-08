@@ -28,7 +28,7 @@
                             </div>
                             <div class="form-group ">
                                 <label for="fastinput" class="control-label col-lg-2">Additional Email</label>     
-                                <div class="col-lg-10"><input name="additionalemail" placeholder="additionemail@domain.com" class="form-control input-medium" type="text" /></div>
+                                <div class="col-lg-10"><input name="additionalemail" placeholder="additionemail@domain.com" class="form-control input-medium" type="email" /></div>
                             </div>
                             <input class="btn btn-theme" type="submit" value="Submit">
                             <input class="btn btn-theme04" type="submit" value="Reset">
