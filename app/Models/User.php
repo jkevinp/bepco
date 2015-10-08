@@ -58,6 +58,12 @@ class User extends Model implements AuthenticatableContract,AuthorizableContract
      public function userphoto(){
         return $this->hasOne('bepc\Models\UserPhoto');
     }
+    public function useraddress(){
+        return $this->hasMany('bepc\Models\UserAddress');
+    }
+    public function usercontact(){
+        return $this->hasMany('bepc\Models\UserContact');
+    }
     public function userprivilege(){
         return $this->hasOne('bepc\Models\UserPrivilege');
     }

@@ -19,11 +19,24 @@ Route::get('/auth/logout', ['uses' => 'AuthController@destroy' , 'as' => 'auth.l
 Route::group(['prefix' => 'user'] , function(){
 	Route::get('/create/{type?}' , ['uses' => 'UserController@create' ,  'as' => 'user.create']);
 	Route::get('/show/{id}/{name?}' , ['uses' => 'UserController@show' ,  'as' => 'user.show']);
-	Route::post('/registration/' , ['uses' => 'UserController@store' ,  'as' => 'user.store']);
+	Route::post('/registration/' , ['uses' => 'UserController@update' ,  'as' => 'user.store']);
+	Route::post('/update/' , ['uses' => 'UserController@store' ,  'as' => 'user.update']);
 	Route::get('/list' , ['uses' => 'UserController@index'  , 'as' => 'user.list']);
 	Route::get('/create-id/{userid}' , ['uses' => 'UserController@create_id'  , 'as' => 'user.id']);
 	Route::get('/uploadphoto/{userid}' , ['uses' => 'UserController@uploadphoto'  , 'as' => 'user.upload.photo']);
 	Route::post('/storephoto/' , ['uses' => 'UserController@storephoto'  , 'as' => 'user.store.photo']);
+
+	Route::get('/add-contact/{userid}', ['uses' => 'UserController@addContact' , 'as' => 'user.contact.create']);
+	Route::get('/edit-contact/{contactid}', ['uses' => 'UserController@editContact' , 'as' => 'user.contact.edit']);
+	Route::post('/update-contact/', ['uses' => 'UserController@updateContact' , 'as' => 'user.contact.update']);
+	Route::post('/store-contact/', ['uses' => 'UserController@storeContact' , 'as' => 'user.contact.store']);
+
+	Route::get('/add-address/{userid}', ['uses' => 'UserController@addAddress' , 'as' => 'user.address.create']);
+	Route::get('/edit-address/{contactid}', ['uses' => 'UserController@editAddress' , 'as' => 'user.address.edit']);
+	Route::post('/update-address/', ['uses' => 'UserController@updateAddress' , 'as' => 'user.address.update']);
+	Route::post('/store-address/', ['uses' => 'UserController@storeAddress' , 'as' => 'user.address.store']);
+
+
 	Route::get('/backup/', ['uses' => 'PageController@backup' , 'as' => 'site.backup']);
 	Route::get('/download/', ['uses' => 'PageController@download' , 'as' => 'site.download']);
 	Route::get('/download-file/{name}', ['uses' => 'PageController@getDownload' , 'as' => 'site.download.file']);

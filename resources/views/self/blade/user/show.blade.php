@@ -191,13 +191,74 @@
                       </div><! --/col-md-6 -->
                       
                       <div class="col-md-6 detailed">
-                        <h4>Contact</h4>
-                        <div class="col-md-8 col-md-offset-2 mt">
-                          <p>
-                            {{$user->email}}<br/>
-                          </p>
+                        <h4>Contact Information <span class="pull-right "><a href="{{route('user.contact.create' , $user->id)}}" class="btn btn-theme"><i class="fa fa-plus"></i> Add Contact</a> <a href="{{route('user.address.create' , $user->id)}}" class="btn btn-theme"><i class="fa fa-plus"></i> Add Address</a></span></h4>
+                        <div class="col-md-12">
+                          <p>Primary Email: {{$user->email}}</p>
+                          <div>
+                           <table class="table table-hover table-bordered table-striped">
+                            <thead>
+                              <th>Phone#</th>
+                              <th>Mobile#</th>
+                              <th>Facebook</th>
+                              <th>Additional Email</th>
+                              <th>Actions</th>
+                            </thead>  
+                          @if(count($user->usercontact))
+                            @foreach($user->usercontact as $uc)
+                            <tr>
+                              <td>{{$uc->phone}}</td>
+                              <td>{{$uc->mobile}}</td>
+                              <td><a href="https://facebook.com/{{$uc->facebook}}">{{$uc->facebook}}</a></td>
+                              <td>{{$uc->additionalemail}}</td>
+                              <td><a href="{{route('user.contact.edit' , $uc->id)}}" class="btn btn-theme btn-xs" title="edit contact information"><i class="fa fa-edit" ></a></td>
+                            </tr>
+                            @endforeach
+                          @else
+                            <tr>
+                              <td colspan=5 class="text-center">No Contact Information Found!<br/></td>
+                            </tr>
+
+                          @endif
+                           </table>
+                        </div>
+
+                          <div>
+                           <table class="table table-hover table-bordered table-striped">
+                            <thead>
+                              <th>Street</th>
+                              <th>State</th>
+                              <th>City</th>
+                              <th>Region</th>
+                              <th>Country</th>
+                              <th>Zip/Postal Code</th>
+                              <th>Actions</th>
+                            </thead>  
+                          @if(count($user->useraddress))
+                            @foreach($user->useraddress as $ua)
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td><a href="{{route('user.contact.edit' , $uc->id)}}" class="btn btn-theme btn-xs" title="edit contact information"><i class="fa fa-edit" ></a></td>
+                            </tr>
+                            @endforeach
+                          @else
+                            <tr>
+                              <td colspan=7 class="text-center">No Address Information Found!<br/></td>
+                            </tr>
+
+                          @endif
+                           </table>
+                        </div>
+
+
                         </div>
                       </div><! --/col-md-6 -->
+                    
+
                     </div><! --/row -->
                   </div><! --/tab-pane -->
                   
@@ -205,88 +266,55 @@
                     <div class="row">
                       <div class="col-lg-8 col-lg-offset-2 detailed">
                         <h4 class="mb">Personal Information</h4>
-                                          <form role="form" class="form-horizontal">
-                                              <div class="form-group">
-                                                  <label class="col-lg-2 control-label"> Avatar</label>
-                                                  <div class="col-lg-6">
-                                                      <input type="file" id="exampleInputFile" class="file-pos">
-                                                  </div>
-                                              </div>
-                                              <div class="form-group">
-                                                  <label class="col-lg-2 control-label">Company</label>
-                                                  <div class="col-lg-6">
-                                                      <input type="text" placeholder=" " id="c-name" class="form-control">
-                                                  </div>
-                                              </div>
-                                              <div class="form-group">
-                                                  <label class="col-lg-2 control-label">Lives In</label>
-                                                  <div class="col-lg-6">
-                                                      <input type="text" placeholder=" " id="lives-in" class="form-control">
-                                                  </div>
-                                              </div>
-                                              <div class="form-group">
-                                                  <label class="col-lg-2 control-label">Country</label>
-                                                  <div class="col-lg-6">
-                                                      <input type="text" placeholder=" " id="country" class="form-control">
-                                                  </div>
-                                              </div>
-                                              <div class="form-group">
-                                                  <label class="col-lg-2 control-label">Description</label>
-                                                  <div class="col-lg-10">
-                                                      <textarea rows="10" cols="30" class="form-control" id="" name=""></textarea>
-                                                  </div>
-                                              </div>
-                                          </form>
+                          <div class=" blurlogin">
+                              <div class="row mt">
+                                <div class="col-md-12">
+                                  <div>
+                                    <br/>
+                                    {!! Form::open(['route' => 'user.update' , 'method' => 'post']) !!}
+                                    <div class="row">
+                                      <div class="col-md-4 ">
+                                        <input type="text" name="firstname" class="form-control input input-lg input-white text-center" value="{{$user->firstname}}" placeholder="Firstname"  required="true" /> 
+                                      </div>
+                                      <div class="col-md-4 ">
+                                        <input type="text" name="middlename" class="form-control input input-lg input-white text-center"  value="{{$user->middlename}}"  placeholder="Middlename"  required="true"/>  
+                                      </div>
+                                      <div class="col-md-4 ">
+                                        <input type="text" name="lastname" class="form-control input input-lg input-white text-center" value="{{$user->lastname}}"  placeholder="Lastname" required="true" />  
+                                      </div>
+                                    </div>
+                                    <br style="clear:both;"/>
+                                    <input type="email" name="email" class="form-control input input-lg input-white text-center"  value="{{$user->email}}"  placeholder="Email Address"  required="true"/> 
+                                    <br style="clear:both;"/>
+                                    <input type="text" name="username" class="form-control input input-lg input-white text-center"  value="{{$user->username}}"  placeholder="Username"  required="true"/>  
+                                    <br style="clear:both;"/>
+                                    <select class="form-control input input-lg text-center input-white" style="background:transparent;" name="usergroup_id">
+                                      @foreach($usergroups as $ug)
+                                            @if($user->usergroup_id == $ug->id)
+                                              <option alt="{{$ug->description}}"   title="{{$ug->description}}" class="form-control" style="backround:white;color:black;" value="{{$ug->id}}" selected>{{$ug->name}}</option>
+                                            @else
+                                              <option alt="{{$ug->description}}"   title="{{$ug->description}}" class="form-control" style="backround:white;color:black;" value="{{$ug->id}}">{{$ug->name}}</option>
+                                            @endif
+                                      @endforeach
+                                    </select>
+                                    <br style="clear:both;"/>
+                                    <div class="btn-group btn-group-justified">
+                                          <div class="btn-group">
+                                            <button type="submit" class="btn btn-theme btn-lg"><i class="fa fa-edit"></i> Update</button>
+                                          </div>
+                                          <div class="btn-group">
+                                            <a  href="{{route('user.list')}}"  class="btn btn-theme04 btn-lg"><i class="fa fa-user"></i> Cancel</a>
+                                          </div>
+                                        </div>
+                                    {!! Form::close() !!}
+                                    <br/><br/><br/><br/>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                                        
                       </div>
-                      
-                      <div class="col-lg-8 col-lg-offset-2 detailed mt">
-                        <h4 class="mb">Contact Information</h4>
-                                          <form role="form" class="form-horizontal">
-                                              <div class="form-group">
-                                                  <label class="col-lg-2 control-label">Address 1</label>
-                                                  <div class="col-lg-6">
-                                                      <input type="text" placeholder=" " id="addr1" class="form-control">
-                                                  </div>
-                                              </div>
-                                              <div class="form-group">
-                                                  <label class="col-lg-2 control-label">Address 2</label>
-                                                  <div class="col-lg-6">
-                                                      <input type="text" placeholder=" " id="addr2" class="form-control">
-                                                  </div>
-                                              </div>
-                                              <div class="form-group">
-                                                  <label class="col-lg-2 control-label">Phone</label>
-                                                  <div class="col-lg-6">
-                                                      <input type="text" placeholder=" " id="phone" class="form-control">
-                                                  </div>
-                                              </div>
-                                              <div class="form-group">
-                                                  <label class="col-lg-2 control-label">Cell</label>
-                                                  <div class="col-lg-6">
-                                                      <input type="text" placeholder=" " id="cell" class="form-control">
-                                                  </div>
-                                              </div>
-                                              <div class="form-group">
-                                                  <label class="col-lg-2 control-label">Email</label>
-                                                  <div class="col-lg-6">
-                                                      <input type="text" placeholder=" " id="email" class="form-control">
-                                                  </div>
-                                              </div>
-                                              <div class="form-group">
-                                                  <label class="col-lg-2 control-label">Skype</label>
-                                                  <div class="col-lg-6">
-                                                      <input type="text" placeholder=" " id="skype" class="form-control">
-                                                  </div>
-                                              </div>
-      
-                                              <div class="form-group">
-                                                  <div class="col-lg-offset-2 col-lg-10">
-                                                      <button class="btn btn-theme" type="submit">Save</button>
-                                                      <button class="btn btn-theme04" type="button">Cancel</button>
-                                                  </div>
-                                              </div>
-                                          </form>
-                      </div><! --/col-lg-8 -->
                     </div><! --/row -->
                   </div><! --/tab-pane -->
                 </div><!-- /tab-content -->

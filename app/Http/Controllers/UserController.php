@@ -11,6 +11,7 @@ use Validator;
 use bcrypt;
 use URL;
 use bepc\Repositories\Contracts\UserContract;
+use bepc\Repositories\Contracts\UserContactContract;
 use bepc\Repositories\Contracts\UserBarcodeContract;
 use bepc\Repositories\Contracts\UserIdCardContract;
 use bepc\Libraries\Generic\Helper;
@@ -25,10 +26,11 @@ class UserController extends Controller
     public $imagebarcodetype = "png";
 
 
-    public function __construct(UserContract $uc, UserBarcodeContract $ubc , UserIdCardContract $uicc){
+    public function __construct(UserContract $uc, UserBarcodeContract $ubc , UserIdCardContract $uicc , UserContactContract $ucc){
         $this->user = $uc;
         $this->userbarcode = $ubc;
         $this->useridcard = $uicc;
+        $this->usercontact = $ucc;
         $this->imagebarcodepath = public_path('img-id');
         $this->imagebarcodetype = "png";
     }
@@ -120,7 +122,8 @@ class UserController extends Controller
     public function show($id , $name= false)
     {
         $user = $this->user->find($id);
-        if($name)return view('self.blade.user.show')->withUser($user);
+        $usergroups = UserGroup::all();
+        if($name)return view('self.blade.user.show')->with(compact('user' , 'usergroups'));
 
     }
 
@@ -144,7 +147,41 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+         $input = $request->all();
+        $rules = [
+                    'username' => 'unique:user,username|required|min:5|max:30',
+                    'email'    => 'required|email|unique:user,email',
+                    'firstname'=> 'required',
+                    'lastname' => 'required',
+                    'middlename'=>'required',
+                    'usergroup_id'=>'required|integer|exists:usergroup,id',
+                    'password' => 'required|min:5',
+                    'confirmpassword' => 'required|min:5|same:password'
+
+                ];
+        $v = validator::make($input , $rules);
+        if($v->fails())return redirect()->back()->withErrors($v->messages()->first())->withInput($input);
+
+        $input['id'] = $file = $this->create_barcode($this->user->generate_id()); //create the barcode first
+        $filename = $file.".".$this->imagebarcodetype; //create the filename based on the barcode.
+        $filepath = $this->imagebarcodepath."/"; //create the full path of the file
+        $endfile = $filepath.$filename; //create the final path + name of the file
+
+        if($user = $this->user->store($input)){
+            $userbarcode = $this->userbarcode->store($user, $filename);
+            $user->barcode_id = $userbarcode->id;
+            if(file_exists($endfile) && $user && $userbarcode ){
+                   $user->save();
+                   return redirect(route('auth.login'))->with('flash_message' , 'User successfully registered.');
+                }else{
+
+                    if($userbarcode)$this->userbarcode->fdelete($userbarcode);
+                    if($user)$this->user->fdelete($user);
+                    return redirect()->back()->withErrors('Cannot save userbarcode. Try Again');
+                }
+            
+        }
+        return redirect()->back()->withErrors('Could not save user');
     }
 
     /**
@@ -212,4 +249,87 @@ class UserController extends Controller
         else return redirect()->back()->withErrors('Could not upload the file or invalid image file');
 
     }
+
+    //functions for user contact
+    public function addContact($id){
+        if(!$id)return redirect()->back()->withErrors('User id is required!');
+        if($user = $this->user->find($id)){
+            return view('self.blade.usercontact.create')->with(compact('user'));
+        }
+        else return redirect()->back()->withErrors('User could not be found!');
+    }
+    public function storeContact(Request $request){
+        if($request->has('user_id')){
+            if( $user = $this->user->find($request->get('user_id'))){
+                if($result = $this->usercontact->store($user, $request)){
+                    return redirect()->back()->with('flash_message' , 'Contact saved!');
+                }
+                return redirect()->back()->withErrors('Contact could not be saved. Please fill at least 1 of the field: (phone,email,facebook,additional email)'); 
+             
+            }else return redirect()->back()->withErrors('User could not be found!');
+         }else return redirect()->back()->withErrors('User Id not be found!'); 
+       
+    }
+    public function editContact($contactid){
+        if(!$contactid)return redirect()->back()->withErrors('Contact id is required!');
+        if($usercontact = $this->usercontact->find($contactid)){
+            return view('self.blade.usercontact.edit')->with(compact('usercontact'));
+        }
+        else return redirect()->back()->withErrors('User or contact could not be found!');
+    }
+    public function updateContact(Request $request){
+        if($request->has('user_id')){
+            if( $usercontact = $this->usercontact->find($request->get('id'))){
+                if($result = $this->usercontact->update($usercontact, $request)){
+                    return redirect()->back()->with('flash_message' , 'Contact changes successfully saved!');
+                }
+                return redirect()->back()->withErrors('Contact could not be saved. Please fill at least 1 of the field: (phone,email,facebook,additional email)'); 
+             
+            }else return redirect()->back()->withErrors('User could not be found!');
+         }else return redirect()->back()->withErrors('User Id not be found!'); 
+       
+    }
+
+      //functions for user Address
+    public function addAddress($id){
+        if(!$id)return redirect()->back()->withErrors('User id is required!');
+        if($user = $this->user->find($id)){
+            return view('self.blade.usercontact.create')->with(compact('user'));
+        }
+        else return redirect()->back()->withErrors('User could not be found!');
+    }
+    public function storeAddress(Request $request){
+        if($request->has('user_id')){
+            if( $user = $this->user->find($request->get('user_id'))){
+                if($result = $this->usercontact->store($user, $request)){
+                    return redirect()->back()->with('flash_message' , 'Contact saved!');
+                }
+                return redirect()->back()->withErrors('Contact could not be saved. Please fill at least 1 of the field: (phone,email,facebook,additional email)'); 
+             
+            }else return redirect()->back()->withErrors('User could not be found!');
+         }else return redirect()->back()->withErrors('User Id not be found!'); 
+       
+    }
+    public function editAddress($contactid){
+        if(!$contactid)return redirect()->back()->withErrors('Contact id is required!');
+        if($usercontact = $this->usercontact->find($contactid)){
+            return view('self.blade.usercontact.edit')->with(compact('usercontact'));
+        }
+        else return redirect()->back()->withErrors('User or contact could not be found!');
+    }
+    public function updateAddress(Request $request){
+        if($request->has('user_id')){
+            if( $usercontact = $this->usercontact->find($request->get('id'))){
+                if($result = $this->usercontact->update($usercontact, $request)){
+                    return redirect()->back()->with('flash_message' , 'Contact changes successfully saved!');
+                }
+                return redirect()->back()->withErrors('Contact could not be saved. Please fill at least 1 of the field: (phone,email,facebook,additional email)'); 
+             
+            }else return redirect()->back()->withErrors('User could not be found!');
+         }else return redirect()->back()->withErrors('User Id not be found!'); 
+       
+    }
+
+
+
 }
