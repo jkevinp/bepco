@@ -15,6 +15,7 @@ class CreateSupplierItem extends Migration
         Schema::create('supplieritem' , function(Blueprint $t){
             $t->increments('id');
             $t->string('item_id');
+            $t->string('supplier_id');
             $t->string('status');
             $t->timestamps();
             $t->softDeletes();

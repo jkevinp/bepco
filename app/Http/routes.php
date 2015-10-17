@@ -116,3 +116,20 @@ Route::group(['prefix' => 'user/controlpanel'] , function(){
 Route::group(['prefix' => 'user/setting'] , function(){
 	Route::get('set/{id}/{value}' , ['uses' => 'SettingController@change' , 'as' => 'setting.change']);
 });
+
+Route::group(['prefix' => 'user/supplier'] , function(){
+	Route::get('/list' , ['uses' => 'SupplierController@index' , 'as' => 'supplier.list']);
+	Route::get('/create' , ['uses' => 'SupplierController@create' , 'as' => 'supplier.create']);
+	Route::post('/store' , ['uses' => 'SupplierController@store' , 'as' => 'supplier.store']);
+	Route::get('/edit/{id}' , ['uses' => 'SupplierController@edit' , 'as' => 'supplier.edit']);
+	Route::post ('/update' , ['uses' => 'SupplierController@update' , 'as' => 'supplier.update']);
+
+});
+
+Route::group(['prefix' => 'user/supplieritem'] , function(){
+	Route::get('/list' , ['uses' => 'SupplierItemController@index' , 'as' => 'supplieritem.list']);
+	Route::get('/create' , ['uses' => 'SupplierItemController@create' , 'as' => 'supplieritem.create']);
+	Route::post('/store' , ['uses' => 'SupplierItemController@store' , 'as' => 'supplieritem.store']);
+	Route::get('/edit/{id}' , ['uses' => 'SupplierItemController@edit' , 'as' => 'supplieritem.edit']);
+	Route::post ('/update' , ['uses' => 'SupplierItemController@update' , 'as' => 'supplieritem.update']);
+});

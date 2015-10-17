@@ -37,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('bepc\Repositories\Contracts\ItemGroupContract', 'bepc\Repositories\Eloquent\EloquentItemGroupRepository');
         $this->app->bind('bepc\Repositories\Contracts\IngredientContract', 'bepc\Repositories\Eloquent\EloquentIngredientRepository');
         $this->app->bind('bepc\Repositories\Contracts\InventoryLogContract', 'bepc\Repositories\Eloquent\EloquentInventoryLogRepository');
-        
+        $this->app->bind('bepc\Repositories\Contracts\SupplierContract' , 'bepc\Repositories\Eloquent\EloquentSupplierRepository');
+     $this->app->bind('bepc\Repositories\Contracts\SupplierItemContract' , 'bepc\Repositories\Eloquent\EloquentSupplierItemRepository');
     }
 }

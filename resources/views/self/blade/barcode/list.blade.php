@@ -12,7 +12,7 @@
                         <thead>
                             <th>Barcode ID</th>
                                 <th>Barcode Key</th>
-                                <th>Assign Product</th>
+                                <th>Assigned Product</th>
                                 <th>ImageUrl</th>
                                 <th>Actions</th>
                         </thead>

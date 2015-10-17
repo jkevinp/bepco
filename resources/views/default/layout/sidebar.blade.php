@@ -104,6 +104,26 @@
                 <li><a  href="{{route('user.create')}}" class="user-create"><i class="fa fa-plus"></i> Create User</a></li>
               </ul>
           </li>
+          <li class="sub-menu">
+              <a href="javascript:;" class="supplier" >
+                  <i class="fa fa-supplier"></i>
+                  <span>Suppliers</span>
+              </a>
+              <ul class="sub">
+                <li><a  href="{{route('supplier.list')}}" class="supplier-list"><i class="fa fa-navicon"></i> List Suppliers</a></li>
+                <li><a  href="{{route('supplier.create')}}" class="supplier-create"><i class="fa fa-plus"></i> Create Supplier</a></li>
+              </ul>
+          </li>
+          <li class="sub-menu">
+              <a href="javascript:;" class="supplieritem" >
+                  <i class="fa fa-supplier"></i>
+                  <span>Suppliers Items</span>
+              </a>
+              <ul class="sub">
+                <li><a  href="{{route('supplieritem.list')}}" class="supplieritem-list"><i class="fa fa-navicon"></i> List Supplier Items</a></li>
+                <li><a  href="{{route('supplieritem.create')}}" class="supplieritem-create"><i class="fa fa-plus"></i> Create Supplier Item</a></li>
+              </ul>
+          </li>
            <li class="sub-menu">
               <a href="{{route('cpanel.index')}}" class="controlpanel" >
                   <i class="fa fa-user"></i>

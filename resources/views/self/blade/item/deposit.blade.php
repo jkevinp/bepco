@@ -1,7 +1,22 @@
 @extends('default.layout.layout')
 
 @section('content')
+
+
+
 <div class="row mt">
+    <div class="col-md-12">
+        <div class="content-panel">
+            <h2 class="violet"><i class="fa fa-angle-right"></i> Deposit Item</h2>
+                <div class='row mt'>
+                    <div class="col-md-12">
+                        <span class="col-md-8"> <i class="fa fa-info "></i> Deposit item stores the given quantity of item to the storage.</span>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+
     <div class="col-md-6">
         <div class="row mt">
                 <div class="form-panel">
