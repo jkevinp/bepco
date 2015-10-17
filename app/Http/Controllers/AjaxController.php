@@ -33,9 +33,10 @@ class AjaxController extends Controller
                 ->groupBy('product.name')
                 ->get();
     }
+
     public function ordernumber(Request $r){
         return DB::table('order')
-        ->select(DB::raw('created_at , count(*) as order_count'))
+        ->select(DB::raw('DATE_FORMAT(created_at,"%m-%d-%Y") as y, count(*) as a'))
         ->groupBy('created_at')
         ->get();
     }

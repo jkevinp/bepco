@@ -55,6 +55,24 @@ class EloquentUserRepository implements UserContract
         }
         return false;
 	}
+	public function updatephoto($request){
+		$input = $request->all();
+		
+		$image = $request->file('file');
+        if(strpos($image->getClientMimeType(),'image') !== FALSE){
+            $upload_folder ='img-photo/';
+            $input['id'] = str_random();
+            $image->move(public_path($upload_folder).'/', $input['id'].'.' . $image->getClientOriginalExtension());
+            $input['path'] =public_path($upload_folder).'/';
+            $input['filename'] = $input['id'].'.' . $image->getClientOriginalExtension();
+            $p = $this->find($input['user_id'])->userphoto;
+            $p->path = $input['path'];
+            $p->filename = $input['filename'];
+            return $p->save();
+        }
+        return false;
+	}
+
 	public function getphoto(User $user){
 
 	}

@@ -22,6 +22,7 @@ class CreateUserTable extends Migration
             $table->string('password', 60);
             $table->string('usergroup_id');
             $table->string('barcode_id' ,8)->nullable();
+            $table->boolean('activated')->default(0);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

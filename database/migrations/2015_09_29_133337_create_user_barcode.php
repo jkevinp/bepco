@@ -17,8 +17,8 @@ class CreateUserBarcode extends Migration
             $t->string('barcodekey');
             $t->string('user_id')->unique();
             $t->string('filename');
-             $t->string('path');
-              $t->string('status');
+            $t->string('path');
+            $t->string('status');
             $t->timestamps();
             $t->softDeletes();
         });

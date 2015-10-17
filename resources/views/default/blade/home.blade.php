@@ -74,18 +74,26 @@ var chart1 = Morris.Bar({
     hideHover: ['auto']
 });
 
-var chart2 = Morris.Bar({
-    // ID of the element in which to draw the chart.
-    barGap: 10,
-    barSizeRation:['0.55'],
-    element: 'bar-chart-year',
-    data: [0, 0], // Set initial data (ideally you would provide an array of default data)
-    xkey: 'created_at', // Set the key for X-axis
-    ykeys: ['order_count'], // Set the key for Y-axis
-    labels: ['Order Count'], // Set the label when bar is rolled over
-    resize : ['true'],
-    barColors: ['#f75b68','#4DA74D','#646464'],
-    hideHover: ['auto']
+// var chart2 = Morris.Bar({
+//     // ID of the element in which to draw the chart.
+//     barGap: 10,
+//     barSizeRation:['0.55'],
+//     element: 'bar-chart-year',
+//     data: [0, 0], // Set initial data (ideally you would provide an array of default data)
+//     xkey: 'created_at', // Set the key for X-axis
+//     ykeys: ['order_count'], // Set the key for Y-axis
+//     labels: ['Order Count'], // Set the label when bar is rolled over
+//     resize : ['true'],
+//     barColors: ['#f75b68','#4DA74D','#646464'],
+//     hideHover: ['auto']
+// });
+
+var chart2= Morris.Line({
+  element: 'bar-chart-year',
+  data: [],
+  xkey: 'y',
+  ykeys: ['a'],
+  labels: ['order count']
 });
 
  $.ajax({
@@ -118,6 +126,7 @@ var chart2 = Morris.Bar({
     dataType: 'json',
     success : function(data){
         chart2.setData(data);
+        console.log(data);
     },
     error: function (jqXHR, textStatus, errorThrown) {
          alert(textStatus + errorThrown);

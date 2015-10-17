@@ -10,14 +10,8 @@
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <h2 class="violet">Edit Contact Information of {{$usercontact->user->getName()}}</h2>
                             <hr>
-                             <div class="form-group ">
-                                <label for="fastinput" class="control-label col-lg-2">Contract ID</label>     
-                                <div class="col-lg-10"><input name="id" class="form-control input-medium" type="text" readonly value="{{$usercontact->id}}"></div>
-                            </div>
-                            <div class="form-group ">
-                                <label for="fastinput" class="control-label col-lg-2">User ID</label>     
-                                <div class="col-lg-10"><input name="user_id" class="form-control input-medium" type="text" readonly value="{{$usercontact->user_id}}"></div>
-                            </div>
+                                <input name="id" class="form-control input-medium" type="hidden" readonly value="{{$usercontact->id}}">
+                                <input name="user_id" class="form-control input-medium" type="hidden" readonly value="{{$usercontact->user_id}}">
                             <div class="form-group ">
                                 <label for="fastinput" class="control-label col-lg-2">Phone Number</label>     
                                 <div class="col-lg-10"><input name="phone" value="{{$usercontact->phone}}" placeholder="4950253" class="form-control input-medium" type="text" /></div>

@@ -20,21 +20,29 @@ Route::group(['prefix' => 'user'] , function(){
 	Route::get('/create/{type?}' , ['uses' => 'UserController@create' ,  'as' => 'user.create']);
 	Route::get('/show/{id}/{name?}' , ['uses' => 'UserController@show' ,  'as' => 'user.show']);
 	Route::post('/registration/' , ['uses' => 'UserController@update' ,  'as' => 'user.store']);
-	Route::post('/update/' , ['uses' => 'UserController@store' ,  'as' => 'user.update']);
+	Route::post('/update' , ['uses' => 'UserController@update' ,  'as' => 'user.update']);
+
 	Route::get('/list' , ['uses' => 'UserController@index'  , 'as' => 'user.list']);
 	Route::get('/create-id/{userid}' , ['uses' => 'UserController@create_id'  , 'as' => 'user.id']);
-	Route::get('/uploadphoto/{userid}' , ['uses' => 'UserController@uploadphoto'  , 'as' => 'user.upload.photo']);
-	Route::post('/storephoto/' , ['uses' => 'UserController@storephoto'  , 'as' => 'user.store.photo']);
+	Route::get('/update-id/{userid}' , ['uses' => 'UserController@update_id'  , 'as' => 'user.id.update']);
+
+	Route::get('/uploadphoto/{userid}' , ['uses' => 'UserController@uploadphoto' , 'as' => 'user.upload.photo']);
+	Route::post('/updatephoto/' ,         ['uses' => 'UserController@updatephoto' , 'as' => 'user.update.photo']);
+	Route::post('/storephoto/' , 		 ['uses' => 'UserController@storephoto'  , 'as' => 'user.store.photo' ]);
 
 	Route::get('/add-contact/{userid}', ['uses' => 'UserController@addContact' , 'as' => 'user.contact.create']);
 	Route::get('/edit-contact/{contactid}', ['uses' => 'UserController@editContact' , 'as' => 'user.contact.edit']);
 	Route::post('/update-contact/', ['uses' => 'UserController@updateContact' , 'as' => 'user.contact.update']);
 	Route::post('/store-contact/', ['uses' => 'UserController@storeContact' , 'as' => 'user.contact.store']);
+	Route::get('/delete-contact/{contactid}' , ['uses' => 'UserController@destroyContact' , 'as' => 'user.contact.delete']);
+
 
 	Route::get('/add-address/{userid}', ['uses' => 'UserController@addAddress' , 'as' => 'user.address.create']);
 	Route::get('/edit-address/{contactid}', ['uses' => 'UserController@editAddress' , 'as' => 'user.address.edit']);
 	Route::post('/update-address/', ['uses' => 'UserController@updateAddress' , 'as' => 'user.address.update']);
 	Route::post('/store-address/', ['uses' => 'UserController@storeAddress' , 'as' => 'user.address.store']);
+	Route::get('/delete-address/{useraddressid}' , ['uses' => 'UserController@destroyAddress' , 'as' => 'user.address.delete']);
+
 
 
 	Route::get('/backup/', ['uses' => 'PageController@backup' , 'as' => 'site.backup']);
@@ -101,12 +109,9 @@ Route::group(['prefix' => 'inventory/item'],function(){
 });
 
 Route::group(['prefix' => 'user/controlpanel'] , function(){
-
 	Route::get('/index' , ['uses' => 'ControlPanelController@index' , 'as' => 'cpanel.index']);
 	Route::get('/pull' , ['uses' => 'ControlPanelController@pull' , 'as' => 'cpanel.git.pull']);
 	Route::get('/command-prompt' , ['uses' => 'ControlPanelController@commandprompt' , 'as' => 'cpanel.git.cmd']);
-
-
 });
 Route::group(['prefix' => 'user/setting'] , function(){
 	Route::get('set/{id}/{value}' , ['uses' => 'SettingController@change' , 'as' => 'setting.change']);

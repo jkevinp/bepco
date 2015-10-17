@@ -92,7 +92,6 @@ class UserController extends Controller
                     if($user)$this->user->fdelete($user);
                     return redirect()->back()->withErrors('Cannot save userbarcode. Try Again');
                 }
-            
         }
         return redirect()->back()->withErrors('Could not save user');
     }
@@ -110,7 +109,13 @@ class UserController extends Controller
         $useridcard = $this->useridcard->create_id($user, $user->userbarcode);
         if($useridcard)return redirect()->back()->with('flash_message'  , 'Successfully created a new id card for '.$user->getName());
         return redirect()->back()->withErrors('Could not create a new id card for '.$user->getName());
-
+    }
+    public function update_id($userid){
+        $user = $this->user->find($userid);
+        if(!$user || !$user->userbarcode)return redirect()->back()->withErrors('Could not find user');
+        $useridcard = $this->useridcard->create_id($user, $user->userbarcode);
+        if($useridcard)return redirect()->back()->with('flash_message'  , 'Successfully created a new id card for '.$user->getName());
+        return redirect()->back()->withErrors('Could not create a new id card for '.$user->getName());
     }
 
 
@@ -125,8 +130,8 @@ class UserController extends Controller
     {
         $user = $this->user->find($id);
         $usergroups = UserGroup::all();
+        if(!$name)return redirect(route('self.blade.user.show', [$id, $user->getName()]));
         if($name)return view('self.blade.user.show')->with(compact('user' , 'usergroups'));
-
     }
 
     /**
@@ -147,11 +152,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-         $input = $request->all();
+    public function update(Request $request){
+        $input = $request->all();
         $rules = [
-                    'username' => 'unique:user,username|required|min:5|max:30',
+                    'username' => 'unique:user,username|required|min:5|max:30|unique:user,username',
                     'email'    => 'required|email|unique:user,email',
                     'firstname'=> 'required',
                     'lastname' => 'required',
@@ -239,7 +243,9 @@ class UserController extends Controller
     }
     public function uploadphoto($userid){
        if($user = $this->user->find($userid)){
-            return view('self.blade.user.uploadphoto')->withUser($user);
+            $count = count($user->userphoto);
+            if($count ===0) return view('self.blade.user.uploadphoto')->withUser($user);
+            return view('self.blade.user.updatephoto')->withUser($user);
        }
        else return redirect(route('user.list'))->withErrors('Could not find user with user id: '.$userid);
 
@@ -249,7 +255,12 @@ class UserController extends Controller
             return redirect(route('user.list'))->with('flash_message', 'Photo has been successfully uploaded.');
         }   
         else return redirect()->back()->withErrors('Could not upload the file or invalid image file');
-
+    }
+    public function updatephoto(Request $r){
+         if($result = $this->user->updatephoto($r)){
+            return redirect(route('user.list'))->with('flash_message', 'Photo has been successfully uploaded.');
+        }   
+        else return redirect()->back()->withErrors('Could not upload the file or invalid image file');
     }
 
     //functions for user contact
@@ -286,10 +297,8 @@ class UserController extends Controller
                     return redirect()->back()->with('flash_message' , 'Contact changes successfully saved!');
                 }
                 return redirect()->back()->withErrors('Contact could not be saved. Please fill at least 1 of the field: (phone,email,facebook,additional email)'); 
-             
-            }else return redirect()->back()->withErrors('User could not be found!');
+            }else return redirect()->back()->withErrors('Contact could not be found!');
          }else return redirect()->back()->withErrors('User Id not be found!'); 
-       
     }
 
       //functions for user Address
@@ -319,26 +328,51 @@ $region = array("ARMM"," Bicol Region","CAR","Cagayan Valley","Central Mindanao"
          }else return redirect()->back()->withErrors('User Id not be found!'); 
        
     }
-    public function editAddress($contactid){
-        if(!$contactid)return redirect()->back()->withErrors('Contact id is required!');
-        if($usercontact = $this->usercontact->find($contactid)){
-            return view('self.blade.useraddress.edit')->with(compact('usercontact'));
+    public function editAddress($addressid){
+        $cities = array("Alaminos City","Angeles City","Antipolo City","Bacolod City","Bago City","Baguio City","Bais City","Balanga City","Batangas City","Bayawan City","Bisilig City","Butuan City","Cabanatuan City","Cadiz City","Cagayan de Oro City","Calamba City","Calapan City","Calbayog City","Caloocan City","Candon City","Canlaon City","Cauayan City","Cavite City","Cebu City","Cotabato City","Dagupan City","Danao City","Dapitan City","Davao City","Digos City","Dipolog City","Dumaguete City","Escalante City","Gapan City","General Santos City","Gingoog City","Himamaylan City","Iligan City","Iloilo City","Iriga City",
+"Isabela City","Island Garden City of Samal","Kabankalan City","Kidapawan City","Koronadal City","La Carlota City","Laoag City","Lapu-Lapu City","Las Piñas City","Legazpi City","Ligao City","Lipa City","Lucena City","Maasin City","Makati City","Malabon City","Malaybalay City","Malolos City","Malolos City","Mandaluyong City","Mandaue City","Manila","Maragondon","Marawi City","Masbate City","Muntinlupa City","Naga City","Olongapo City","Ormoc City","Oroquieta City","Ozamis City","Pagadian City","Palayan City","Legazpi City","Parañaque City","Pasay City","Pasig City","Passi City","Puerto Princesa City","Quezon City","Roxas City","Sagay City","San Carlos City, Negros Occidental","San Carlos City, Pangasinan","San Fernando City, La Union","San Fernando City, Pampanga","San Jose City","San Jose del Monte City","San Pablo City","Santa Rosa City","Santiago City","Muñ City","Silay City","Sipalay City","Sorsogon City","Surigao City","Tabaco City","Tacloban City","Tacurong City",
+"Tagaytay City","Tagbilaran City","Tagum City","Talisay City, Cebu", "Talisay City, Negros Occidental","Tanauan City","Tangub City","Tanjay City","Tarlac City","Taguig City","Toledo City","Trece Martires City","Tuguegarao City","Urdaneta City","Valencia City","Valenzuela City","Victorias City","Vigan City","Zamboanga City");
+
+$region = array("ARMM"," Bicol Region","CAR","Cagayan Valley","Central Mindanao","Central Luzon", "Caraga", "Central Visayas", "Eastern Visayas", "Ilocos Region", "National Capital Region", "Northern Mindanao", "Southern Mindanao", "Western Mindanao", "Western Visayas");
+
+        if(!$addressid)return redirect()->back()->withErrors('Address id is required!');
+        if($useraddress = $this->useraddress->find($addressid)){
+            return view('self.blade.useraddress.edit')->with(compact('useraddress' ,'region' ,'cities'));
         }
-        else return redirect()->back()->withErrors('User or contact could not be found!');
+        else return redirect()->back()->withErrors('User or Address could not be found!');
     }
     public function updateAddress(Request $request){
+
         if($request->has('user_id')){
-            if( $usercontact = $this->usercontact->find($request->get('id'))){
-                if($result = $this->usercontact->update($usercontact, $request)){
-                    return redirect()->back()->with('flash_message' , 'Contact changes successfully saved!');
+            if( $useraddress = $this->useraddress->find($request->get('id'))){
+                if($result = $this->useraddress->update($useraddress, $request)){
+                    return redirect()->back()->with('flash_message' , 'Address changes successfully saved!');
                 }
-                return redirect()->back()->withErrors('Contact could not be saved. Please fill at least 1 of the field: (phone,email,facebook,additional email)'); 
-             
-            }else return redirect()->back()->withErrors('User could not be found!');
-         }else return redirect()->back()->withErrors('User Id not be found!'); 
+                return redirect()->back()->withErrors('Address could not be saved. Please fill at least 1 of the field: (phone,email,facebook,additional email)'); 
+            }else return redirect()->back()->withErrors('Address could not be found!');
+         }else return redirect()->back()->withErrors('User Id cannot be found!'); 
        
     }
-
-
+    public function destroyAddress($addressid){
+        //$this->useraddress->sdelete()
+        if($addressid){
+            if($result = $this->useraddress->find($addressid)){
+                $this->useraddress->sdelete($result);
+                return redirect()->back()->with('flash_message' , 'Address has been deleted!');
+            }
+            return redirect()->back()->withErrors('Address Record cannot be found!');  
+        }
+        return redirect()->back()->withErrors('Address Id cannot be found!');  
+    }
+    public function destroyContact($contactid){
+        if($contactid){
+            if($result = $this->usercontact->find($contactid)){
+                $this->usercontact->sdelete($result);
+                return redirect()->back()->with('flash_message' , 'Contact has been deleted!');
+            }
+            return redirect()->back()->withErrors('Contact Record cannot be found!');  
+        }
+        return redirect()->back()->withErrors('Contact Id cannot be found!');  
+    }
 
 }

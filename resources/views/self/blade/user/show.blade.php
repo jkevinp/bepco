@@ -17,7 +17,7 @@
                 </p>
                 <p>
                   @if($user->userphoto)
-
+                  <a class="btn btn-theme" href="{{route('user.upload.photo' , $user->id)}}"><i class="fa fa-check"></i>Update Photo</a>
                   @else
                   <a class="btn btn-theme" href="{{route('user.upload.photo' , $user->id)}}"><i class="fa fa-check"></i>Upload Photo</a>
                   @endif
@@ -58,6 +58,7 @@
                 @endif
                 <p>
                   @if($user->useridcard)
+                  <a class="btn btn-theme" href="{{route('user.id.update' , $user->id)}}"><i class="fa fa-check"></i>Update ID</a>
                   @else
                   <a class="btn btn-theme" href="{{route('user.id' , $user->id)}}"><i class="fa fa-check"></i>Generate ID</a>
                   @endif
@@ -210,7 +211,11 @@
                               <td>{{$uc->mobile}}</td>
                               <td><a href="https://facebook.com/{{$uc->facebook}}">{{$uc->facebook}}</a></td>
                               <td>{{$uc->additionalemail}}</td>
-                              <td><a href="{{route('user.contact.edit' , $uc->id)}}" class="btn btn-theme btn-xs" title="edit contact information"><i class="fa fa-edit" ></a></td>
+                              <td>
+                                  <a href="{{route('user.contact.edit' , $uc->id)}}" class="btn btn-theme btn-xs" title="edit contact information"><i class="fa fa-edit" ></i></a>
+                                  <a data-href="{{route('user.contact.delete' , $uc->id)}}" class="confirm btn  btn-danger btn-xs" title="delete contact information"><i class="fa fa-trash" ></i></a>
+                              </td>
+                           
                             </tr>
                             @endforeach
                           @else
@@ -242,14 +247,16 @@
                               <td>{{$ua->region}}</td>
                               <td>{{$ua->country}}</td>
                               <td>{{$ua->zippostal}}</td>
-                              <td><a href="{{route('user.contact.edit' , $uc->id)}}" class="btn btn-theme btn-xs" title="edit contact information"><i class="fa fa-edit" ></a></td>
+                              <td>
+                                <a href="{{route('user.address.edit' , $ua->id)}}" class="btn btn-theme btn-xs" title="edit address information"><i class="fa fa-edit" ></i></a>
+                                <a data-href="{{route('user.address.delete' , $ua->id)}}" class="confirm btn  btn-danger btn-xs" title="delete address information"><i class="fa fa-trash" ></i></a>
+                              </td>
                             </tr>
                             @endforeach
                           @else
                             <tr>
                               <td colspan=7 class="text-center">No Address Information Found!<br/></td>
                             </tr>
-
                           @endif
                            </table>
                         </div>
@@ -329,5 +336,27 @@
 @stop
 
 @section('script')
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.confirm').click(function(e){
+        var href = $(this).data('href');
+        e.preventDefault();
+        swal({   
+          title: "Halt!",   
+          text: "Are you sure you want to delete this record?",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Yes, delete it!",   
+          closeOnConfirm: false }, 
+          function(){  
+             swal("Deleting!", "Please wait..", "success"); 
+             window.location.assign(href);
+           });
+    });
+
+  });
+  
+</script>
 @stop
 

@@ -28,13 +28,15 @@ class EloquentUserAddressRepository implements UserAddressContract
     }
     public function update(UserAddress $useraddress , $request){
          $input = $request->all();
-        if(!$this->checkParams($input)){
-            $useraddress->phone = $input['phone'];
-            $useraddress->mobile = $input['mobile'];
-            $useraddress->facebook = $input['facebook'];
-            $useraddress->additionalemail = $input['additionalemail'];
+      
+            $useraddress->state = $input['state'];
+            $useraddress->region = $input['region'];
+            $useraddress->country = $input['country'];
+            $useraddress->city = $input['city'];
+            $useraddress->street = $input['street'];
+            $useraddress->zippostal = $input['zippostal'];
             return $useraddress->save();
-        }
+        
         return false;
     }
     public function search($fields,$param){
