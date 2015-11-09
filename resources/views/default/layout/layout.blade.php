@@ -23,6 +23,12 @@
     <link href="{{URL::asset($env)}}/css/bootstrap.css" rel="stylesheet">
     <link href="{{URL::asset($env)}}/css/selectize.css" rel="stylesheet">
     <link href="{{URL::asset($env)}}/css/bootstrap-fileupload.css" rel="stylesheet">
+
+   <link rel="stylesheet" type="text/css" href="{{URL::asset('libs')}}/css/datepicker.css" />
+    <link rel="stylesheet" type="text/css" href="{{URL::asset('libs')}}/css/daterangepicker.css" />
+    <link rel="stylesheet" type="text/css" href="{{URL::asset('libs')}}/css/timepicker.css" />
+    <link rel="stylesheet" type="text/css" href="{{URL::asset('libs')}}/css/datertimepicker.css" />
+
     <!--external css-->
     <link href="{{URL::asset($env)}}/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="{{URL::asset($env)}}/js/gritter/css/jquery.gritter.css" />   
@@ -34,11 +40,12 @@
     @else
     <link href="{{URL::asset($env)}}/css/style.css" rel="stylesheet">
     @endif
+
     <link href="{{URL::asset($env)}}/css/style-responsive.css" rel="stylesheet">
     <link href="{{URL::asset('default')}}/css/table-responsive.css" rel="stylesheet">
     <link href="{{URL::asset($env)}}/css/lightbox.css" rel="stylesheet">
     <link href="{{URL::asset('libs')}}/css/sweetalert.css" rel="stylesheet">
-     <link href="{{URL::asset('libs')}}/css/custom.css" rel="stylesheet">
+    <link href="{{URL::asset('libs')}}/css/custom.css" rel="stylesheet">
 
     
     @yield('header')
@@ -84,7 +91,6 @@
     <script class="include" type="text/javascript" src="{{URL::asset($env)}}/js/jquery.dcjqaccordion.2.7.js"></script>
     <script type="text/javascript" src="{{URL::asset($env)}}/js/jquery.scrollTo.min.js"></script>
     <script type="text/javascript" src="{{URL::asset($env)}}/js/jquery.nicescroll.js"></script>
-
     <!--common script for all pages-->
     <script type="text/javascript" src="{{URL::asset($env)}}/js/common-scripts.js"></script>
     <!--script for this page-->
@@ -103,8 +109,9 @@
     <script type="text/javascript" src="{{URL::asset($env)}}/js/form-component.js"></script>
     {!! Html::script('links.js')  !!}
     <!-- dates -->
-    {!! Html::script($env.'/js/date/date.js')  !!}
+    
     {!! Html::script($env.'/js/date/bootstrap-datepicker.js')  !!}
+    {!! Html::script($env.'/js/date/date.js')  !!}
     {!! Html::script($env.'/js/date/bootstrap-datetimepicker.js')  !!}
     {!! Html::script($env.'/js/date/daterangepicker.js')  !!}
     {!! Html::script($env.'/js/date/moment.min.js')  !!}
@@ -149,8 +156,7 @@
     </script>
     @endif
 
-    @yield('script')
-
+  
 
 
 
@@ -168,5 +174,7 @@
           
         });
     </script>
+      @yield('script')
+
   </body>
 </html>

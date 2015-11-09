@@ -1,7 +1,7 @@
 <?php namespace bepc\Repositories\Eloquent;
 
-use bepc\Repositories\Contracts\UserContract;
-use bepc\Models\User;
+use bepc\Repositories\Contracts\CustomerContract;
+use bepc\Models\Customer;
 use bepc\Models\UserBarcode;
 
 use bepc\Models\UserIdCard;
@@ -9,36 +9,36 @@ use bepc\Libraries\BarcodeGenerator\BarcodeGenerator as BgcOutput;
 use bcrypt;
 use bepc\Libraries\Generic\Helper;
 use bepc\Models\UserPhoto;
-class EloquentUserRepository implements UserContract
+
+use Validator;
+class EloquentCustomerRepository implements CustomerContract
 {
 
 	public function find($id){
-		return User::find($id);
+		return Customer::find($id);
 	}
 	public function store($param){
-		$param['password'] = bcrypt($param['password']);
-		
-		$user =User::create($param);
+		$param['id'] = $this->generate_id();
+		$user =Customer::create($param);
 		return $user;
-
 	}
 	public function generate_id(){
 		return Helper::generate_user_id();
 	}
-	public function sdelete(User $user){
+	public function sdelete(Customer $user){
 		return $user->delete();
 	}
-	public function fdelete(User $user){
+	public function fdelete(Customer $user){
 		return $user->forceDelete();
 	}
 
 	public function search($searchParameter){
-		return User::where($searchParameter);
+		return Customer::where($searchParameter);
 	}
 	public function all(){
-		return User::all();
+		return Customer::all();
 	}
-	public function generate_barcode(User $user){
+	public function generate_barcode(Customer $user){
 
 	}
 	public function uploadphoto($request){
@@ -73,15 +73,19 @@ class EloquentUserRepository implements UserContract
         return false;
 	}
 
-	public function getphoto(User $user){
+	public function getphoto(Customer $user){
 
 	}
-	public function changeStatus(User $user){
+	public function changeStatus(Customer $user){
 		$user->activated = !$user->activated;
 		return $user->save();
 	}
-	public function updatePassword(User $user ,$newPassword){
+	public function updatePassword(Customer $user ,$newPassword){
 		$user->password = bcrypt($newPassword);
 		return $user->save();
+	}
+	public function validateStore($param){
+		$rules = Customer::getRuleStore();
+		return Validator::make($param , $rules);
 	}
 } 

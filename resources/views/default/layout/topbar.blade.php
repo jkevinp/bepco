@@ -17,6 +17,7 @@
                         {{count(bepc\Models\Item::where('quantity', '<=' ,0)->get())}}
                     </span>
                 </a>
+                
                 <ul class="dropdown-menu extended inbox" >
                   <div class="notify-arrow notify-arrow-green"></div>
                     <li>
@@ -45,6 +46,42 @@
                 </ul>
             </li>
             <!-- settings end -->
+            <!-- orders start -->
+            <li class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#"  style="color:white">
+                    <i class="fa fa-truck" style=""></i>
+                    <span class="badge bg-theme">
+                        {{count(bepc\Models\Order::getNotification())}}
+                    </span>
+                </a>
+                
+                <ul class="dropdown-menu extended inbox" >
+                  <div class="notify-arrow notify-arrow-green"></div>
+                    <li>
+                        <p class="green">Out of stock Items</p>
+                    </li>
+                    @foreach(bepc\Models\Order::getNotification() as $item)
+                    <li>
+                        <a href="">
+                            <div class="subject">
+                                <div class="from">Item ID: {{$item->id}}</div>
+                                <div class="from">Item Name: {{$item->name}}</div>
+                                <div class="from">Quantity: {{$item->quantity}}</div>
+                            </div>
+                        </a>
+                            <div class="time">
+                                
+                            </div>
+                        
+                    </li>
+                    @endforeach
+                   
+                    <li class="external">
+                        <a href="">See All Orders</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- orders end -->
             <!-- inbox dropdown start-->
             <li  class="dropdown">
                 <a data-toggle="dropdown" class="dropdown-toggle" href="#" style="color:white;">

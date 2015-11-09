@@ -31,5 +31,8 @@ class Order extends Model
 	public function getShowables(){
 		return $this->showables;
 	}
+	public static function getNotification(){
+		return Self::where('status' , '!=' , 'fulfilled')->get(); 
+	}
  	
 }

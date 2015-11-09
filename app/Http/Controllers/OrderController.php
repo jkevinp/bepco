@@ -10,9 +10,17 @@ use bepc\Libraries\Generic\Helper;
 
 use bepc\Models\Order;
 use bepc\Models\OrderDetail;
-
+use bepc\Repositories\Contracts\CustomerContract;
+use Auth;
 class OrderController extends Controller
 {
+
+    public function __construct(CustomerContract $cc){
+        $this->customer = $cc;
+        $this->middleWare('auth');
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -44,12 +52,32 @@ class OrderController extends Controller
      */
     public function save(Request $request)
     {
+        $input = $request->all();
+        
+        if(!Auth::check())return Response::json('Session Expired! Please login again');
+        if(!$request->has('deliverydate'))return Response::json('Delivery Date is required!');
+        if(!$request->has('data'))return Response::json('No items in cart.');
+        if(!$request->has('type') )return Response::json('Customer Type not found.');
+        if(!$request->has('customerdata'))return Response::json('Customer Data not found');
+
+
+        if($request->get('type') === 'create'){
+            if($customer = $this->customer->store($request->get('customerdata'))){
+                //return Response::json($customer);
+            }else{
+                return Response::json('Could not save customer data. Please try again.');
+            }
+            //return Response::json(['response' => $request->get('customerdata')]);
+        }else{
+            
+        }
+
         $input['id'] = Helper::generate_id('ORDER-', str_random(3));
-        $input['deliverydate'] = date('Y-m-d');
-        $input['description'] = 'Auto Generated Order';
+        $input['deliverydate'] = $request->get('deliverydate');
+        $input['description'] = !empty($request->get('details')) ?  $request->get('details'): 'Auto Generated Order';
         $input['status'] = 'created';
-        $input['customer_id'] = 1;
-        $input['creator_id'] = 1;
+        $input['customer_id'] = $customer->id;
+        $input['creator_id'] = Auth::user()->id;
         $order = Order::create($input);
         $data = $request->get('data');
         foreach ($data as $key => $value) {
@@ -60,7 +88,12 @@ class OrderController extends Controller
                  'product_quantity' => $value[1] 
             ]);
         }
-        return Response::json('okay');
+        if($order && $customer)return Response::json('Successfully saved customer order.');
+        return Response::json("Something went wrong. Please Try again.");
+    }
+
+    public function generateOrder(){
+        return view('self.blade.order.generateOrder');
     }
 
     /**

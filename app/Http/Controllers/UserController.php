@@ -35,6 +35,7 @@ class UserController extends Controller
         $this->useraddress = $uac;
         $this->imagebarcodepath = public_path('img-id');
         $this->imagebarcodetype = "png";
+        $this->middleWare('auth');
     }
     public function index(){   
         $users = $this->user->all();
@@ -100,6 +101,27 @@ class UserController extends Controller
         $barcodefile = $this->userbarcode->create_barcode($userid,$this->imagebarcodetype, $this->imagebarcodepath);
         if($this->userbarcode->checkbarcodefile($this->imagebarcodepath."/".$barcodefile.".".$this->imagebarcodetype))return $barcodefile;
         return false;
+    }
+    public function changeStatus($id){
+        if($user = $this->user->find($id)){
+            if($this->user->changeStatus($user)){
+                 return redirect()->back()->with('flash_message' , 'User status successfully changed');
+            }else{
+                return redirect()->back()->withErrors('Could not activated user');
+            }
+        }
+        return redirect()->back()->withErrors('User not found!');
+    }
+    public function delete($id){
+        if($user = $this->user->find($id)){
+            if($this->user->sdelete($user)){
+                 return redirect()->back()->with('flash_message' , 'User status successfully changed');
+            }else{
+                return redirect()->back()->withErrors('Could not activated user');
+            }
+        }
+        return redirect()->back()->withErrors('User not found!');
+
     }
 
 
@@ -373,6 +395,34 @@ $region = array("ARMM"," Bicol Region","CAR","Cagayan Valley","Central Mindanao"
             return redirect()->back()->withErrors('Contact Record cannot be found!');  
         }
         return redirect()->back()->withErrors('Contact Id cannot be found!');  
+    }
+    public function forgotPassword(){
+        return view('self.blade.user.forgotpassword');
+    }
+    public function resetPassword(Request $request){
+        //validate
+        $input = $request->all();
+        $find = $this->user->search(['id' => $input['id'] , 
+                            'username' => $input['username'],
+                            'email' => $input['email']])->first();
+        if($find){
+            return view('self.blade.user.recover')->with('flash_message' ,'Please choose a new password')->withUser($find);
+        }
+        return redirect()->back()->withErrors('User with the credentials you entered could not be found.');  
+    }
+    public function updatePassword(Request $request){
+        //validate
+        //validate 2 passwords
+        $input = $request->all();
+            if($user = $this->user->find($input['id'])){
+                if($this->user->updatePassword($user, $input['password'])){
+                    return redirect(route('auth.login'))->with('flash_message' , 'Password has been updated.');
+                }
+
+         return redirect()->back()->withErrors('An error occured while saving new password. Please contact web admin.');        
+        }
+         return redirect()->back()->withErrors('An error occured! No user id found. Please contact web admin.'); 
+
     }
 
 }

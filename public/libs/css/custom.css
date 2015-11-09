@@ -20,6 +20,21 @@ li.fruit{
             font-weight: bold;
 
 }
+.btn-red{
+background:#e74c3c !important;
+}
+.btn-blue{
+background: #3498db !important;
+}
+.btn-green{
+background:#27ae60 !important;
+}
+.btn-yellow{
+  background:#f39c12   !important;
+}
+.btn-orange{
+  background:#e67e22!important;
+}
 .opacity5{
     
     background: transparent !important;

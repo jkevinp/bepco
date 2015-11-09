@@ -68,11 +68,8 @@ var Script = function () {
 
 
     //color picker
-
-    $('.cp1').colorpicker({
-        format: 'hex'
-    });
-    $('.cp2').colorpicker();
+    if($('.cp1').length) $('.cp1').colorpicker({ format: 'hex' });
+     if($('.cp2').length) $('.cp2').colorpicker();
 
 
     //date picker
@@ -82,14 +79,12 @@ var Script = function () {
     }
     $(function(){
         window.prettyPrint && prettyPrint();
-        $('#dp1').datepicker({
-            format: 'mm-dd-yyyy'
-        });
-        $('#dp2').datepicker();
-        $('#dp3').datepicker();
-        $('#dp3').datepicker();
-        $('#dpYears').datepicker();
-        $('#dpMonths').datepicker();
+       if(('#dp1').length) $('#dp1').datepicker({format: 'mm-dd-yyyy' });
+        if(('#dp2').length) $('#dp2').datepicker();
+        if(('#dp3').length) $('#dp3').datepicker();
+        if(('#dp3').length) $('#dp3').datepicker();
+       if(('#dpYears').length)  $('#dpYears').datepicker();
+        if(('#dpMonths').length) $('#dpMonths').datepicker();
 
 
         var startDate = new Date(2012,1,20);

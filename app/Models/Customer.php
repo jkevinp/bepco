@@ -11,7 +11,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Model implements AuthenticatableContract,AuthorizableContract,CanResetPasswordContract{
+class Customer extends Model implements AuthenticatableContract,AuthorizableContract,CanResetPasswordContract{
     use Authenticatable, Authorizable, CanResetPassword,SoftDeletes;
 
     /**
@@ -19,7 +19,7 @@ class User extends Model implements AuthenticatableContract,AuthorizableContract
      *
      * @var string
      */
-    protected $table = 'user';
+    protected $table = 'customer';
     public $incrementing =false;
 
     /**
@@ -27,9 +27,7 @@ class User extends Model implements AuthenticatableContract,AuthorizableContract
      *
      * @var array
      */
-    protected $fillable = ['id',  'firstname' , 'lastname', 'middlename', 'usergroup_id', 'email', 'password' , 'username' ,'barcode_id' ,'activated' ];
-
-
+    protected $fillable = ['id',  'firstname' , 'lastname', 'middlename', 'email', 'password' , 'cellphone' ,'address'  ,'telephone'];
     /**
      * The attributes excluded from the model's JSON form.
      *
@@ -37,6 +35,17 @@ class User extends Model implements AuthenticatableContract,AuthorizableContract
      */
     protected $hidden = ['password', 'remember_token'];
 
+    public $rule_store =  [
+                    'username' => 'unique:user,username|required|min:5|max:30',
+                    'email'    => 'required|email|unique:user,email',
+                    'firstname'=> 'required',
+                    'lastname' => 'required',
+                    'middlename'=>'required'
+                ];
+
+    public function rule_store(){
+        return Self::$rule_store;
+    }
     public function getName(){
         return $this->firstname. " ".$this->middlename." ".$this->lastname;
     }

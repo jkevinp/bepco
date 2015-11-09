@@ -18,6 +18,10 @@ Route::get('/auth/logout', ['uses' => 'AuthController@destroy' , 'as' => 'auth.l
 
 Route::group(['prefix' => 'user'] , function(){
 	Route::get('/create/{type?}' , ['uses' => 'UserController@create' ,  'as' => 'user.create']);
+	Route::get('/forgotpassword' , ['uses' => 'UserController@forgotPassword' , 'as' => 'user.forgotpassword']);
+	Route::post('/resetpassword' , ['uses' => 'UserController@resetPassword' , 'as' => 'user.resetpassword']);
+	Route::post('/recover' , ['uses' => 'UserController@updatePassword' , 'as' => 'user.recover']);
+	
 	Route::get('/show/{id}/{name?}' , ['uses' => 'UserController@show' ,  'as' => 'user.show']);
 	Route::post('/registration/' , ['uses' => 'UserController@update' ,  'as' => 'user.store']);
 	Route::post('/update' , ['uses' => 'UserController@update' ,  'as' => 'user.update']);
@@ -43,6 +47,8 @@ Route::group(['prefix' => 'user'] , function(){
 	Route::post('/store-address/', ['uses' => 'UserController@storeAddress' , 'as' => 'user.address.store']);
 	Route::get('/delete-address/{useraddressid}' , ['uses' => 'UserController@destroyAddress' , 'as' => 'user.address.delete']);
 
+	Route::get('/changeStatus/{id}' ,['uses'=> 'UserController@changeStatus' , 'as' => 'user.changeStatus']);
+	Route::get('/delete/{id}' ,['uses'=> 'UserController@delete' , 'as' => 'user.delete']);
 
 
 	Route::get('/backup/', ['uses' => 'PageController@backup' , 'as' => 'site.backup']);
@@ -95,6 +101,7 @@ Route::group(['prefix' => 'user/order'],function(){
 	Route::get('/create' , ['uses' => 'OrderController@create' , 'as' => 'order.create']);
 	Route::post('/save' , ['uses' => 'OrderController@save' , 'as' => 'order.ajaxstore']);
 	Route::get('/index' , ['uses' => 'OrderController@index' , 'as' => 'order.list']);
+	Route::get('/generate' , ['uses' => 'OrderController@generateOrder' , 'as' => 'order.generate']);
 });
 Route::group(['prefix' => 'inventory/item'],function(){
 	Route::get('/create' , ['uses' => 'ItemController@create' , 'as' => 'item.create']);

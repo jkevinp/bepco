@@ -91,7 +91,8 @@
               </a>
               <ul class="sub">
                 <li><a  href="{{route('order.list')}}" class="order-list"><i class="fa fa-navicon"></i> List Orders</a></li>
-                <li><a  href="{{route('order.create')}}" class="order-create"><i class="fa fa-plus"></i> Create Order</a></li>
+                <li><a  href="{{route('order.create')}}" class="order-create"><i class="fa fa-plus"></i> Create Customer Order</a></li>
+                <li><a  href="{{route('order.generate')}}" class="order-generate"><i class="fa fa-plus"></i> Generate Order</a></li>
               </ul>
           </li>
           <li class="sub-menu">
