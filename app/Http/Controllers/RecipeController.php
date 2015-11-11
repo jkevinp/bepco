@@ -35,11 +35,21 @@ class RecipeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($recipe= false)
     {
-        $products = $this->product->getNullRecipe()->lists('name', 'id');
+
+        if(!$recipe){
+            $products = $this->product->getNullRecipe()->lists('name', 'id');
+        }
+        else{
+            $products = $this->product->getNullRecipeSearch(['id' => $recipe])->lists('name' , 'id');
+         
+        } 
+
         $items = $this->item->all();
+        if(count($products) && count($items))
         return view('self.blade.recipe.create')->with(compact('products' , 'items'));
+        return redirect()->back()->withErrors("No available product or items");
     }
 
     /**

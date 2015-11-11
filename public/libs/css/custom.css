@@ -9,16 +9,24 @@
             height:100vh;
         }
 ul.tree{
-           list-style-type: none;
+           list-style-type: none !important;
        } 
 li.fruit{
-            margin: 0;
-            padding-left:30px;
-            line-height: 20px;
-            background: url('../images/node.png') no-repeat;
-            color: #369;
-            font-weight: bold;
+            margin: 0 !important  ;
+            padding-left:30px!important;
+            line-height: 20px !important;
+            background: url('../images/node.png') no-repeat !important;
+            color: #369 !important;
+            font-weight: bold !important;
+}
+.navhover:hover{
+  color:white !important;
+}
 
+li.last{
+  border-bottom: 1px;
+  border-bottom-color: white;
+  border-bottom-style: solid;
 }
 .btn-red{
 background:#e74c3c !important;

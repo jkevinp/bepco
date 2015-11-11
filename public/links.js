@@ -9,6 +9,8 @@ $(document).ready(function(){
     pageUrl[1] = "";
     hasClicked = false;
     $.each(pageUrl, function(x){
+
+
         if(pageUrl[x].length > 0){
 
             if(!hasClicked){
@@ -16,11 +18,11 @@ $(document).ready(function(){
                 $(name).addClass('active');
                 $(name).click();
                 hasClicked = true;
-                console.log(name);
+                console.log("name 1  is " + name);
             }else{
                 var name= '.' +pageUrl[x -1] + "-" +pageUrl[x];
                  $(name).closest("li").addClass('active');
-                 console.log(name);
+                 console.log("name is " +name);
             }
         }
        

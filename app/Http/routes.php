@@ -15,6 +15,9 @@ Route::get('/', ['uses' => 'PageController@index' , 'as' => 'default.home']);
 Route::get('/auth/login', ['uses' => 'AuthController@index' , 'as' => 'auth.login']);
 Route::post('/auth/login', ['uses' => 'AuthController@signin' , 'as' => 'auth.login']);
 Route::get('/auth/logout', ['uses' => 'AuthController@destroy' , 'as' => 'auth.logout']);
+Route::get('/auth/forgotpassword' , ['uses' => 'AuthController@forgotPassword' , 'as' => 'auth.forgotpassword']);
+Route::post('/auth/resetpassword' , ['uses' => 'AuthController@resetPassword' , 'as' => 'auth.resetpassword']);
+Route::post('/auth/recover' , ['uses' => 'AuthController@updatePassword' , 'as' => 'auth.recover']);
 
 Route::group(['prefix' => 'user'] , function(){
 	Route::get('/create/{type?}' , ['uses' => 'UserController@create' ,  'as' => 'user.create']);
@@ -74,7 +77,7 @@ Route::group(['prefix' => 'user/product'],function(){
 	Route::get('/processcomputation' , ['uses' => 'ProductController@processcomputation' , 'as' => 'product.processcomputation']);
 });
 Route::group(['prefix' => 'user/recipe'],function(){
-	Route::get('/create' , ['uses' => 'RecipeController@create' , 'as' => 'recipe.create']);
+	Route::get('/create/{id?}' , ['uses' => 'RecipeController@create' , 'as' => 'recipe.create']);
 	Route::get('/show/{id}' , ['uses' => 'RecipeController@show' , 'as' => 'recipe.show']);
 	Route::get('/list' , ['uses' => 'RecipeController@index' , 'as' => 'recipe.list']);
 	Route::get('/print' , ['uses' => 'RecipeController@printbarcode' , 'as' => 'recipe.print']);
@@ -102,6 +105,8 @@ Route::group(['prefix' => 'user/order'],function(){
 	Route::post('/save' , ['uses' => 'OrderController@save' , 'as' => 'order.ajaxstore']);
 	Route::get('/index' , ['uses' => 'OrderController@index' , 'as' => 'order.list']);
 	Route::get('/generate' , ['uses' => 'OrderController@generateOrder' , 'as' => 'order.generate']);
+	Route::post('/generate2' , ['uses' => 'OrderController@selectOrders' , 'as' => 'order.generate2']);
+	Route::post('/placeorder' , ['uses' => 'OrderController@placeOrder' , 'as' => 'order.place']);
 });
 Route::group(['prefix' => 'inventory/item'],function(){
 	Route::get('/create' , ['uses' => 'ItemController@create' , 'as' => 'item.create']);

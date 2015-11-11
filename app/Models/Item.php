@@ -31,5 +31,8 @@ class Item extends Model
  	public function itemgroup(){
  		return $this->belongsTo('bepc\Models\ItemGroup');
  	}
+ 	public function supplier(){
+ 		return $this->hasMany('bepc\Models\SupplierItem');
+ 	}
 
 }

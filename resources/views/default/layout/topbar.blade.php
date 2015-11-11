@@ -120,9 +120,32 @@
     </div>
      <div class="top-menu">
         <ul class="nav pull-right top-menu">
-            <li><a class="logout" href="{{route('auth.logout')}}"><i class="fa fa-gear"></i> Settings</a></li>
-            <li><a class="logout" href="{{route('auth.logout')}}"><i class="fa fa-sign-out"></i> Logout</a></li>
-        </ul>
+        <li>
+            <div class="dropdown navhover">
+                    <button class="btn btn-theme dropdown-toggle logout " style="background-color:transparent !important;border:0;" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                   @if(Auth::check())
+                      <a href="{{route('user.show' , [Auth::user()->id , str_replace(' ' , '-' ,Auth::user()->getName())])}}" class="white navhover" style="background-color:transparent !important;">
+                     
+                          @if(Auth::user()->userphoto)
+                                <img src="{{URL::asset('img-photo')}}/{{Auth::user()->userphoto->filename}}"width="50" class="img-thumbnail img">
+                                {{Auth::user()->firstname}} {{Auth::user()->middlename}} {{Auth::user()->lastname}} ({{Auth::user()->getUserGroupName()}})
+                          @else
+                                <img src="{{URL::asset('img-template')}}/id.png" width="50" class="img-thumbnail img">
+                                 {{Auth::user()->firstname}} {{Auth::user()->middlename}} {{Auth::user()->lastname}} ({{Auth::user()->getUserGroupName()}})
+                          @endif
+                      </a>
+                      @endif
+                <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a href="{{route('user.show' , [Auth::user()->id , str_replace(' ' , '-' ,Auth::user()->getName())])}}"><i class="fa fa-user"></i> Profile</a></li>
+                    <li><a class="logout" href="" style="background-color:transparent !important;"><i class="fa fa-gear"></i> Settings</a></li>
+                    <li><a class="logout" href="{{route('auth.logout')}}" style="background-color:transparent !important;"><i class="fa fa-sign-out"></i> Logout</a></li>
+                </ul>
+            </div>
+       
+        </li>
+            </ul>
     </div>
 </header>
 <!--header end-->

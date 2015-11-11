@@ -36,7 +36,7 @@
 						    <button type="submit" class="btn btn-theme btn-lg"><i class="fa fa-sign-in"></i> Login</button>
 						</div>
 						<div class="btn-group">
-						    <a href="{{route('user.forgotpassword')}}" class="btn btn-theme btn-lg"><i class="fa fa-send"></i> Forgot Password</a>
+						    <a href="{{route('auth.forgotpassword')}}" class="btn btn-theme btn-lg"><i class="fa fa-send"></i> Forgot Password</a>
 						</div>
 						<div class="btn-group">
 						    <a  href="{{route('user.create')}}"	class="btn btn-theme btn-lg"><i class="fa fa-user"></i> Register</a>

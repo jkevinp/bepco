@@ -47,4 +47,7 @@ class EloquentProductRepository  implements ProductContract
 	public function getNullRecipe(){
 		 return Product::whereNotIn('id' , Recipe::all()->lists('product_id'))->get();
 	}
+	public function getNullRecipeSearch($paramArray){
+		 return Product::whereNotIn('id' , Recipe::all()->lists('product_id'))->where($paramArray)->get();
+	}
 } 

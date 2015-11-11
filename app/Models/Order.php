@@ -8,7 +8,7 @@ class Order extends Model
 {
  	protected $table='order';
  	public $incrementing = false;
- 	protected $dates = [ 'created_at' , 'updated_at' , ];
+ 	protected $dates = [ 'created_at' , 'updated_at' , 'deleted_at'];
 	protected $fillable = 	[
 								'id',
 								'deliverydate',
@@ -27,6 +27,9 @@ class Order extends Model
 							];
 	public function orderdetail(){
 		return $this->hasMany('bepc\Models\OrderDetail');	
+	}
+	public function customer(){
+		return $this->belongsTo('bepc\Models\Customer' ,'customer_id');	
 	}
 	public function getShowables(){
 		return $this->showables;

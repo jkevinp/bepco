@@ -10,4 +10,6 @@ interface ProductContract{
 	public function all();
 	public function getNullBarcode();
 	public function getNullRecipe();
+	
+	public function getNullRecipeSearch($paramArray);
 }

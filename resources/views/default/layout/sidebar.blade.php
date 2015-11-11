@@ -2,31 +2,8 @@
 <aside>
   <div id="sidebar"  class="nav-collapse ">
       <ul class="sidebar-menu" id="nav-accordion">
-        <p class="centered">
-          @if(Auth::check())
-          <a href="{{route('user.show' , [Auth::user()->id , str_replace(' ' , '-' ,Auth::user()->getName())] )}}">
-         
-              @if(Auth::user()->userphoto)
-                    <img src="{{URL::asset('img-photo')}}/{{Auth::user()->userphoto->filename}}"width="60" class="img-circle">
-              @else
-                    <img src="{{URL::asset('img-template')}}/id.png" width="60" class="img-circle">
-              @endif
-          </a>
-           @endif
-        </p>
-        <h5 class="centered">
-          @if(Auth::check())
-            {{Auth::user()->firstname}}
-            {{Auth::user()->middlename}}
-            {{Auth::user()->lastname}}
-          @endif
-        </h5>
-        <h6 class="centered">
-          @if(Auth::check())
-            {{Auth::user()->getUserGroupName()}}
-          @endif
-
-        </h6>
+     
+       
           <li class="mt">
               <a href="{{route('default.home')}}">
                   <i class="fa fa-dashboard"></i>
@@ -51,7 +28,8 @@
               <ul class="sub">
                 <li><a  href="{{route('product.list')}}" class="product-list"><i class="fa fa-navicon"></i> List Products</a></li>
                 <li><a  href="{{route('product.create')}}" class="product-create"><i class="fa fa-plus"></i> Create Product</a></li>
-                <li><a  href="{{route('product.compute')}}" class="product-compute"><i class="fa fa-calculator"></i> Compute Ingredients</a></li>
+                <!--<li><a  href="{{route('product.compute')}}" class="product-compute"><i class="fa fa-calculator"></i> Compute Ingredients</a></li>
+                -->
               </ul>
           </li>
           <li class="sub-menu">

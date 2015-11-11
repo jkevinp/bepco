@@ -53,12 +53,14 @@
             <h2 style="padding-bottom:50px" class="violet text-center">New User <br/><i class="fa fa-user fa-5x" > </i></h2>
            </div>
         </div></div>
+        @if(count($customers) >0)
         <div class="col-md-3 col-md-offset-1 hoverable" data-target="registered">
          <div class="content-panel">
            <div class="panel-heading">
             <h2 style="padding-bottom:50px" class="violet text-center">Existing User <br/><i class="fa fa-user fa-5x" > </i></h2>
            </div>
         </div></div>
+        @endif
       </div>
     </div>
     </div>
@@ -140,18 +142,30 @@
                     <div class="cmxform form-horizontal style-form">
                      <div class="form-group ">
                         <label for="name" class="control-label col-lg-2">Customer Name*</label>     
-                        <div class="col-lg-10"><input  name="name" class="form-control input-medium " required="" type="text"></div>
+                        <div class="col-lg-10">
+                            <select class="selectize" name="customer_id" id="customer_id">
+                              <option value="" disabled selected>Select or Type Customer name</option>
+                              @foreach($customers as $customer)
+                                <option value="{{$customer->id}}">{{$customer->getName()}} [{{$customer->id}}]</option>
+                              @endforeach
+                            </select>
+                          </div>
                     </div>
                   <div class="form-group ">
                     <label for="name" class="control-label col-lg-2">Delivery Date*</label>     
-                    <div class="col-lg-10"><input class="form-control opacity5"  id="deliverydate" name="deliverydate" size="16" type="date" value="{{date('Y-m-d')}}" min="{{date('Y-m-d')}}" required></div>
+                    <div class="col-lg-10"><input class="form-control opacity5"  id="registerddeliverydate" name="deliverydate" size="16" type="date" value="{{date('Y-m-d')}}" min="{{date('Y-m-d')}}" required></div>
                   </div>
                    <div class="form-group ">
-                                <label for="details" class="control-label col-lg-2">Description*</label>    
-                                <div class="col-lg-10"><textarea ="" class="form-control" style="resize:none;" id="details" placeholder="Details" name="details" cols="50" rows="10"></textarea></div>
-                            </div>
+                      <label for="details" class="control-label col-lg-2">Description*</label>    
+                        <div class="col-lg-10"><textarea ="" class="form-control" style="resize:none;" id="details" placeholder="Details" name="details" cols="50" rows="10"></textarea></div>
+                        <br/>
+                        <div class="col-md-6"><button class="btn-lg btn-block col-md-6 btn-theme btn_next">Next</button></div>
+                        <div class="col-md-6"><button class="btn-lg btn-block col-md-6 btn-danger btn_back">Back</button></div></div>
+
                   </div>
+
             </div>
+
         </div>
       </div>
     </div>
@@ -217,13 +231,15 @@
       $('#btn_submit').click(function(e){
         e.preventDefault();
         var data = [];
+        var deliverydate = $('#deliverydate').val();
         var customerdata = {};
           if(target_raw == 'create'){
               $('#customerform').find('input').each(function(index,obj){
                 customerdata[$(obj).attr("name")]= $(obj).val();
               });
             }else if(target_raw == 'registered'){
-              customerdata['id'] = 1;
+              customerdata['id'] = $('#customer_id').val();
+              deliverydate = $('#registerddeliverydate').val();
             }
 
         $('#sortable2').each(function(){
@@ -252,7 +268,7 @@
                   {
                     details : $('#details').val() ,
                     data: data ,
-                    deliverydate : $('#deliverydate').val() ,
+                    deliverydate :deliverydate,
                     _token: _token,
                     type: target_raw,
                     customerdata: customerdata,
@@ -307,15 +323,16 @@
       });
       
       $('.btn_next').click(function(e){
-          $('.create').slideUp("fast");
+           $('.' + target_raw).slideUp("fast");
           $('.order').slideDown("slow");
       });
        $('.btn_back').click(function(e){
-          $('.create').slideUp("fast");
+          $('.' + target_raw).slideUp("fast");
           $('.selection').slideDown("slow");
       });
        $('#btn_back2').click(function(e){
         $('.order').slideUp("fast");
+
         $('.' + target_raw).slideDown("slow");
        });
 

@@ -11,12 +11,17 @@ use bepc\Libraries\Generic\Helper;
 use bepc\Models\Order;
 use bepc\Models\OrderDetail;
 use bepc\Repositories\Contracts\CustomerContract;
+
+use bepc\Repositories\Contracts\ProductContract;
+use bepc\Repositories\Contracts\RecipeContract;
 use Auth;
 class OrderController extends Controller
 {
 
-    public function __construct(CustomerContract $cc){
+    public function __construct(CustomerContract $cc , ProductContract $pc , RecipeContract $rc){
         $this->customer = $cc;
+        $this->product= $pc;
+        $this->recipe = $rc;
         $this->middleWare('auth');
     }
 
@@ -41,7 +46,8 @@ class OrderController extends Controller
     public function create()
     {
         $products= \bepc\Models\Product::all();
-        return view('self.blade.order.create')->with(compact('products'));        
+        $customers = $this->customer->all();
+        return view('self.blade.order.create')->with(compact('products' , 'customers'));        
     }
  
     /**
@@ -50,6 +56,30 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    public function placeOrder(Request $request){
+        $input = $request->all();
+
+          if($request->has('startdate') && $request->has('enddate')){
+                $orders= Order::whereDate('deliverydate', '>=' , $input['startdate'])
+                        ->whereDate('deliverydate' ,'<=' , $input['enddate'])
+                        ->where('status' , '=' , 'created')->get();
+                foreach ($orders as $order) {
+                    $order->status ='items ordered';
+                    if($order->save()){
+
+                    }else{
+                         foreach ($orders as $order) {
+                            $order->status ='created';
+                            return redirect()->back()->withErrors("Aborted due to undefined error. Please try again");
+                         }
+                    }
+                }
+            }
+        else return redirect()->back()->withErrors('Something went wrong with date information. Please try again');
+        return redirect(route('order.list'))->with('flash_message' , 'Orders has been updated!');
+    }
+
     public function save(Request $request)
     {
         $input = $request->all();
@@ -69,7 +99,12 @@ class OrderController extends Controller
             }
             //return Response::json(['response' => $request->get('customerdata')]);
         }else{
-            
+           if($customer = $this->customer->find($request->get('customerdata')['id'])){
+
+           }else{
+              return Response::json('Could not find customer data. Please try again.');
+           }
+
         }
 
         $input['id'] = Helper::generate_id('ORDER-', str_random(3));
@@ -94,6 +129,37 @@ class OrderController extends Controller
 
     public function generateOrder(){
         return view('self.blade.order.generateOrder');
+    }
+    public function selectOrders(Request $request){
+        $input = $request->all();
+            
+        if($request->has('startdate') && $request->has('enddate')){
+            $orders= Order::whereDate('deliverydate', '>=' , $input['startdate'])
+                        ->whereDate('deliverydate' ,'<=' , $input['enddate'])
+                        ->where('status' , '=' , 'created')->get();
+
+            $toorder = [];
+            foreach ($orders as $order) {
+                foreach ($order->OrderDetail as $od) {
+                    if(isset($toorder[$od->product_id]))
+                    $toorder[$od->product_id]['orderquantity'] += $od->product_quantity;
+                    else{
+                        $toorder[$od->product_id]['orderquantity'] = $od->product_quantity;
+                        $toorder[$od->product_id]['product'] = $this->product->find($od->product_id);
+                        $toorder[$od->product_id]['recipename'] = $this->product->find($od->product_id)->pluck('name');    
+                        $toorder[$od->product_id]['recipeid'] = $this->product->find($od->product_id)->pluck('id');
+                        $toorder[$od->product_id]['ingredient'] = $this->recipe->find($this->product->find($od->product_id)->recipe->first()->id)->ingredient;
+                        
+                    }
+
+                }
+            }
+        }
+        $startdate = $request->get('startdate');
+        $enddate = $request->get('enddate');
+         return view('self.blade.order.generate2')->with(compact('toorder' , 'orders' ,'startdate' ,'enddate'));
+      //   var_dump($toorder); 
+      //  return redirect()->back()->withErrors('Please Specify Start and end date');
     }
 
     /**

@@ -40,6 +40,7 @@ class AjaxController extends Controller
         ->groupBy('created_at')
         ->get();
     }
+    
 
     public function getUser(Request $r){
     	if($r->Ajax()){

@@ -19,7 +19,7 @@
 	<div class="row mt">
 		<div class="col-md-6 col-md-offset-3">
 			<div>
-				{!! Form::open(['route' => 'user.resetpassword' , 'method' => 'post']) !!}
+				{!! Form::open(['route' => 'auth.resetpassword' , 'method' => 'post']) !!}
 				<br style="clear:both;"/><br style="clear:both;"/><br style="clear:both;"/><br style="clear:both;"/><br style="clear:both;"/>
 				<br style="clear:both;"/>
 				<br style="clear:both;"/>

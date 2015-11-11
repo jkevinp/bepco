@@ -15,9 +15,6 @@ class Product extends Model
 								'alert_quantity',
 								'imageurl'
 							];
- 	public function ingredient(){
- 		return $this->hasMany('bepc\Models\Ingredient');
- 	}
  	public function recipe(){
  		return $this->hasMany('bepc\Models\Recipe');
  	}

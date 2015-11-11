@@ -38,7 +38,9 @@ class BarcodeController extends Controller
      */
     public function create(){
         $products = $this->product->getNullBarcode()->lists('name', 'id');
+        if(count($products) > 0)
         return view('self.blade.barcode.create')->with(compact('products'));
+        return redirect(route('barcode.list'))->withErrors('No more products to assign barcode.');   
     }
 
     /**
@@ -52,18 +54,22 @@ class BarcodeController extends Controller
         $input = $request->all();
         $extension = "png";
         $product = Product::find($input['product_id']);
-        $file = $this->BgcOutput->output($request->get('barcodekey') ? $request->get('barcodekey') :  str_pad($input['product_id'], 7, "0", STR_PAD_LEFT) ,  $extension , public_path('img-barcode')); 
+        if($product){
+            $file = $this->BgcOutput->output($request->get('barcodekey') ? $request->get('barcodekey') :  str_pad($input['product_id'], 7, "0", STR_PAD_LEFT) ,  $extension , public_path('img-barcode')); 
         //if($request->has('fastinput'))return redirect()->back()->with('flash_message' ,  'Successfully saved barcode. <br/>File:<a href="'.$file.'">View</a>');
-        if(file_exists(public_path('img-barcode').'/'.$file)){
-            $input['imageurl'] = Url('img-barcode').'/'.$file;
-            $input['barcodekey'] = $request->get('barcodekey') ?str_pad( $request->get('barcodekey'), 7, "0", STR_PAD_LEFT)  :  str_pad($input['product_id'], 7, "0", STR_PAD_LEFT) ;
-            if($barcode = $this->save($input)){
-                $product->barcode_id = $barcode->id;
-                if($product->save()){
-                    return redirect(route('barcode.show' , $file ))->with('flash_message' ,  'Successfully saved barcode. <br/>File:<a href="'.$file.'">View</a>');
+            if(file_exists(public_path('img-barcode').'/'.$file)){
+                $input['imageurl'] = Url('img-barcode').'/'.$file;
+                $input['barcodekey'] = $request->get('barcodekey') ?str_pad( $request->get('barcodekey'), 7, "0", STR_PAD_LEFT)  :  str_pad($input['product_id'], 7, "0", STR_PAD_LEFT) ;
+                if($barcode = $this->save($input)){
+                    $product->barcode_id = $barcode->id;
+                    if($product->save()){
+                        return redirect(route('barcode.show' , $file ))->with('flash_message' ,  'Successfully saved barcode. <br/>File:<a href="'.$file.'">View</a>');
+                    }
                 }
             }
+
         }
+      
         return redirect()->back()->withErrors('Cannot save barcode. Try Again');
     }
     public function save($input){
