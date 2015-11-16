@@ -106,7 +106,7 @@
            <li class="sub-menu">
               <a href="{{route('cpanel.index')}}" class="controlpanel" >
                   <i class="fa fa-user"></i>
-                  <span>Control Panel</span>
+                  <span>Control Panel & Reports</span>
               </a>
           </li>
           

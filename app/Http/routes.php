@@ -97,7 +97,8 @@ Route::group(['prefix' => 'ajax'], function(){
 	Route::get('/getUser' , ['uses' => 'AjaxController@getUser' , 'as' => 'ajax.get.user']);
 	Route::get('/order' , ['uses' => 'AjaxController@order' , 'as' => 'ajax.get.order']);
 	Route::get('/ordernumber' , ['uses' => 'AjaxController@ordernumber' , 'as' => 'ajax.get.ordernumber']);
-	Route::get('/command-prompt' , ['uses' => 'AjaxController@shell' , 'as' => 'cpanel.shell.cmd']);	
+	Route::get('/command-prompt' , ['uses' => 'AjaxController@shell' , 'as' => 'cpanel.shell.cmd']);
+	Route::get('/report/withdrawals' , ['uses' => 'AjaxController@getWithdrawals' , 'as' => 'ajax.report.get.withdrawals']);
 });
 
 Route::group(['prefix' => 'user/order'],function(){
@@ -112,9 +113,11 @@ Route::group(['prefix' => 'inventory/item'],function(){
 	Route::get('/create' , ['uses' => 'ItemController@create' , 'as' => 'item.create']);
 	Route::get('/edit/{id}/{name?}' , ['uses' => 'ItemController@edit' , 'as' => 'item.edit']);
 	Route::post('/store' , ['uses' => 'ItemController@store' , 'as' => 'item.store']);
+	Route::post('/setReorder' , ['uses' => 'ItemController@SetReOrder' , 'as' => 'item.setReorder']);
 	Route::post('/update/{id}' , ['uses' => 'ItemController@update' , 'as' => 'item.update']);
 	Route::get('/index' , ['uses' => 'ItemController@index' , 'as' => 'item.list']);
 	Route::get('/withdraw/{id?}' , ['uses' => 'ItemController@withdraw' , 'as' => 'item.withdraw']);
+	Route::get('/reorder/{id}/{auto?}' , ['uses' => 'ItemController@reorder' , 'as' => 'item.reorder']);
 	Route::get('/deposit/{id?}' , ['uses' => 'ItemController@deposit' , 'as' => 'item.deposit']);
 	Route::post('/proccess-withdrawal/' , ['uses' => 'ItemController@proccessWithdrawal' , 'as' => 'item.process.withdraw']);
 	Route::post('/proccess-deposit/' , ['uses' => 'ItemController@proccessDeposit' , 'as' => 'item.process.deposit']);

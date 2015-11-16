@@ -45,7 +45,6 @@ class EloquentItemGroupRepository  implements ItemGroupContract
 
 	}
 	public function getIn($field, $param){
-		
 		$items = ItemGroup::whereIn('id', $param)->get();
 		return $items;
 	}

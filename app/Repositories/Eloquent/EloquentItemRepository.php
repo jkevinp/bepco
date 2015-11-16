@@ -81,7 +81,7 @@ class EloquentItemRepository  implements ItemContract
 		else{
 			$item->quantity = $item->quantity - $quantity;
 			if($result = $item->save()){
-				Helper::log('induct', 'withdraw' , $user , 'EIR' , 'Quantity' , $quantity);
+				Helper::log('induct', 'withdraw' , $user , 'EIR' , $item->id , $quantity);
 			}
 			return $result;
 		}
@@ -93,7 +93,7 @@ class EloquentItemRepository  implements ItemContract
 
 		$item->quantity = $item->quantity + $quantity;
 		if($result= $item->save()){
-			Helper::log('induct', 'deposit' , $user , 'EIR' , 'Quantity' , $quantity);
+			Helper::log('induct', 'deposit' , $user , 'EIR' , $item->id , $quantity);
 		}
 		return $result;
 

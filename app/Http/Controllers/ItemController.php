@@ -8,7 +8,7 @@ use bepc\Http\Controllers\Controller;
 //interfaces
 use bepc\Repositories\Contracts\ItemContract;
 use bepc\Repositories\Contracts\ItemGroupContract;
-
+use DB;
 use bepc\Repositories\Contracts\UserContract;
 class ItemController extends Controller
 {
@@ -22,10 +22,44 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function SetReOrder(Request $request){
+
+        if($request->has('id') && $request->has('optimal_order_qty') && $request->has('reorder_point')){
+            $item = $this->item->find($request->get('id'));
+            
+            if($item){
+                $item->safe_quantity = $request->get('optimal_order_qty');
+                $item->alert_quantity = $request->get('reorder_point');
+                if($item->save())return redirect(route('item.list'))->with('flash_message' , 'Reorder point & quantity successfully saved.');
+                return redirect()->back()->withErrors('Could not save item.');
+            }else return redirect(route('item.list'))->withErrors('Could not find item.');
+        }
+    }
     public function index()
     {
         $items = $this->item->all();
         return view('self.blade.item.list')->withItems($items);
+    }
+    public function reorder($id, $auto = false){
+        $item = $this->item->find($id);
+        $lastyear = date("Y-m-d",strtotime("-1 year", time()));  
+        $used = 0;
+        $logs = DB::table('inventorylog')
+        ->where('action' , '=' , 'withdraw')
+        ->where('field' ,'=' ,$item->id)
+        ->where ('created_at' , ">=" , $lastyear)->get();
+        if(!$item)return redirect(route('item.list'))->withErrors('Could not find item');
+        
+        if($auto){
+            $withdrawn = DB::table('inventorylog')
+                ->select(DB::raw("SUM(param) as count"))
+                ->where('field' ,'=' ,$item->id)
+                ->where('action' ,'=' , 'withdraw')
+                ->where ('created_at' , ">=" , $lastyear)
+                ->first();
+            $used = $withdrawn->count;
+        }
+        return view('self.blade.item.reorder')->with(compact('item' ,'used' ,'logs'));
     }
 
     /**

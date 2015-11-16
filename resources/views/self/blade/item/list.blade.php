@@ -24,6 +24,7 @@
                   <th><i class="fa fa-bookmark"></i>Item Description</th>
                   <th><i class="fa fa-bookmark"></i>Avialable  Quantity</th>
                   <th><i class="fa fa-bookmark"></i>Item Safe Stock</th>
+                  <th><i class="fa fa-bookmark"></i>Reorder Quantity</th>
                   <th><i class="fa fa-bookmark"></i>Category</th>
                   <th><i class="fa fa-bookmark"></i>Status</th>
                   <th><i class=" fa fa-edit"></i> Actions</th>
@@ -42,6 +43,8 @@
                   <td> <span class="">{{$item->itemgroup->name}}</span></td>
                   <td> <span class="violet"><a href="#">{{$item->description}}</a></span> </td>
                   <td>{{number_format($item->quantity)}}</td>
+                  
+                  <td>{{$item->alert_quantity}}</td>
                   <td>{{$item->safe_quantity}}</td>
                   <td>Category</td>
                   <td>
@@ -74,6 +77,7 @@
                             ><i class="fa fa-reply"></i></a>
 
                         <a class="btn btn-default"  title="Order {{$item->name}}"  href="{{route('item.deposit' , $item->id)}}" ><i class="fa fa-truck"></i></a>
+                         <a class="btn btn-default"  title="Setup reorder {{$item->name}}"  href="{{route('item.reorder' , $item->id)}}" ><i class="fa fa-calculator"></i></a>
                   </td>
               </tr>
              </tbody>

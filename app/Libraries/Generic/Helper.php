@@ -16,7 +16,6 @@ class Helper
         return date('Ymds').str_pad(rand(0,99),2,"0");
     }
     public static function log($processname , $action, User $user , $fired_at , $field , $param){
-    	
     	$log['proccess'] = $processname;
     	$log['action'] = $action;
     	$log['user_name'] = $user->getName();

@@ -33,6 +33,18 @@ class AjaxController extends Controller
                 ->groupBy('product.name')
                 ->get();
     }
+    public function getWithdrawals(Request $request){
+        if($request->has('start_date') && $request->has('end_date')){
+        return 
+        Response::json(DB::table('inventorylog')
+        ->join('item' , 'inventorylog.field' ,'=' , 'item.id')
+        ->select('item.*' , 'inventorylog.*' , 'item.id as item_id' , 'inventorylog.id as inventorylog_id')
+        ->where('inventorylog.action' , '=' , 'withdraw')
+        ->where('inventorylog.created_at' , '>=' , $request->get('start_date'))
+        ->where('inventorylog.created_at' ,'<=' , $request->get('end_date'))
+        ->get());
+        }
+    }
 
     public function ordernumber(Request $r){
         return DB::table('order')
@@ -48,7 +60,7 @@ class AjaxController extends Controller
     		if($r->has('id')){
     			$user=  $this->user->find($r->get('id'));
     			if($user){return Response::json(['status' => 'success','result' => $user]);}
-    			return Response::json(['status' => 'error']);
+    			return Response::json(['status' => 'error id:'.$r->get('id')]);
     		}
     		//error
     		return Response::json(['status' => 'error']);
