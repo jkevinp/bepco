@@ -9,10 +9,10 @@ class EloquentIngredientRepository  implements IngredientContract
 {
 
 	public function find($id){
-		return Product::find($id);
+		return Ingredient::find($id);
 	}
 	public function all(){
-		return Product::all();
+		return Ingredient::all();
 	}
 	public function store($request){
 		$input = $request->all();
@@ -23,28 +23,28 @@ class EloquentIngredientRepository  implements IngredientContract
             $image->move(public_path($upload_folder).'/', $file_name);
             echo URL::asset($upload_folder . $file_name);  // get upload file url
             $input['imageurl'] = $upload_folder.$file_name;
-            $p =  Product::create($input);
+            $p =  Ingredient::create($input);
             
            }
             
     	return $p;
     }
-	public function sdelete(Product $user){
+	public function sdelete(Ingredient $user){
 		
 	}
-	public function fdelete(Product $user){
+	public function fdelete(Ingredient $user){
 		
 	}
-	public function create_id(Product $user){
+	public function create_id(Ingredient $user){
 
 	}
-	public function search($fields, $param){
-
+	public function search($arrayParam){
+		return Ingredient::where($arrayParam)->get();
 	}
 	public function getNullBarcode(){
-		 return Product::whereNull('barcode_id')->orWhere('barcode_id' , '=' ,'')->get();
+		 return Ingredient::whereNull('barcode_id')->orWhere('barcode_id' , '=' ,'')->get();
 	}
 	public function getNullRecipe(){
-		 return Product::whereNotIn('id' , Recipe::all()->lists('product_id'))->get();
+		 return Ingredient::whereNotIn('id' , Recipe::all()->lists('product_id'))->get();
 	}
 } 

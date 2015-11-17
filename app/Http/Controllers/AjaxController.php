@@ -10,20 +10,31 @@ use bepc\Models\OrderDetail;
 
 use bepc\Models\Ingredient;
 use bepc\Repositories\Contracts\UserContract;
+use bepc\Repositories\Contracts\RecipeContract;
+use bepc\Repositories\Contracts\IngredientContract;
 use Response;
 use DB;
+
 class AjaxController extends Controller
 {
-	public function __construct(UserContract $uc){
+	public function __construct(UserContract $uc , RecipeContract $rc , IngredientContract $ic){
 		$this->user = $uc;
+        $this->recipe = $rc;
+        $this->ingredient = $ic;
 	}
     public function recipe(Request $r){
         if($r->has('product_id')){
             $p = Product::find($r->get('product_id'));
             $recipe = $p->recipe;
             $i = Ingredient::where('recipe_id' , '=' ,$recipe->first()->id)->get();
-
             return ['recipe' => $p->recipe , 'ingredient' => $i->lists('quantity','name')];
+        }
+    }
+    public function getRecipe(Request $r){
+        if($r->has('id')){
+            $recipe = $this->recipe->find($r->get('id'));
+            $ingredients = $this->ingredient->search(['recipe_id' => $r->get('id')]);
+            return Response::json(['recipe' => $recipe  , 'ingredients' => $ingredients->lists('id' ,'name')]);
         }
     }
     public function order(Request $r){
@@ -60,7 +71,7 @@ class AjaxController extends Controller
     		if($r->has('id')){
     			$user=  $this->user->find($r->get('id'));
     			if($user){return Response::json(['status' => 'success','result' => $user]);}
-    			return Response::json(['status' => 'error id:'.$r->get('id')]);
+    			return Response::json(['status' => 'error']);
     		}
     		//error
     		return Response::json(['status' => 'error']);

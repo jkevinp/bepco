@@ -10,6 +10,8 @@ use URL;
 use bepc\Models\Ingredient;
 use bepc\Models\Recipe;
 use bepc\Repositories\Contracts\ProductContract;
+use bepc\Repositories\Contracts\UserContract;
+use DB;
 class ProductController extends Controller
 {
     /**
@@ -17,7 +19,9 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct(ProductContract $pc){
+    public function __construct(ProductContract $pc , UserContract $uc){
+        $this->user = $uc;
+        $this->middleWare('auth');
         $this->product = $pc;
     }
 
@@ -147,4 +151,86 @@ class ProductController extends Controller
       
         return $order;
     }
+
+    public function deposit($id = false){
+        if($id){
+            $product = $this->product->find($id);
+            if(!$product)return $this->redirect()->back()->withErrors('The Id you specified is not a valid product');
+            return view('self.blade.product.deposit')->withItem($product);
+        }
+        return redirect(route('product.list'))->withErrors('Item ID is required.');
+    }
+
+    public function withdraw($id = false){
+        if($id){
+            $product = $this->product->find($id);
+            if(!$product)return $this->redirect()->back()->withErrors('The Id you specified is not a valid product');
+            return view('self.blade.product.withdraw')->withItem($product);
+        }
+    }
+   
+    public function proccessWithdrawal(Request $r){
+        $input = $r->all();
+        //validation
+        if($r->has('user_id') && $r->has('id') && $r->has('details') && $r->has('quantity')){
+        $user = $this->user->find($input['user_id']);
+        if( $product = $this->product->find($input['id'])){
+           if( $this->product->deduct($product ,$user , $input['quantity'], $input['details']))
+            return redirect()->back()->with('flash_message' , "Proccess has been saved!");
+        }
+        }
+        return redirect()->back()->withErrors('Failed to process withdrawal');
+
+    }
+    public function proccessDeposit(Request $r){
+        $input = $r->all();
+        //validation
+        if($r->has('user_id') && $r->has('id') && $r->has('details') && $r->has('quantity')){
+            $user = $this->user->find($input['user_id']);
+            if( $product = $this->product->find($input['id'])){
+                if( $this->product->induct($product ,$user , $input['quantity'], $input['details']))
+                return redirect()->back()->with('flash_message' , "Proccess has been saved!");
+            }
+        }
+        return redirect()->back()->withErrors('Failed to process deposit');
+    }
+
+    public function reorder($id, $auto = false){
+        $item = $this->product->find($id);
+        $lastyear = date("Y-m-d",strtotime("-1 year", time()));  
+        $used = 0;
+        $logs = DB::table('inventorylog')
+        ->where('action' , '=' , 'withdraw')
+        ->where('param_id' ,'=' ,$item->id)
+        ->where('table' , '=' , get_class($item))
+        ->whereDate('created_at' , ">=" , $lastyear)->get();
+        if(!$item)return redirect(route('product.list'))->withErrors('Could not find product');
+        
+        if($auto){
+            $withdrawn = DB::table('inventorylog')
+                ->select(DB::raw("SUM(param) as count"))
+                ->where('param_id' ,'=' ,$item->id)
+                ->where('action' ,'=' , 'withdraw')
+                ->whereDate('created_at' , ">=" , $lastyear)
+                ->where('table' , '=' , get_class($item))
+                ->first();
+            $used = $withdrawn->count;
+        }
+        return view('self.blade.product.reorder')->with(compact('item' ,'used' ,'logs'));
+    }
+
+      public function SetReOrder(Request $request){
+
+        if($request->has('id') && $request->has('optimal_order_qty') && $request->has('reorder_point')){
+            $item = $this->product->find($request->get('id'));
+            if($item){
+                $item->safe_quantity = $request->get('optimal_order_qty');
+                $item->alert_quantity = $request->get('reorder_point');
+                if($item->save())return redirect(route('product.list'))->with('flash_message' , 'Reorder point & quantity successfully saved.');
+                return redirect()->back()->withErrors('Could not save item.');
+            }else return redirect(route('product.list'))->withErrors('Could not find item.');
+        }
+    }
+
+
 }

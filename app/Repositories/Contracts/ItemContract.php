@@ -13,7 +13,8 @@ interface ItemContract{
 	public function getNullBarcode();
 	public function getNullRecipe();
 	public function getIn($field, $param);
-	public function deduct(Item $item , User $user ,$quantity);
-	public function induct(Item $item , User $user ,$quantity);
+	public function deduct(Item $item , User $user ,$quantity, $purpose);
+	public function induct(Item $item , User $user ,$quantity, $purpose);
 	public function update(Item $item,$request);
+	public function findAll($ids);
 }

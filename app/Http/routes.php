@@ -26,7 +26,7 @@ Route::group(['prefix' => 'user'] , function(){
 	Route::post('/recover' , ['uses' => 'UserController@updatePassword' , 'as' => 'user.recover']);
 	
 	Route::get('/show/{id}/{name?}' , ['uses' => 'UserController@show' ,  'as' => 'user.show']);
-	Route::post('/registration/' , ['uses' => 'UserController@update' ,  'as' => 'user.store']);
+	Route::post('/registration/' , ['uses' => 'UserController@store' ,  'as' => 'user.store']);
 	Route::post('/update' , ['uses' => 'UserController@update' ,  'as' => 'user.update']);
 
 	Route::get('/list' , ['uses' => 'UserController@index'  , 'as' => 'user.list']);
@@ -42,7 +42,6 @@ Route::group(['prefix' => 'user'] , function(){
 	Route::post('/update-contact/', ['uses' => 'UserController@updateContact' , 'as' => 'user.contact.update']);
 	Route::post('/store-contact/', ['uses' => 'UserController@storeContact' , 'as' => 'user.contact.store']);
 	Route::get('/delete-contact/{contactid}' , ['uses' => 'UserController@destroyContact' , 'as' => 'user.contact.delete']);
-
 
 	Route::get('/add-address/{userid}', ['uses' => 'UserController@addAddress' , 'as' => 'user.address.create']);
 	Route::get('/edit-address/{contactid}', ['uses' => 'UserController@editAddress' , 'as' => 'user.address.edit']);
@@ -75,6 +74,14 @@ Route::group(['prefix' => 'user/product'],function(){
 	Route::post('/update' , ['uses' => 'ProductController@update' , 'as' => 'product.update']);
 	Route::get('/compute/{orderid?}' , ['uses' => 'ProductController@compute' , 'as' => 'product.compute']);
 	Route::get('/processcomputation' , ['uses' => 'ProductController@processcomputation' , 'as' => 'product.processcomputation']);
+
+	Route::get('/withdraw/{id?}' , ['uses' => 'ProductController@withdraw' , 'as' => 'product.withdraw']);
+	Route::get('/reorder/{id}/{auto?}' , ['uses' => 'ProductController@reorder' , 'as' => 'product.reorder']);
+	Route::post('/setReorder' , ['uses' => 'ProductController@SetReOrder' , 'as' => 'product.setReorder']);
+	Route::get('/deposit/{id?}' , ['uses' => 'ProductController@deposit' , 'as' => 'product.deposit']);
+	Route::post('/proccess-withdrawal/' , ['uses' => 'ProductController@proccessWithdrawal' , 'as' => 'product.process.withdraw']);
+	Route::post('/proccess-deposit/' , ['uses' => 'ProductController@proccessDeposit' , 'as' => 'product.process.deposit']);
+
 });
 Route::group(['prefix' => 'user/recipe'],function(){
 	Route::get('/create/{id?}' , ['uses' => 'RecipeController@create' , 'as' => 'recipe.create']);
@@ -92,8 +99,15 @@ Route::group(['prefix' => 'user/ingredient'],function(){
 	Route::post('/store' , ['uses' => 'IngredientController@store' , 'as' => 'ingredient.store']);
 	Route::post('/update' , ['uses' => 'IngredientController@update' , 'as' => 'ingredient.update']);
 });
+
+Route::group(['prefix' => 'reports'] , function(){
+	Route::post('/generate' , ['uses' => 'ReportController@generate' , 'as' => 'report.generate']);
+});
+
 Route::group(['prefix' => 'ajax'], function(){
+	
 	Route::get('/recipe' , ['uses' => 'AjaxController@recipe' , 'as' => 'ajax.recipe']);
+	Route::get('/getrecipe' , ['uses' => 'AjaxController@getRecipe' , 'as' => 'ajax.get.recipe']);
 	Route::get('/getUser' , ['uses' => 'AjaxController@getUser' , 'as' => 'ajax.get.user']);
 	Route::get('/order' , ['uses' => 'AjaxController@order' , 'as' => 'ajax.get.order']);
 	Route::get('/ordernumber' , ['uses' => 'AjaxController@ordernumber' , 'as' => 'ajax.get.ordernumber']);
@@ -113,11 +127,12 @@ Route::group(['prefix' => 'inventory/item'],function(){
 	Route::get('/create' , ['uses' => 'ItemController@create' , 'as' => 'item.create']);
 	Route::get('/edit/{id}/{name?}' , ['uses' => 'ItemController@edit' , 'as' => 'item.edit']);
 	Route::post('/store' , ['uses' => 'ItemController@store' , 'as' => 'item.store']);
-	Route::post('/setReorder' , ['uses' => 'ItemController@SetReOrder' , 'as' => 'item.setReorder']);
 	Route::post('/update/{id}' , ['uses' => 'ItemController@update' , 'as' => 'item.update']);
 	Route::get('/index' , ['uses' => 'ItemController@index' , 'as' => 'item.list']);
+
 	Route::get('/withdraw/{id?}' , ['uses' => 'ItemController@withdraw' , 'as' => 'item.withdraw']);
 	Route::get('/reorder/{id}/{auto?}' , ['uses' => 'ItemController@reorder' , 'as' => 'item.reorder']);
+	Route::post('/setReorder' , ['uses' => 'ItemController@SetReOrder' , 'as' => 'item.setReorder']);
 	Route::get('/deposit/{id?}' , ['uses' => 'ItemController@deposit' , 'as' => 'item.deposit']);
 	Route::post('/proccess-withdrawal/' , ['uses' => 'ItemController@proccessWithdrawal' , 'as' => 'item.process.withdraw']);
 	Route::post('/proccess-deposit/' , ['uses' => 'ItemController@proccessDeposit' , 'as' => 'item.process.deposit']);

@@ -35,7 +35,8 @@ class UserController extends Controller
         $this->useraddress = $uac;
         $this->imagebarcodepath = public_path('img-id');
         $this->imagebarcodetype = "png";
-        $this->middleWare('auth');
+        $this->middleWare('auth' , ['except' => ['store' , 'create']]);
+
     }
     public function index(){   
         $users = $this->user->all();

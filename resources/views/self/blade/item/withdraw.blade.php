@@ -16,7 +16,7 @@
                             </div>
                             <div class="form-group ">
                                 <label for="name" class="control-label col-lg-2">Item Group*</label>     
-                                <div class="col-lg-10"><input value="{{$item->itemgroup->name}}" readonly=""  name="name" class="form-control input-medium " required="" type="text"></div>
+                                <div class="col-lg-10"><input value="{{$item->itemgroup->name}}" readonly  name="name" class="form-control input-medium " required="" type="text"></div>
                             </div>
                               <div class="form-group ">
                                 <label for="quantity" class="control-label col-lg-2">Available Quantity*</label>     
@@ -24,7 +24,7 @@
                             </div>
                             <div class="form-group ">
                                 <label for="details" class="control-label col-lg-2">Description*</label>        
-                                <div class="col-lg-10"><textarea ="" readonly class="form-control" style="resize:none;" id="details" placeholder="Details" name="details" cols="50" rows="10"></textarea></div>
+                                <div class="col-lg-10"><textarea readonly class="form-control" style="resize:none;" id="details" placeholder="Details" name="details" cols="50" rows="10">{{$item->description}}</textarea></div>
                             </div>
                             
                         </div>
@@ -53,8 +53,8 @@
                                 <div class="col-lg-10"><input id="withdraw_quantity"  name="quantity" class="form-control input-medium " size="16" value="{{$item->quantity}}" required="" type="number" min="1" max="{{$item->quantity}}"></div>
                             </div>
                             <div class="form-group ">
-                                <label for="details" class="control-label col-lg-2">Description*</label>        
-                                <div class="col-lg-10"><textarea ="" readonly class="form-control" style="resize:none;" id="details" placeholder="Details" name="details" cols="50" rows="8"></textarea></div>
+                                <label for="details" class="control-label col-lg-2">Description/Purpose*</label>        
+                                <div class="col-lg-10"><textarea required  class="form-control" style="resize:none;" id="details" placeholder="Details" name="details" cols="50" rows="8"></textarea></div>
                             </div>
                             <input type="hidden" name="user_id" id="user_id" value="">
                             <input class="btn btn-theme" type="submit" value="Withdraw" id="btn_submit">

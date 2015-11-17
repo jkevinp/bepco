@@ -48,6 +48,9 @@ class EloquentItemRepository  implements ItemContract
 	public function create_id(Item $user){
 
 	}
+	public function findAll($ids){
+		return Item::whereIn('id' , $ids)->get();
+	}
 	public function search($fields, $param){
 
 	}
@@ -74,26 +77,29 @@ class EloquentItemRepository  implements ItemContract
 	public function getNullRecipe(){
 		 return Item::whereNotIn('id' , Recipe::all()->lists('product_id'))->get();
 	}
-	public function deduct(Item $item ,User $user,  $quantity){
+	public function deduct(Item $item ,User $user,  $quantity , $details){
+				$start_quantity = $item->quantity;
 		if($item->quantity - $quantity < 0){
 			return false;
 		}
 		else{
 			$item->quantity = $item->quantity - $quantity;
 			if($result = $item->save()){
-				Helper::log('induct', 'withdraw' , $user , 'EIR' , $item->id , $quantity);
+					Helper::log('deduct', 'withdraw' , $user , 'EIR' , 'quantity' , $quantity , $item->id , $quantity , $start_quantity, $item->quantity, get_class($item),$details);
 			}
 			return $result;
 		}
+		return false;
 
 		//process save record withdraw here
 	}
-	//    public static function log($processname , $action, User $user , $fired_at , $field , $param){
-	public function induct(Item $item ,User $user,  $quantity){
+	//$processname , $action, User $user , $fired_at , $field , $param , $param_id ,$param_value , $start_quantity ,$end_quantity
 
+	public function induct(Item $item ,User $user,  $quantity , $details){
+		$start_quantity = $item->quantity;
 		$item->quantity = $item->quantity + $quantity;
 		if($result= $item->save()){
-			Helper::log('induct', 'deposit' , $user , 'EIR' , $item->id , $quantity);
+			Helper::log('induct', 'deposit' , $user , 'EIR' , 'quantity' , $quantity , $item->id , $quantity , $start_quantity, $item->quantity, get_class($item),$details);
 		}
 		return $result;
 

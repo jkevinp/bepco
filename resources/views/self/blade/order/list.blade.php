@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row mt">
-    <div class="col-md-10 col-md-offset-1">
+    <div class="col-md-12">
         <div class="row mt">
                 <div class="form-panel">
                     <div class=" form">
@@ -10,32 +10,29 @@
                             <h2 class="violet">Customer Orders Listing<span class="pull-right"><a href="{{route('barcode.print')}}" class="btn btn-theme"><i class="fa fa-print"></i> Print</a></span></h2>
                             <table class="table table-stripe table-hover table-bordered">
                                 <thead>
-                                        
-                                        @foreach($fieldlist as $field)
-                                            <th>{{$field}}</th>
-                                        @endforeach
-                                        <th>Days before delivery</th>
-                                        <th>Actions</th>
+                                    @foreach($fieldlist as $field)
+                                        <th>{{$field}}</th>
+                                    @endforeach
+                                    <th>Days before delivery</th>
+                                    <th>Actions</th>
                                 </thead>
                                 <tbody>
                                 @foreach($orders as $order)
-                                    <tr>
-                                    @foreach($fieldlist as $field)
-                                        <td>{{$order[$field]}}</td>
-                                    @endforeach
-                                    <?php 
-                                        // dd(date('Y-m-d'));
-                                        // dd(date_create($order->deliverydate));
+                                 <?php 
                                         $today = DateTime::createFromFormat('Y-m-d' , date('Y-m-d'));
                                         $daysLeft = date_diff( $today ,date_create($order->deliverydate));
                                         $daysLeft = $daysLeft->format("%r%a");
-                                        
                                     ?>
+                                    <tr class="<?php echo ($daysLeft == 0) ?  'due':''; ?>">
+                                    @foreach($fieldlist as $field)
+                                        <td>{{$order[$field]}}</td>
+                                    @endforeach
+                                   
                                     <td>
                                         @if($daysLeft > 0)
-                                            {{$daysLeft}}
+                                            {{$daysLeft}} days
                                         @else
-                                            Due
+                                            0 days
                                         @endif
                                     </td>
                                     <td>
@@ -88,6 +85,16 @@
 </div>
 
 
+@stop
+
+@section("header")
+<style type="text/css">
+    
+.due{
+    background-color: rgba(255,0,0,0.1);
+}
+
+</style>
 @stop
 
 @section('script')

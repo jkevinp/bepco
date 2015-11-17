@@ -59,7 +59,17 @@
            <div class="panel-heading">
             <h2 style="padding-bottom:50px" class="violet text-center">Existing User <br/><i class="fa fa-user fa-5x" > </i></h2>
            </div>
-        </div></div>
+          </div>
+        </div>
+        @else
+        <div class="col-md-3 col-md-offset-1">
+         <div class="content-panel">
+           <div class="panel-heading">
+            <h2 style="padding-bottom:50px" class="violet text-center">Existing User <br/><i class="fa fa-user fa-5x" > </i></h2>
+           </div>
+          </div>
+        </div>
+
         @endif
       </div>
     </div>

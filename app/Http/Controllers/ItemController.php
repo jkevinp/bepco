@@ -46,16 +46,18 @@ class ItemController extends Controller
         $used = 0;
         $logs = DB::table('inventorylog')
         ->where('action' , '=' , 'withdraw')
-        ->where('field' ,'=' ,$item->id)
-        ->where ('created_at' , ">=" , $lastyear)->get();
+        ->where('param_id' ,'=' ,$item->id)
+        ->where('table' , '=' , get_class($item))
+        ->whereDate('created_at' , ">=" , $lastyear)->get();
         if(!$item)return redirect(route('item.list'))->withErrors('Could not find item');
         
         if($auto){
             $withdrawn = DB::table('inventorylog')
                 ->select(DB::raw("SUM(param) as count"))
-                ->where('field' ,'=' ,$item->id)
+                ->where('param_id' ,'=' ,$item->id)
                 ->where('action' ,'=' , 'withdraw')
-                ->where ('created_at' , ">=" , $lastyear)
+                ->whereDate('created_at' , ">=" , $lastyear)
+                ->where('table' , '=' , get_class($item))
                 ->first();
             $used = $withdrawn->count;
         }
@@ -81,9 +83,7 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        if($this->item->store($request))
-            return redirect()->back()->with('flash_message' , 'Item has been successfully saved.');
-
+        if($this->item->store($request)) return redirect()->back()->with('flash_message' , 'Item has been successfully saved.');
         return redirect()->back()->withInput($request->all())->withErrors('Item could not be saved');
     }
 
@@ -113,13 +113,12 @@ class ItemController extends Controller
             }else{
                 return redirect()->back()->withErrors('Could not find Item');
             }
-        }
+        }return redirect(route('item.list'))->withErrors('Item ID is required.');
     }
     public function withdraw($id = false){
         if($id){
             $item = $this->item->find($id);
             if(!$item)return $this->redirect()->back()->withErrors('The Id you specified is not a valid item');
-
             return view('self.blade.item.withdraw')->withItem($item);
         }
     }
@@ -127,31 +126,33 @@ class ItemController extends Controller
         if($id){
             $item = $this->item->find($id);
             if(!$item)return $this->redirect()->back()->withErrors('The Id you specified is not a valid item');
-
             return view('self.blade.item.deposit')->withItem($item);
         }
+        return redirect(route('item.list'))->withErrors('Item ID is required.');
     }
     public function proccessWithdrawal(Request $r){
-    
         $input = $r->all();
         //validation
+        if($r->has('user_id') && $r->has('id') && $r->has('details') && $r->has('quantity')){
         $user = $this->user->find($input['user_id']);
-       if( $item = $this->item->find($input['id'])){
-           if( $this->item->deduct($item ,$user , $input['quantity']))
+        if( $item = $this->item->find($input['id'])){
+           if( $this->item->deduct($item ,$user , $input['quantity'], $input['details']))
             return redirect()->back()->with('flash_message' , "Proccess has been saved!");
-       }
+        }
+        }
         return redirect()->back()->withErrors('Failed to process withdrawal');
 
     }
     public function proccessDeposit(Request $r){
-    
         $input = $r->all();
         //validation
+        if($r->has('user_id') && $r->has('id') && $r->has('details') && $r->has('quantity')){
         $user = $this->user->find($input['user_id']);
        if( $item = $this->item->find($input['id'])){
-            if( $this->item->induct($item ,$user , $input['quantity']))
+            if( $this->item->induct($item ,$user , $input['quantity'], $input['details']))
             return redirect()->back()->with('flash_message' , "Proccess has been saved!");
-       }
+        }
+        }
         return redirect()->back()->withErrors('Failed to process deposit');
 
     }
@@ -174,8 +175,8 @@ class ItemController extends Controller
             }else{
                  return redirect()->back()->withErrors('Could not find Item');
             }
-
         }
+        return redirect(route('item.list'))->withErrors('Item ID is required');
     }
 
     /**

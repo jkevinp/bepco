@@ -1,22 +1,17 @@
 @extends('default.layout.layout')
 
 @section('content')
-
-
-
 <div class="row mt">
     <div class="col-md-12">
         <div class="content-panel">
-            <h2 class="violet"><i class="fa fa-angle-right"></i> Deposit Item</h2>
+            <h2 class="violet"><i class="fa fa-angle-right"></i> Deposit Product</h2>
                 <div class='row mt'>
                     <div class="col-md-12">
-                        <span class="col-md-8"> <i class="fa fa-info "></i> Deposit item stores the given quantity of item to the storage.</span>
+                        <span class="col-md-8"> <i class="fa fa-info "></i> Deposit product stores the given quantity of item to the storage.</span>
                     </div>
                 </div>
         </div>
     </div>
-
-
     <div class="col-md-6">
         <div class="row mt">
                 <div class="form-panel">
@@ -30,10 +25,6 @@
                                 <div class="col-lg-10"><input value="{{$item->id}}" readonly name="name" class="form-control input-medium " required="" type="text"></div>
                             </div>
                             <div class="form-group ">
-                                <label for="name" class="control-label col-lg-2">Item Group*</label>     
-                                <div class="col-lg-10"><input value="{{$item->itemgroup->name}}" readonly=""  name="name" class="form-control input-medium " required="" type="text"></div>
-                            </div>
-                              <div class="form-group ">
                                 <label for="quantity" class="control-label col-lg-2">Available Quantity*</label>     
                                 <div class="col-lg-10"><input  name="quantity" id="available_quantity" readonly class="form-control input-medium " size="16" value="{{$item->quantity}}" required="" type="number" min="1" max="{{$item->quantity}}"></div>
                             </div>
@@ -51,7 +42,7 @@
         <div class="row mt">
                 <div class="form-panel">
                     <div class=" form">
-                        <form class="cmxform form-horizontal style-form" id="form_withdraw"  method="post" action="{{route('item.process.deposit')}}">
+                        <form class="cmxform form-horizontal style-form" id="form_withdraw"  method="post" action="{{route('product.process.deposit')}}">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <h2 class="violet">Deposit Information</h2>
                             <hr>

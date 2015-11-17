@@ -17,7 +17,12 @@ class InventoryLog extends Model
 								'message',
 								'fired_at',
 								'field',
-								'param'
+								'param',
+								'table',
+								'param_id',
+								'param_value',
+								'start_quantity',
+								'end_quantity'
 							];
 
 

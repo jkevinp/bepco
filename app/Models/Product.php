@@ -13,6 +13,8 @@ class Product extends Model
 								'name',
 								'price',
 								'alert_quantity',
+								'safe_quantity',
+								'quantity',
 								'imageurl'
 							];
  	public function recipe(){
